@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>at.ac.tuwien.student.sese2017.xp</groupId>
-	<artifactId>hotelverwaltung</artifactId>
+	<artifactId>hotelmanagement</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -71,6 +71,13 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+        <!-- FIX FOR TRAVIS ERROR -->
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
+        </dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -1,3 +1,5 @@
 language: java
 jdk:
  - oraclejdk8
+notifications:
+   slack: sese-xp3-ws2017:ZsrYv58SOlXQoFtiHS29Qlt0

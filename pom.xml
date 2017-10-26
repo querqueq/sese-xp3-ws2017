@@ -72,13 +72,6 @@
 			<scope>runtime</scope>
 		</dependency>
 
-        <!-- FIX FOR TRAVIS ERROR -->
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>jta</artifactId>
-            <version>1.1</version>
-        </dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

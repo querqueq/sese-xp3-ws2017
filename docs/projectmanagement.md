@@ -8,6 +8,8 @@
 * Assigned to sprints ([Github's Milestones][milestones]) and then split up into specific tasks ([GitHub Issues][issues]).
 * User stories in the backlog are project cards.
 * As soon as a user story is being planned, it must be converted to an issue.
+* Are the main tasks for themself. An implementation includes the whole vertical implementation from database to ui.
+* Preliminary general tasks to a user story can be defined. (e.g. [Templating Engine](https://github.com/sese-xp3-ws2017/sese-xp3-ws2017/issues/3))
 
 ## Tasks
 
@@ -21,11 +23,15 @@
 * Are [Github's Milestones][milestones]
 * Every sprint ends with a sprint retrospective meeting and is follwoed by a planning meeting for the next sprint.
 
+## Meetings
+
 ### Sprint retrospective meeting
 
 **Default agenda**
 
 **Required number of team members**
+
+**Result**
 
 ### Planning meeting
 
@@ -33,6 +39,7 @@
 
 **Required number of team members**
 
+**Result**
 
 [milestones]: https://github.com/sese-xp3-ws2017/sese-xp3-ws2017/milestones?direction=asc&sort=due_date&state=open
 [issues]: https://github.com/sese-xp3-ws2017/sese-xp3-ws2017/issues

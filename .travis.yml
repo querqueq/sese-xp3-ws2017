@@ -1,7 +1,6 @@
 language: java
 jdk:
  - oraclejdk8
- - openjdk8
 dist: trusty
 addons:
   sonarcloud:
@@ -14,7 +13,7 @@ script:
   # JaCoCo is used to have code coverage, the agent has to be activated
  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
 after_success:
- - if [ "$jdk" == "oraclejdk8" ]; then mvn clean test jacoco:report coveralls:report; fi
+ - mvn clean test jacoco:report coveralls:report
 notifications:
    slack: sese-xp3-ws2017:ZsrYv58SOlXQoFtiHS29Qlt0
 
@@ -29,4 +28,4 @@ deploy:
   on:
     jdk: oraclejdk8
     repo: sese-xp3-ws2017/sese-xp3-ws2017
-    branch: dev
+    branch: dev,master

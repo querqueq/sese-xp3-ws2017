@@ -14,6 +14,19 @@ script:
   # JaCoCo is used to have code coverage, the agent has to be activated
  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
 after_success:
- - mvn clean test jacoco:report coveralls:report
+ - if [ "$jdk" == "oraclejdk8" ]; then mvn clean test jacoco:report coveralls:report; fi
 notifications:
    slack: sese-xp3-ws2017:ZsrYv58SOlXQoFtiHS29Qlt0
+
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: q/AcmnwGZlgmOhdj3QlYXEX5/st6b8aT7lQxX0yX1ENpnKIUluQKZYZvtxdaUQ0qkXT3zlkQk+1myK+oOGiJ6z9ke+4humQtj5Qn8FyQv0HDeHtQGy+uPOMAHPPVaRbDQ3oyQXPMZomjTUZwkRlTdvUxRD/8NJ3CiV0ncOavhtOcCaFIUrlG0unPmhcr2Lig0zqc9qOZJqvjdyCQoAWwGgLLPWbE5dex2yrD0YumlthooAKMZRH9enVRbyHQek+4vtEuO4ts+CaCwxT9eF/EJRaYwdXMxYp9LzOEqZuHfZmqLwUXuWiEBvxPppsG9mpGGGa7UJGsdCx1e5jSx0cEoL7GZTOvw74hJESv2b40DcTh5FAs/lS25BAa+BVnhNIh5RhODZaiNqj0e2eyArqjsMknpmg3UFZiKpA+qHloJzV6KdvKNmBi4OrLgZ3L85pwtNK3JWpqCCf9+BYs48CePaJsudkZceDJQOlSwdub6qh5EMlXzsq8NwnZ9Fj6jwlw1dlruXjowfveWZxwCKIbTKOhUhBrLMqbjaUvLIgTgzAdxKKaMfJ4hGsjwrQomq7lGy/fVbFU7YiPcM7J/0/KpjUsTFYJl7IUnUp8KF2QJCBxB0vToeLxMdl2PMKV8eS7N04Y/pQbrEeDLWyozm88gCsdny5ChIptvuIZCQt/KY0=
+  file: "*/target/*.jar"
+  file_glob: true
+  skip_cleanup: true
+  on:
+    jdk: oraclejdk8
+    repo: sese-xp3-ws2017/sese-xp3-ws2017
+    branch: dev

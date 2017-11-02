@@ -124,7 +124,7 @@
 
 **Kunde kann Zimmer reservieren**
 
-  --> Siehe Fragen
+  -   Siehe Fragen
 
 **Arbeitseinteilung erstellen**
 
@@ -138,7 +138,7 @@
 **Vorgesetzter kann Urlaubsantrag bestätigen/ablehnen**
 
   Als Vorgesezter kann man die Urlaubsanträge der Mitarbeiter einsehen und bestätigen/ablehnen.
-  --> Siehe Frage - Wer darf es?
+  -   Siehe Frage - Wer darf es?
 
 **Serienbrief erstellen**
 
@@ -150,28 +150,89 @@
 
 ## Fragen
 
-* Wieso kann eine Reservierung von mehreren Kunden getätigt werden und wie soll diese Reservierung gehandelt werden?
-* Was heißt nachträglich storniert?
-  * Nach erfolgter Bezahlung
-  * Nach konsumierter Leistung
-* Was passiert mit bereits stornierten Resevierungen, wenn der Reservierungsstornierungsabbrechzeitraum geändert wird, so dass die Stornierung ungültig wäre?
-* Soll die Reservierungsstornierungsabbrechzeitraumspezifikation für alle bestehenden Reservierungen übernommen werden oder nur für alle zukünftigen?
-* Nur Kunden können die Web-Oberfläche nutzen zum Reservieren. Heißt das eine Person die noch nie Kunde war kann kein Kunde via der Web-Oberfläche werden?
-* Wie umfangreich muss diese Webpresenz einstellbar sein? Vollwertiges CMS? Desigaspekt? Gibt es eine bestehende Webseite?
-* Wie erhält ein Vorort entstandener Kunde seine Zugangsdaten für die Web-Oberfläche?
-* Können Kundenstammdaten erfasst werden ohne das eine Person bereits eine Leistung in Anspruch genommen hat?
-* Kann sich ein Kunde selbst über die Web-Oberfläche registrieren?
-* Kann ein Kunde seine eigenen Stammdaten editieren?
-* Müssen Gäste, welche nicht die Zimmer bezahlen, aber bspw. ein Einzelzimmer belegen, trotzdem ihre
+* **Wieso kann eine Reservierung von mehreren Kunden getätigt werden und wie soll diese Reservierung gehandelt werden?**
+
+    Ist für die erste Stufe nicht notwendig, es reicht, wenn eine Reservierung von genau einem Kunden getätigt werden kann.
+
+* **Was heißt nachträglich storniert?**
+
+    - ~~Nach erfolgter Bezahlung~~
+    - Nach konsumierter Leistung: Falls ein Kunde z.b. das Zimmer nicht für den vollen Zeitraum nutzt.
+
+* **Was passiert mit bereits stornierten Resevierungen, wenn der Reservierungsstornierungsabbrechzeitraum geändert wird, so dass die Stornierung ungültig wäre?**
+* **Soll die Reservierungsstornierungsabbrechzeitraumspezifikation für alle bestehenden Reservierungen übernommen werden oder nur für alle zukünftigen?**
+
+    Der Zeitraum betrifft nur offene / zukünftige Resevierungen.
+
+* **Nur Kunden können die Web-Oberfläche nutzen zum Reservieren. Heißt das eine Person die noch nie Kunde war kann kein Kunde via der Web-Oberfläche werden?**
+
+    Die Person kann sich über die Web-Oberfläche als Kunde registrieren.
+
+* **Wie umfangreich muss diese Webpresenz einstellbar sein? Vollwertiges CMS? Desigaspekt? Gibt es eine bestehende Webseite?**
+
+    Es gibt noch keine Webseite. Geplant ist eine kurze Werbeseite mit Zimmern, Lobby, Pool, etc. eine Informationsseite mit Kosten, Angeboten, Kontakt, Anfahrt sowie ein Reservierungssystem.
+
+* **Wie erhält ein Vorort entstandener Kunde seine Zugangsdaten für die Web-Oberfläche?**
+
+    Ist derzeit nicht geplant, dass vor Ort Kunden auch gleich einen Zugang zum Web erhalten. Eventuell kann man über die Kundennummer nachträglich einen Zugang anfragen?
+
+* **Können Kundenstammdaten erfasst werden ohne das eine Person bereits eine Leistung in Anspruch genommen hat?**
+
+    Ja
+
+* **Kann sich ein Kunde selbst über die Web-Oberfläche registrieren?**
+
+    Ja
+
+* **Kann ein Kunde seine eigenen Stammdaten editieren?**
+
+    Ja
+
+* **Müssen Gäste, welche nicht die Zimmer bezahlen, aber bspw. ein Einzelzimmer belegen, trotzdem ihre**
   Personalien angeben?
-* Ist es möglich das Zimmer derart große Mängel aufweisen, dass diese gesperrt werden müssen und somit nicht zur Buchung verfügbar sind? (Bspw. Sperrung auch wegen Renovierungsarbeiten)
-* Wie sollen die Statistiken konkret aussehen? (Rabatte im speziellen)
-* Wer soll Mitarbeiter anlegen und bearbeiten können?
-* Wer kann die Arbeitseinteilung für Mitarbeiter vornehmen?
-* Wer kann Urlaube genähmigen oder verweigern? Soll dies im System eingetragen werden?
-* Welche Rollen/Berechtigungen soll es geben? (Wie soll der Vorgesetzte im System abgebildet sein)
-* Wie soll der Serienbrief im System abgelegt werden? (Soll für jeden Empfänger eine solche Struktur angelegt werden
-  oder soll eine Sammelstruktur erstellt werden)
-* Sollen auch Abfragen und Webzugriffe protokolliert werden?
-* Welche Technologien werden als State-of-the-Art gesehen?
-* Sollen Mitarbeiter die Arbeitseinteilung im System einsehen können?
+
+    Ja
+
+* **Ist es möglich das Zimmer derart große Mängel aufweisen, dass diese gesperrt werden müssen und somit nicht zur Buchung verfügbar sind? (Bspw. Sperrung auch wegen **Renovierungsarbeiten)
+
+    Das ist noch nicht klar. Ist eine gute Idee.
+
+* **Wie sollen die Statistiken konkret aussehen? (Rabatte im speziellen)**
+
+    Das haben wir uns noch nicht überlegt. Allgemein wollen wir verstehen, welche Auswirkung eine Rabatt-Aktion auf die Auslastung hat.
+
+* **Wer soll Mitarbeiter anlegen und bearbeiten können?**
+
+    Was würde Sie vorschlagen?
+
+* **Wer kann die Arbeitseinteilung für Mitarbeiter vornehmen?**
+
+    Das macht in der Regel der Manager oder seine Vertretung.
+
+* **Wer kann Urlaube genähmigen oder verweigern?**
+
+    Das macht in der Regel ein Manager oder seine Vertretung. Wir hatten immer Probleme, dass Urlaube nicht oder zu spät freigegeben wurden. Eine rechtzeitige Benachrichtigung könnte hier helfen.
+
+* **Soll dies im System eingetragen werden?**
+
+    Ja die Urlaube sollen angezeigt und in der Arbeitseinteilung berücksichtigt werden.
+
+* **Welche Rollen/Berechtigungen soll es geben? (Wie soll der Vorgesetzte im System abgebildet sein)**
+
+    Wir haben im Moment Manager, Stellvertreter, Rezeptionisten, Reinigungspersonal, Wartungstechniker.
+
+* **Wie soll der Serienbrief im System abgelegt werden? (Soll für jeden Empfänger eine solche Struktur angelegt werden oder soll eine Sammelstruktur erstellt werden)**
+
+    Serienbriefe sollen für alle Empfänger gleich sein, sich lediglich im Namen etc. unterscheiden.
+
+* **Sollen auch Abfragen und Webzugriffe protokolliert werden?**
+
+    Ja
+
+* **Welche Technologien werden als State-of-the-Art gesehen?**
+
+    Wir sind hier keine Spezialisten. Es soll sich nach wie eine moderne Web-Anwendung verhalten und zukunftssicher sein.
+
+* **Sollen Mitarbeiter die Arbeitseinteilung im System einsehen können?**
+
+    Ja, das ist eventuell hilfreich wenn Dienste getauscht werden sollen.

@@ -4,6 +4,8 @@ Student project for the lecture: "Seminar aus Software Engineering WS2017"
 from the Technical University  in Vienna.
 
 [![Build Status](https://travis-ci.com/lkerck/sese-xp3-ws2017.svg?token=KupCS9kWrzEcfVJw5K7C&branch=master)](https://travis-ci.com/lkerck/sese-xp3-ws2017)
+[![Coverage Status](https://coveralls.io/repos/github/sese-xp3-ws2017/sese-xp3-ws2017/badge.svg?branch=ENV_CI_CD_env)](https://coveralls.io/github/sese-xp3-ws2017/sese-xp3-ws2017?branch=ENV_CI_CD_env)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=at.ac.tuwien.student.sese2017.xp:hotelmanagement)](https://sonarcloud.io/dashboard/index/at.ac.tuwien.student.sese2017.xp:hotelmanagement)
 
 ## Dev Setup
 

@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head><title>SESE - XP3 - register</title></head>
+<body>
+<center>
+    <h1>Software Endearing Seminar</h1><br/>
+    <h2>Hotel management site</h2><br/><br/>
+    <h3>Registration</h3>
+    <form action="register.html">
+        <table>
+            <tr>
+                <td><label for="uName">Name</label></td>
+                <td><input id="uName" th:text="${name}"/></td>
+            </tr>
+            <tr>
+                <td><label for="uPass1">Password</label></td>
+                <td><input id="uPass1" type="password" th:text="${pass}"></td>
+            </tr>
+            <tr>
+                <td><label for="uPass2">repeat Password</label></td>
+                <td><input id="uPass2" type="password" th:text="${pass}"></td>
+            </tr>
+            <tr>
+                <td><button type="submit" >Register</button></td>
+                <td><button type="reset">Clear</button></td>
+            </tr>
+        </table>
+    </form>
+</center>
+</body>
+</html>

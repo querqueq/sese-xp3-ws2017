@@ -6,7 +6,7 @@ from the Technical University  in Vienna.
 [![Build Status](https://travis-ci.org/sese-xp3-ws2017/sese-xp3-ws2017.svg?branch=master)](https://travis-ci.org/sese-xp3-ws2017/sese-xp3-ws2017)
 [![Coverage Status](https://coveralls.io/repos/github/sese-xp3-ws2017/sese-xp3-ws2017/badge.svg?branch=ENV_CI_CD_env)](https://coveralls.io/github/sese-xp3-ws2017/sese-xp3-ws2017?branch=ENV_CI_CD_env)
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=at.ac.tuwien.student.sese2017.xp:hotelmanagement)](https://sonarcloud.io/dashboard/index/at.ac.tuwien.student.sese2017.xp:hotelmanagement)
-
+[![Maintainability](https://api.codeclimate.com/v1/badges/7e83452d7c36fed7121d/maintainability)](https://codeclimate.com/github/sese-xp3-ws2017/sese-xp3-ws2017/maintainability)
 ## Architecture
 
 Project based on Spring Framework. In detail we're using the following Spring modules:

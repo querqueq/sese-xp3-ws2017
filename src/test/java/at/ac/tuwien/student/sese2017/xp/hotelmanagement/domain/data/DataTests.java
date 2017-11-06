@@ -45,11 +45,19 @@ public class DataTests {
         .setFirstField("Hello")
         .setSecondField("World")
         .setLongField(LOREM_IPSUM);
-    entityManager.persist(exampleEntity);
+    exampleEntity = entityManager.persist(exampleEntity);
     List<ExampleEntity> find = exampleRepository
         .findBySecondFieldOrderByDateFieldDesc(exampleEntity.getSecondField());
     assertThat(find).extracting(ExampleEntity::getSecondField)
         .containsOnly(exampleEntity.getSecondField());
+    assertThat(find).extracting(ExampleEntity::getFirstField)
+        .containsOnly(exampleEntity.getFirstField());
+    assertThat(find).extracting(ExampleEntity::getLongField)
+        .containsOnly(exampleEntity.getLongField());
+    assertThat(find).extracting(ExampleEntity::getDateField)
+        .containsOnly(exampleEntity.getDateField());
+    assertThat(find).extracting(ExampleEntity::getId)
+        .containsOnly(exampleEntity.getId());
 
   }
 

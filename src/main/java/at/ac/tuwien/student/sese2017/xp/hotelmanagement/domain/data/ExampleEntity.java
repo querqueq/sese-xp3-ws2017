@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import lombok.Data;
+import lombok.extern.java.Log;
 
 /**
  * Example database entry.
@@ -24,4 +25,5 @@ public class ExampleEntity {
 
   @Lob // to automatically convert the string into a clob instead of a varchar
   private String longField;
+
 }

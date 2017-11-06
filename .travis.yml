@@ -9,9 +9,17 @@ addons:
       - master
       - dev
 
+# initialize codeclimate test reporter
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
   # JaCoCo is used to have code coverage, the agent has to be activated
  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar jacoco:report coveralls:report
+# report code coverage to code climate
+after_script:
+ - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 notifications:
    slack: sese-xp3-ws2017:ZsrYv58SOlXQoFtiHS29Qlt0
 

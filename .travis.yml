@@ -19,7 +19,7 @@ script:
  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar jacoco:report coveralls:report
 # report code coverage to code climate
 after_script:
- - ./cc-test-reporter after-build --input-type jacoco -d --exit-code $TRAVIS_TEST_RESULT
+ - ./cc-test-reporter after-build --coverage-input-type jacoco -d --exit-code $TRAVIS_TEST_RESULT
 notifications:
    slack: sese-xp3-ws2017:ZsrYv58SOlXQoFtiHS29Qlt0
 

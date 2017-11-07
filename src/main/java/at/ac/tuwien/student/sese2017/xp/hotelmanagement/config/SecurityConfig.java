@@ -13,8 +13,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http
           .authorizeRequests()
-          .antMatchers("/css/**", "/index", "/register").permitAll()
-          .antMatchers("/user/**").hasRole("USER")
+          .antMatchers("/css/**", "/index", "/register", "/error").permitAll()
+          .antMatchers("/customer/**").hasRole("CUSTOMER")
+        .antMatchers("/staff/**").hasRole("STAFF")
           .and()
           .formLogin()
           .loginPage("/login").failureUrl("/login-error");
@@ -30,7 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     auth
           .inMemoryAuthentication()
-          .withUser("user").password("password").roles("USER");
-    //TODO check database if user is present:
+              .withUser("customer").password("password").roles("CUSTOMER")
+              .and()
+              .withUser("staff").password("password").roles("STAFF");
+    //TODO check database if customer is present:
   }
 }

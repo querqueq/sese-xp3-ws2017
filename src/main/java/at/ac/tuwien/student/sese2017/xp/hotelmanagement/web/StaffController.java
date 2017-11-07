@@ -6,16 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Log
 @Controller
-public class MainController {
+public class StaffController {
 
-  @RequestMapping("/")
-  public String mainPage() {
-    return "redirect:/index";
-  }
-
-  @RequestMapping("/index")
-  public String index() {
-    log.info("index - Page called");
-    return "index";
+  @RequestMapping("/staff/index")
+  public String userIndex() {
+    return "staff/index";
   }
 }

@@ -3,7 +3,6 @@
 <head>
     <title>Hello Spring Security</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}" />
 </head>
 <body>
 <div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
@@ -16,9 +15,9 @@
     </div>
 </div>
 <h1>Hello Spring Security</h1>
-<p>Welchome to the authenticated space!</p>
+<p>Welcome to the STAFF space!</p>
 <ul>
-    <li>Go to the <a href="/user/index" th:href="@{/user/index}">secured pages</a></li>
+    <li>Go to the <a href="/index" th:href="@{/index}">unsecured pages</a></li>
 </ul>
 </body>
 </html>

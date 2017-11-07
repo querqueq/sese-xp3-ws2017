@@ -12,12 +12,12 @@ Project based on Spring Framework. In detail we're using the following Spring mo
 
 ## Best Practices and Guidelines
 
-see [codestyle.md](docs/codestyle.md)
+see [codestyle.md](codestyle.md)
 
 ## Dev setup
 
-see [devops.md](docs/devops.md)
+see [devops.md](devops.md)
 
 ## Project management process
 
-see [projectmanagement.md](docs/projectmanagement.md)
+see [projectmanagement.md](projectmanagement.md)

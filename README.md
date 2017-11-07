@@ -34,7 +34,7 @@ java -jar target/hotelmanagement*.jar
 Please check our contrib guide [contrib.md](docs/contrib.md)
 
 ## Credits
-@lkerck, @querqueq, @Alwaysgone, @a-kraschitzer and @Laszlo32
+[@lkerck](https://github.com/lkerck), [@querqueq](https://github.com/querqueq), [@Alwaysgone](https://github.com/Alwaysgone), [@a-kraschitzer](https://github.com/a-kraschitzer) and [@Laszlo32](https://github.com/Laszlo32)
 
 
 ## License

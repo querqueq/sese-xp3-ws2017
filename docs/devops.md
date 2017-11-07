@@ -9,10 +9,10 @@
   keep it up to date
 * push branch and create a pull request to master
 * wait for the automatic tools to test your pull request
-  * if some CI steps repot problems, correct them, recommit and push.
+  * if some CI steps report problems, correct them, recommit and push.
 * If a commit is technically sound (all automatic checks green) it has to be
   reviewed by another contributor. If the contributor detects some problems
-  he'll request a change, otherwise he'll approve the change.
+  he will request a change, otherwise he'll approve the change.
 * After successful approval, you can finally merge the branch.
 
 > Github workflow description: [Github workflow](https://guides.github.com/introduction/flow/)

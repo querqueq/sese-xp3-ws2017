@@ -1,14 +1,11 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dao;
 
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.Utils;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.sql.rowset.serial.SerialBlob;
 import java.io.Serializable;
 import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -53,8 +50,10 @@ public class Customer implements Serializable {
     @Column(name = "uCompName")
     private String companyAddress;
 
-    @Transient
-    private transient String note = null;
+    @Lob
+    @Column(name = "cNote")
+    @Getter @Setter
+    private String note = null;
 
     // column in getter
     private Blob noteBlob;
@@ -78,22 +77,4 @@ public class Customer implements Serializable {
     @Getter @Setter
     @Column(name = "uFAX")
     private String fax;
-
-    @Column(name = "uNote")
-    public String getNote() {
-        if (note == null) {
-            note = Utils.fromBlob(noteBlob);
-        }
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-        try {
-            noteBlob = new SerialBlob(note.getBytes());
-        } catch (SQLException e) {
-            e.printStackTrace();
-//            TODO : handle exception
-        }
-    }
 }

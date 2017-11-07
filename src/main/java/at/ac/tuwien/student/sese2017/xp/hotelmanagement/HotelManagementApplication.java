@@ -7,15 +7,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Main entry point of the application.
  *
- * This class initializes the spring context and
- * launches the application.
+ * <p>This class initializes the spring context and
+ * launches the application.</p>
  *
  * @author lkerck
  */
 @SpringBootApplication
 public class HotelManagementApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(HotelManagementApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(HotelManagementApplication.class, args);
+  }
 }

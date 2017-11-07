@@ -3,7 +3,13 @@ engines:
     enabled: true
     config:
       file: "google_checkstyle.xml"
-
+  pmd:
+    enabled: true
+  sonar-java:
+    enabled: true
+    config:
+      tests_patterns:
+        - src/test/**
 ratings:
   paths:
   - "**.java"

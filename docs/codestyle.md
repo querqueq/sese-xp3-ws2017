@@ -13,10 +13,8 @@ The following rules are our mandatory style guides:
 
 	* Code needs to build in Travis.
 	* Needs to be reviewed by another developer.
-	* Needs at least ??% code coverage.
+	* Needs at least 80% code coverage.
 	* Style guide quota.
-
-	> TODO: Add quotas
 
 * **Java code style and layout**
   

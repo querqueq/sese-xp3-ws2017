@@ -49,7 +49,7 @@ public class RegistrationController {
       return "registration"; //path to the template to call
     }
 
-    //TODO create CustomerEntity in Database
+    //TODO create UserEntity in Database
 
 
     return "login"; //path to the template to call

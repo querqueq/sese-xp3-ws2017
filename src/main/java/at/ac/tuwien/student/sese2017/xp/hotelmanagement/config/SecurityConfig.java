@@ -6,9 +6,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+/**
+ * This class specifies security aspects of the application.
+ */
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+  /**
+   * Specifies the security scheme for the whole web presentation.
+   *
+   * @param http The HttpSecurity object the scheme is defined on.
+   * @throws Exception can be thrown
+   */
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
@@ -34,6 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
               .withUser("customer").password("password").roles("CUSTOMER")
               .and()
               .withUser("staff").password("password").roles("STAFF");
+
     //TODO check database if customer is present:
+    //The DataBase could be done with Method 2 of following StackOverflow Post
+    // https://stackoverflow.com/questions/41489383/how-can-i-validate-the-credentials-in-my-database-using-spring-security-and-rest
   }
 }

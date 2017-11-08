@@ -19,18 +19,33 @@ import lombok.Data;
 @Data
 public class CustomerEntity {
 
+  /**
+   * The full name of the customer.
+   */
   @NotNull
   @Size(min = 2, max = 30)
   private String name;
 
+  /**
+   * The age of the customer, has to be at least 18.
+   */
   @NotNull
   @Min(18)
   private Integer age;
 
+  /**
+   * The username of the customer.
+   * This username will checked against when logging in.
+   */
   @NotNull
   @Size(min = 6, max = 30)
   private String username;
 
+
+  /**
+   * The password of the customer.
+   * This password will checked against when logging in.
+   */
   @NotNull
   @Size(min = 6, max = 30)
   private String password;

@@ -24,10 +24,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http
           .authorizeRequests()
+          // permitAll gives public access to the matched sub urls
           .antMatchers("/css/**", "/index", "/register", "/error").permitAll()
+          // hasRole checks for a role on the loggedIn user
           .antMatchers("/customer/**").hasRole("CUSTOMER")
-        .antMatchers("/staff/**").hasRole("STAFF")
+          .antMatchers("/staff/**").hasRole("STAFF")
           .and()
+          // This defines the login page where the user can authenticate themselves
           .formLogin()
           .loginPage("/login").failureUrl("/login-error");
   }
@@ -41,13 +44,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     auth
-          .inMemoryAuthentication()
+          .inMemoryAuthentication() //defines the users to check against as in memory, see below
+              // following are valid login credentials and their defined role
+              // the role which is checked on certain sub urls
               .withUser("customer").password("password").roles("CUSTOMER")
               .and()
               .withUser("staff").password("password").roles("STAFF");
 
-    //TODO check database if customer is present:
-    //The DataBase could be done with Method 2 of following StackOverflow Post
-    // https://stackoverflow.com/questions/41489383/how-can-i-validate-the-credentials-in-my-database-using-spring-security-and-rest
+          /* TODO check database if customer is present:
+           * The DataBase could be done with Method 2 of following StackOverflow Post
+           * https://stackoverflow.com/questions/41489383/how-can-i-validate-the-credentials-in-my-database-using-spring-security-and-res
+           */
   }
 }

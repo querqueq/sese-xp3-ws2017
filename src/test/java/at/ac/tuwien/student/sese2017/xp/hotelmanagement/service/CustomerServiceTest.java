@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,14 +57,14 @@ public class CustomerServiceTest {
     assertNotNull(id);
   }
   
-  @Test(expected=ValidationException.class)
+  @Test(expected=ConstraintViolationException.class)
   public void testCreateEntityWithOneInvalidField() throws MalformedURLException {
     CustomerEntity entity = createEntity();
     entity.setPhoneNumber("This is not a phone number");
     customerService.create(entity);
   }
   
-  @Test(expected=ValidationException.class)
+  @Test(expected=ConstraintViolationException.class)
   public void testCreateEntityWithMultipleInvalidFields() throws MalformedURLException {
     CustomerEntity entity = createEntity();
     entity.setBirthday(LocalDate.now().plus(1, ChronoUnit.DAYS));
@@ -71,14 +72,14 @@ public class CustomerServiceTest {
     customerService.create(entity);
   }
   
-  @Test(expected=IllegalArgumentException.class)
+  @Test(expected=ConstraintViolationException.class)
   public void testCreateEntityWithCompulsoryNullField() throws MalformedURLException {
     CustomerEntity entity = createEntity();
     entity.setName(null);
     customerService.create(entity);
   }
   
-  @Test(expected=ValidationException.class)
+  @Test(expected=ConstraintViolationException.class)
   public void testCreateEntityWithInvalidDiscount() throws MalformedURLException {
     CustomerEntity entity = createEntity();
     entity.setDiscount(BigDecimal.valueOf(101.0D));

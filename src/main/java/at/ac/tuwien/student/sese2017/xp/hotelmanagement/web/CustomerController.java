@@ -19,13 +19,6 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 @Controller
 public class CustomerController {
 
-  private CustomerService service;
-
-  @Autowired
-  public CustomerController(CustomerService service) {
-    this.service = service;
-  }
-  
   /**
    * Handles calls to the suburl "/customer/index" on the web representation.
    *
@@ -35,15 +28,5 @@ public class CustomerController {
   public String userIndex() {
     log.info("customer index - Page called");
     return "customer/index"; //path to the template to call
-  }
-  
-  @GetMapping("/customer/create")
-  public String createCustomer() {
-    return "customer/create";
-  }
-  
-  @PostMapping("/customer/create")
-  public String postCustomer(CustomerEntity entity) {
-    return "customer/create";
   }
 }

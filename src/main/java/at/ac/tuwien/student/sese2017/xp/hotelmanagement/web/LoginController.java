@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * This controller handles all requests concerning login actions.
  * The credential check is done by the Security Config
  * @see at.ac.tuwien.student.sese2017.xp.hotelmanagement.config.SecurityConfig#configureGlobal(AuthenticationManagerBuilder)
+ *
+ * @author akraschitzer
  */
 @Slf4j
 @Controller

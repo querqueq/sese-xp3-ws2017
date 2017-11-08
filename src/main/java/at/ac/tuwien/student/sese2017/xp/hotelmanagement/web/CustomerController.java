@@ -5,7 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * This controller handles basic requests to the customer only space of the web page like the index page.
+ * This controller handles basic requests to the customer only space of the web page.
+ * For example the "/customer/index" page.
+ *
+ * @author akraschitzer
  */
 @Slf4j
 @Controller

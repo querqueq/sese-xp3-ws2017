@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * This Class handles all requests to public index URLs and processes or redirects them on.
+ *
+ * @author akraschitzer
  */
 @Slf4j
 @Controller

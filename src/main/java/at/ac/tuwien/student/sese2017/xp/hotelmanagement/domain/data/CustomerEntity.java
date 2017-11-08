@@ -1,4 +1,4 @@
-package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dao;
+package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -8,12 +8,16 @@ import lombok.Data;
 
 /**
  * This is a representation of the customer used by RegistrationController and registration.html.
- * It works as an example how to apply an objects information to a webpage and vice versa.
+ * It works as an example how to apply an objects information to a web page and vice versa.
  *
+ * <p>
  * This class should be extended for use as DAO for database accesses.
+ * </p>
+ *
+ * @author akraschitzer
  */
 @Data
-public class Customer {
+public class CustomerEntity {
 
   @NotNull
   @Size(min = 2, max = 30)

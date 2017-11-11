@@ -10,7 +10,6 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.TestDataInjector;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.RoomRepository;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -228,7 +227,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    *   Should throw InvalidArgumentException
    * </p>
    */
-  @Test(expected = InvalidArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void getAllRoomsByCriteria_minAndMaxOccupantsInvalid() throws Exception {
     roomService.getAllRoomsByCriteria(null, 4, 2, null, null);
   }
@@ -240,7 +239,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    *   Should throw InvalidArgumentException
    * </p>
    */
-  @Test(expected = InvalidArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void getAllRoomsByCriteria_minOccupantsInvalid() throws Exception {
     roomService.getAllRoomsByCriteria(null, -1, null, null, null);
   }
@@ -252,7 +251,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    *   Should throw InvalidArgumentException
    * </p>
    */
-  @Test(expected = InvalidArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void getAllRoomsByCriteria_maxOccupantsInvalid() throws Exception {
     roomService.getAllRoomsByCriteria(null, null, -1, null, null);
   }
@@ -264,7 +263,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    *   Should throw InvalidArgumentException
    * </p>
    */
-  @Test(expected = InvalidArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void getAllRoomsByCriteria_onlyPriceTypeGiven() throws Exception {
     roomService.getAllRoomsByCriteria(null, null, null, PriceType.SINGLE, null);
   }
@@ -276,7 +275,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    *   Should throw InvalidArgumentException
    * </p>
    */
-  @Test(expected = InvalidArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void getAllRoomsByCriteria_onlyMaxPriceGiven() throws Exception {
     roomService.getAllRoomsByCriteria(null, null, null, null, 2.2);
   }

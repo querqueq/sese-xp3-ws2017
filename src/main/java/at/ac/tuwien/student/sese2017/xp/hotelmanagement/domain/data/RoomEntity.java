@@ -1,6 +1,10 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -38,39 +42,6 @@ public class RoomEntity {
   @Column(nullable = false)
   private Integer maxOccupants;
 
-  /**
-   * Price for one adult per night.
-   */
-  @Column
-  private Double priceSingle = 0.0;  // initialize with default value
-
-  /**
-   * Price for two adults per night.
-   */
-  @Column
-  private Double priceDouble = 0.0;  // initialize with default value
-
-  /**
-   * Price for three adults per night.
-   */
-  @Column
-  private Double priceTriple = 0.0;  // initialize with default value
-
-  /**
-   * Price for one adult and one child per night.
-   */
-  @Column
-  private Double priceSingleWithChild = 0.0;  // initialize with default value
-
-  /**
-   * Price for one adult and two children per night.
-   */
-  @Column
-  private Double priceSingleWith2Children = 0.0;  // initialize with default value
-
-  /**
-   * Price for two adults and one child per night.
-   */
-  @Column
-  private Double priceDoubleWithChild = 0.0;  // initialize with default value
+  @ElementCollection
+  private Map<PriceType, Double> priceMap = new HashMap<>();
 }

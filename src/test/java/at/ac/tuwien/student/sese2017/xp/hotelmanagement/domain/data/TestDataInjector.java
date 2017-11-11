@@ -1,12 +1,14 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
 import javax.persistence.EntityManager;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This Class handles the injection of all test data for the test cases.
  *
  * @author akraschitzer
  */
+@Slf4j
 public class TestDataInjector {
 
   public final static RoomEntity ROOM_1 = new RoomEntity().setName("presidentialSuite")
@@ -14,7 +16,7 @@ public class TestDataInjector {
   static {
     ROOM_1.getPriceMap().put(PriceType.SINGLE, 400.21);
     ROOM_1.getPriceMap().put(PriceType.DOUBLE, 600.38);
-    ROOM_1.getPriceMap().put(PriceType.TRIPPLE, 721.41);
+    ROOM_1.getPriceMap().put(PriceType.TRIPLE, 721.41);
     ROOM_1.getPriceMap().put(PriceType.SINGLE_WITH_CHILD, 532.89);
     ROOM_1.getPriceMap().put(PriceType.SINGLE_WITH_TWO_CHILDREN, 610.88);
     ROOM_1.getPriceMap().put(PriceType.DOUBLE_WITH_CHILD, 690.54);
@@ -33,7 +35,7 @@ public class TestDataInjector {
   static {
     ROOM_3.getPriceMap().put(PriceType.SINGLE, 130.21);
     ROOM_3.getPriceMap().put(PriceType.DOUBLE, 220.91);
-    ROOM_3.getPriceMap().put(PriceType.TRIPPLE, 300.28);
+    ROOM_3.getPriceMap().put(PriceType.TRIPLE, 300.28);
     ROOM_3.getPriceMap().put(PriceType.SINGLE_WITH_CHILD, 200.60);
     ROOM_3.getPriceMap().put(PriceType.SINGLE_WITH_TWO_CHILDREN, 240.73);
     ROOM_3.getPriceMap().put(PriceType.DOUBLE_WITH_CHILD, 260.17);
@@ -63,12 +65,20 @@ public class TestDataInjector {
   }
 
   public static void injectRooms(EntityManager em) {
+    log.info("Injecting rooms");
     em.persist(ROOM_1);
     em.persist(ROOM_2);
     em.persist(ROOM_3);
     em.persist(ROOM_4);
     em.persist(ROOM_5);
     em.persist(ROOM_6);
-    em.flush();
+  }
+  public static void clean() {
+    ROOM_1.setRoomId(null);
+    ROOM_2.setRoomId(null);
+    ROOM_3.setRoomId(null);
+    ROOM_4.setRoomId(null);
+    ROOM_5.setRoomId(null);
+    ROOM_6.setRoomId(null);
   }
 }

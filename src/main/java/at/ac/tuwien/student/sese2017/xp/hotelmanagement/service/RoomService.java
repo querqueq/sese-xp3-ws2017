@@ -6,6 +6,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author lkerck
  */
 @Slf4j
+@Service
 public class RoomService {
 
   /**
@@ -27,11 +29,13 @@ public class RoomService {
    * @param maxOccupants maximal number of available slots
    * @param priceType price type (type of occupancy. Only used for maxPrice)
    * @param maxPrice maximal price. Needs a defined priceType
+   * @throws IllegalArgumentException if Integer values are negative or contradict themself or if
+   *   either price type or maxPrice is given without the other.
    * @return Filtered result list
    */
   public List<RoomEntity> getAllRoomsByCriteria(String name, Integer minOccupants,
                                                 Integer maxOccupants, PriceType priceType,
-                                                Double maxPrice) {
+                                                Double maxPrice) throws IllegalArgumentException{
     return null;
   }
 

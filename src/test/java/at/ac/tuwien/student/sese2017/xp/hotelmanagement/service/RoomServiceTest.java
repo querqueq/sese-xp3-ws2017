@@ -288,7 +288,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    * </p>
    */
   @Test(expected = IllegalArgumentException.class)
-  public void getAllRoomsByCriteria_MaxPriceInvalid() throws Exception {
+  public void getAllRoomsByCriteria_maxPriceInvalid() throws Exception {
     roomService.getAllRoomsByCriteria(null, null, null, null, -1.0);
   }
 }

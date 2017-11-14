@@ -281,14 +281,14 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   }
 
   /**
-   * Check maxPrice must be bigger than 0.
+   * Check integer validation with maxPrice invalid.
    *
    * <p>
    *   Should throw InvalidArgumentException
    * </p>
    */
   @Test(expected = IllegalArgumentException.class)
-  public void getAllRoomsByCriteria_MaxPriceSmallerThanZero() throws Exception {
+  public void getAllRoomsByCriteria_MaxPriceInvalid() throws Exception {
     roomService.getAllRoomsByCriteria(null, null, null, null, -1.0);
   }
 }

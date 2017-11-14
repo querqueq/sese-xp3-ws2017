@@ -8,14 +8,12 @@ import static org.junit.Assert.assertThat;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.TestDataInjector;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.RoomRepository;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,17 +30,6 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
 
   @Autowired
   private RoomRepository roomRepository;
-
-  @Before
-  public void beforeClass() throws Exception {
-    log.info("Database entries: {}", roomRepository.findAll().spliterator().getExactSizeIfKnown());
-    TestDataInjector.injectRooms(entityManager);
-
-  }
-  @After
-  public void afterTest() throws Exception {
-    TestDataInjector.clean();
-  }
 
   /**
    * Find all rooms

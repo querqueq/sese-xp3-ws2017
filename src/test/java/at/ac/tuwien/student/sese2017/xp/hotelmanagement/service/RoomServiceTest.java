@@ -123,7 +123,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria(null, null, 2, null, null);
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 6, allRoomsByCriteria.size());
+    assertEquals("Result size not correct", 4, allRoomsByCriteria.size());
     assertThat("Not the right elements returned", allRoomsByCriteria,
         containsInAnyOrder(TestDataInjector.ROOM_2, TestDataInjector.ROOM_4,
             TestDataInjector.ROOM_5, TestDataInjector.ROOM_6));
@@ -141,7 +141,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria(null, 2, 2, null, null);
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 6, allRoomsByCriteria.size());
+    assertEquals("Result size not correct", 3, allRoomsByCriteria.size());
     assertThat("Not the right elements returned", allRoomsByCriteria,
         containsInAnyOrder(TestDataInjector.ROOM_2, TestDataInjector.ROOM_4,
             TestDataInjector.ROOM_6));
@@ -159,7 +159,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria("Room", 2, 2, null, null);
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 6, allRoomsByCriteria.size());
+    assertEquals("Result size not correct", 2, allRoomsByCriteria.size());
     assertThat("Not the right elements returned", allRoomsByCriteria,
         containsInAnyOrder(TestDataInjector.ROOM_2, TestDataInjector.ROOM_6));
   }
@@ -211,7 +211,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria("Room", 2, 4, PriceType.SINGLE, 98.33);
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 1, allRoomsByCriteria.size());
+    assertEquals("Result size not correct", 2, allRoomsByCriteria.size());
     assertThat("Not the right elements returned", allRoomsByCriteria,
         containsInAnyOrder(TestDataInjector.ROOM_2, TestDataInjector.ROOM_6));
   }

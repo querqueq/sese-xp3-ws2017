@@ -5,6 +5,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.RoomRepository;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,18 @@ public class RoomService {
   @Autowired
   public RoomService(RoomRepository roomRepository) {
     this.roomRepository = roomRepository;
+  }
+
+  /**
+   * Get all rooms
+   */
+  public List<RoomEntity> getAllRooms() {
+    // Convert iterable to list
+    Iterator<RoomEntity> it = roomRepository.findAll().iterator(); // Get iterator of result
+    ArrayList<RoomEntity> roomEntities = new ArrayList<>(); // create return list
+    it.forEachRemaining(roomEntities::add); //add all elements to arraylist
+
+    return roomEntities;
   }
 
   /**

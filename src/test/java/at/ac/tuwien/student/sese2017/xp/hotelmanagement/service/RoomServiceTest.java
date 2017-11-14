@@ -45,6 +45,43 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   }
 
   /**
+   * Find all rooms
+   */
+  @Test
+  public void getAllRooms_fullDB() throws Exception {
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{
+        TestDataInjector.ROOM_1, TestDataInjector.ROOM_2, TestDataInjector.ROOM_3,
+        TestDataInjector.ROOM_4, TestDataInjector.ROOM_5, TestDataInjector.ROOM_6
+    };
+    // Execute service function
+    List<RoomEntity> allRoomsByCriteria = roomService.getAllRooms();
+
+    // Check result
+    assertNotNull("Null returned by service", allRoomsByCriteria);
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+  }
+
+  /**
+   * Find all rooms on empty db
+   */
+  @Test
+  public void getAllRooms_emptyDB() throws Exception {
+    // Clear rooms from database
+    roomRepository.deleteAll();
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{};
+    // Execute service function
+    List<RoomEntity> allRoomsByCriteria = roomService.getAllRooms();
+
+    // Check result
+    assertNotNull("Null returned by service", allRoomsByCriteria);
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+  }
+
+  /**
    * Find only rooms with BedRoom in the name.
    *
    * <p>

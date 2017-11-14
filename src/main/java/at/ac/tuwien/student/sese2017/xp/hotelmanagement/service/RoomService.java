@@ -31,7 +31,7 @@ public class RoomService {
   }
 
   /**
-   * Get all rooms
+   * Get all rooms.
    */
   public List<RoomEntity> getAllRooms() {
     // Convert iterable to list

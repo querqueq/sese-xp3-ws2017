@@ -53,12 +53,18 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void getAllRoomsByCriteria_partialNameOnly() throws Exception {
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{
+        TestDataInjector.ROOM_2, TestDataInjector.ROOM_3, TestDataInjector.ROOM_6
+    };
+    // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria("BedRoom", null, null, null, null);
+
+    // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 3, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria,
-        containsInAnyOrder(TestDataInjector.ROOM_2, TestDataInjector.ROOM_3, TestDataInjector.ROOM_6));
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
   }
 
   /**
@@ -70,12 +76,17 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void getAllRoomsByCriteria_fullNameOnly() throws Exception {
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{TestDataInjector.ROOM_2};
+
+    // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria("2BedRoom", null, null, null, null);
+
+    // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 1, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria,
-        containsInAnyOrder(TestDataInjector.ROOM_2));
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
   }
 
   /**
@@ -83,14 +94,19 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void getAllRoomsByCriteria_noCriteria() throws Exception {
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{
+        TestDataInjector.ROOM_1, TestDataInjector.ROOM_2, TestDataInjector.ROOM_3,
+        TestDataInjector.ROOM_4, TestDataInjector.ROOM_5, TestDataInjector.ROOM_6
+    };
+    // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria(null, null, null, null, null);
+
+    // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 6, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria,
-        containsInAnyOrder(TestDataInjector.ROOM_1, TestDataInjector.ROOM_2,
-            TestDataInjector.ROOM_3, TestDataInjector.ROOM_4, TestDataInjector.ROOM_5,
-            TestDataInjector.ROOM_6));
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
   }
 
   /**
@@ -102,13 +118,19 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void getAllRoomsByCriteria_minOccupants() throws Exception {
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{
+        TestDataInjector.ROOM_1, TestDataInjector.ROOM_2, TestDataInjector.ROOM_3,
+        TestDataInjector.ROOM_4, TestDataInjector.ROOM_6
+    };
+    // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria(null, 2, null, null, null);
+
+    // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 5, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria,
-        containsInAnyOrder(TestDataInjector.ROOM_1, TestDataInjector.ROOM_2,
-            TestDataInjector.ROOM_3, TestDataInjector.ROOM_4, TestDataInjector.ROOM_6));
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
   }
 
   /**
@@ -120,13 +142,19 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void getAllRoomsByCriteria_maxOccupants() throws Exception {
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{
+        TestDataInjector.ROOM_2, TestDataInjector.ROOM_4, TestDataInjector.ROOM_5,
+        TestDataInjector.ROOM_6
+    };
+    // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria(null, null, 2, null, null);
+
+    // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 4, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria,
-        containsInAnyOrder(TestDataInjector.ROOM_2, TestDataInjector.ROOM_4,
-            TestDataInjector.ROOM_5, TestDataInjector.ROOM_6));
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
   }
 
   /**
@@ -138,13 +166,18 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void getAllRoomsByCriteria_minAndMaxOccupants() throws Exception {
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{
+        TestDataInjector.ROOM_2, TestDataInjector.ROOM_4, TestDataInjector.ROOM_6
+    };
+    // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria(null, 2, 2, null, null);
+
+    // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 3, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria,
-        containsInAnyOrder(TestDataInjector.ROOM_2, TestDataInjector.ROOM_4,
-            TestDataInjector.ROOM_6));
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
   }
 
   /**
@@ -156,12 +189,18 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void getAllRoomsByCriteria_minAndMaxAndName() throws Exception {
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{
+        TestDataInjector.ROOM_2, TestDataInjector.ROOM_6
+    };
+    // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria("Room", 2, 2, null, null);
+
+    // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 2, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria,
-        containsInAnyOrder(TestDataInjector.ROOM_2, TestDataInjector.ROOM_6));
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
   }
   /**
    * Find all rooms with SinglePrice below 100
@@ -172,12 +211,18 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void getAllRoomsByCriteria_singlePrice() throws Exception {
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{
+        TestDataInjector.ROOM_2, TestDataInjector.ROOM_5, TestDataInjector.ROOM_6
+    };
+    // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria(null, null, null, PriceType.SINGLE, 100.0);
+
+    // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 3, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria,
-        containsInAnyOrder(TestDataInjector.ROOM_2, TestDataInjector.ROOM_5, TestDataInjector.ROOM_6));
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
   }
 
   /**
@@ -189,12 +234,18 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void getAllRoomsByCriteria_triplePrice() throws Exception {
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{
+        TestDataInjector.ROOM_3
+    };
+    // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria(null, null, null, PriceType.TRIPLE, 300.28);
+
+    // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 1, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria,
-        containsInAnyOrder(TestDataInjector.ROOM_3));
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
   }
 
   /**
@@ -208,12 +259,18 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void getAllRoomsByCriteria_allCriterias() throws Exception {
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{
+        TestDataInjector.ROOM_2, TestDataInjector.ROOM_6
+    };
+    // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria("Room", 2, 4, PriceType.SINGLE, 98.33);
+
+    // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
-    assertEquals("Result size not correct", 2, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria,
-        containsInAnyOrder(TestDataInjector.ROOM_2, TestDataInjector.ROOM_6));
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
   }
 
   /*

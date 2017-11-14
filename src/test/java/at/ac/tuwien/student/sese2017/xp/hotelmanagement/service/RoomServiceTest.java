@@ -279,4 +279,16 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   public void getAllRoomsByCriteria_onlyMaxPriceGiven() throws Exception {
     roomService.getAllRoomsByCriteria(null, null, null, null, 2.2);
   }
+
+  /**
+   * Check maxPrice must be bigger than 0.
+   *
+   * <p>
+   *   Should throw InvalidArgumentException
+   * </p>
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void getAllRoomsByCriteria_MaxPriceSmallerThanZero() throws Exception {
+    roomService.getAllRoomsByCriteria(null, null, null, null, -1.0);
+  }
 }

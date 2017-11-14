@@ -35,7 +35,7 @@ public class RoomService {
    */
   public List<RoomEntity> getAllRoomsByCriteria(String name, Integer minOccupants,
                                                 Integer maxOccupants, PriceType priceType,
-                                                Double maxPrice) throws IllegalArgumentException{
+                                                Double maxPrice) throws IllegalArgumentException {
     return null;
   }
 

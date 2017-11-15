@@ -8,6 +8,6 @@ public class SexTest {
   
   @Test
   public void testMaleSex() {
-    assertEquals(Sex.MALE.getDisplay(), "Männlich");
+    assertEquals(Sex.MALE.getDisplay(), "M\u00e4nnlich"); // Maenlich
   }
 }

@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	<head>
+		<title>Hello Spring Security</title>
+		<meta charset="utf-8" />
+	</head>
+	<body>
+		<div class="flash-note" th:if="${note != null}" th:text="${note}"></div>
+		
+		<h1>Kundenstammdaten erfassen</h1>
+		<form th:action="@{/staff/customer/create}" th:object="${customer}"
+			method="post">
+				<p>
+					<label for="name">Name: </label>
+					<input type="text" id="name" autofocus="autofocus" th:field="*{name}"
+						required />
+				</p>
+				<p>
+					<label for="birthday">Geburtstag: </label>
+					<input type="date" id="birthday" th:field="*{birthday}" required />
+				</p>
+				<p>
+					<label for="sex">Geschlecht: </label>
+					<select id="sex" th:field="*{sex}">
+						<option th:each="sex : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex).values()}"
+							th:value="${sex}" th:text="${sex.getDisplay()}"> 
+						</option>
+					</select>
+				</p>
+				<p>
+					<label for="billing">Rechnungsadresse: </label>
+					<input type="text" id="billing" th:field="*{billingAddress}" required />
+				</p>
+				<p>
+					<label for="company">Firma: </label>
+					<input type="text" id="company" th:field="*{companyName}" />
+				</p>
+			  	<p>
+			  		<label for="discount">Rabatt: </label>
+			  		<input type="number" step="0.1" min="0" max="100" id="discount" th:field="*{discount}" />
+			  		%
+			  	</p>
+			  	<p>
+			  		<label for="phone">Telefonnummer: </label>
+			  		<input type="tel" id="phone" th:field="*{phoneNumber}" />
+				</p>
+			  	<p>
+			  		<label for="fax">Faxnummer: </label>
+			  		<input type="tel" id="fax" th:field="*{faxNumber}" />
+				</p>
+			  	<p>
+			  		<label for="email">E-Mail: </label>
+			  		<input type="email" id="email" th:field="*{email}" />
+				</p>
+			  	<p>
+			  		<label for="web">Web-Adresse: </label>
+			  		<input type="url" id="web" th:field="*{webAddress}" />
+				</p>
+				<p>
+					<label for="note">Notiz: </label>
+					<textarea id="note" th:field="*{note}"></textarea> 
+				</p>
+				<input type="submit" value="Speichern" />
+		</form>
+	</body>
+</html>

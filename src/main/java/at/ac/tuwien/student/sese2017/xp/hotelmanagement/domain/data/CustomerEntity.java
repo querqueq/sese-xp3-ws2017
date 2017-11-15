@@ -17,6 +17,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import lombok.Data;
 
 /**
@@ -41,6 +43,7 @@ public class CustomerEntity {
   // TODO validate; birthday can only be in the past
   @Column
   @NotNull
+  @DateTimeFormat(iso = ISO.DATE)
   private LocalDate birthday;
 
   @Column
@@ -80,20 +83,4 @@ public class CustomerEntity {
   @Column
   @Digits(fraction = 0, integer = 50)
   private String faxNumber;
-
-  public Optional<String> getCompanyName() {
-    return Optional.ofNullable(companyName);
-  }
-
-  public Optional<String> getNote() {
-    return Optional.ofNullable(note);
-  }
-
-  public Optional<URL> getWebAddress() {
-    return Optional.ofNullable(webAddress);
-  }
-
-  public Optional<String> getFaxNumber() {
-    return Optional.ofNullable(faxNumber);
-  }
 }

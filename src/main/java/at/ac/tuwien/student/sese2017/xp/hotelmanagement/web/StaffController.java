@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 
 /**
@@ -35,8 +36,11 @@ public class StaffController {
   }
   
   @PostMapping("/staff/customer/create")
-  public String postCustomer(@ModelAttribute CustomerEntity entity) {
-    service.create(entity);
+  public String postCustomer(Model model, @ModelAttribute CustomerEntity entity) {
+    log.info("{}", entity);
+    Long customerId = service.create(entity);
+    model.addAttribute("note", String.format("Kunde %s erfasst! (%d)", entity.getName(), customerId));
+    model.addAttribute("customer", new CustomerEntity());
     return "staff/customerCreate";
   }
 

@@ -21,10 +21,10 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Override
   public Long create(CustomerEntity entity) {
+    //TODO deny double entries (match for name and billing address)
     if(entity.getBirthday().isAfter(LocalDate.now())) {
       throw new ValidationException("Cannot have been born in the future!");
     }
     return customerRepository.save(entity).getId();
   }
-
 }

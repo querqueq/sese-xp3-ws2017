@@ -1,52 +1,84 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
+import java.math.BigDecimal;
+import java.net.URL;
+import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 /**
- * This is a representation of the customer used by RegistrationController and registration.html.
- * It works as an example how to apply an objects information to a web page and vice versa.
+ * This is a representation of the customer used by CustomerService
+ * and the CustomerController as DTO.
  *
- * <p>
- * This class should be extended for use as DAO for database accesses.
- * </p>
- *
- * @author akraschitzer
+ * @author Michael
+ * @author Johannes
  */
 @Data
+@Entity
 public class CustomerEntity {
 
-  /**
-   * The full name of the customer.
-   */
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
+
+  @Column
   @NotNull
-  @Size(min = 2, max = 30)
   private String name;
 
-  /**
-   * The age of the customer, has to be at least 18.
-   */
+  // specification does not include minimum age validation
+  // TODO validate; birthday can only be in the past
+  @Column
   @NotNull
-  @Min(18)
-  private Integer age;
+  @DateTimeFormat(iso = ISO.DATE)
+  private LocalDate birthday;
 
-  /**
-   * The username of the customer.
-   * This username will checked against when logging in.
-   */
+  @Column
   @NotNull
-  @Size(min = 6, max = 30)
-  private String username;
+  private Sex sex;
 
-
-  /**
-   * The password of the customer.
-   * This password will checked against when logging in.
-   */
+  @Column
   @NotNull
-  @Size(min = 6, max = 30)
-  private String password;
+  private String billingAddress;
+
+  @Column
+  private String companyName;
+
+  @Column
+  @Lob
+  private String note;
+
+  @Column @NotNull
+  @ColumnDefault("0")
+  @Digits(fraction = 2, integer = 3)
+  @Min(value = 0) @Max(value = 100)
+  private BigDecimal discount;
+
+  @Column
+  @NotNull
+  @Digits(fraction = 0, integer = 50)
+  private String phoneNumber;
+
+  @Column
+  @Email
+  @NotNull
+  private String email;
+
+  @Column
+  private URL webAddress;
+
+  @Column
+  private String faxNumber;
 }

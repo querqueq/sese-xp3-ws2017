@@ -1,9 +1,7 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-
 import javax.validation.Valid;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,7 +47,7 @@ public class RegistrationController {
       return "registration"; //path to the template to call
     }
 
-    //TODO create CustomerEntity in Database
+    //TODO create UserEntity in Database
 
 
     return "login"; //path to the template to call

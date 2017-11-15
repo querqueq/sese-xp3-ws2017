@@ -1,9 +1,9 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
 public enum Sex {
-  MALE("Männlich"),
+  MALE("M\u00e4nnlich"),  // Maenlich
   FEMALE("Weiblich"),
-  MISCELLANEOUS("Nicht binär")
+  MISCELLANEOUS("Nicht bin\u00e4r") // Nicht binaer
   ;
   
   private final String display;

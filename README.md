@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/sese-xp3-ws2017/sese-xp3-ws2017/badge.svg?branch=ENV_CI_CD_env)](https://coveralls.io/github/sese-xp3-ws2017/sese-xp3-ws2017?branch=ENV_CI_CD_env)
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=at.ac.tuwien.student.sese2017.xp:hotelmanagement)](https://sonarcloud.io/dashboard/index/at.ac.tuwien.student.sese2017.xp:hotelmanagement)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
+[![Heroku](http://heroku-badge.herokuapp.com/?app=sese-xp-ws2017-dev&style=flat&svg=1)](https://sese-xp3-ws2017.herokuapp.com)
 
 Student project for the lecture: "Seminar aus Software Engineering WS2017"
 from the Technical University  in Vienna.
@@ -31,7 +31,7 @@ java -jar target/hotelmanagement*.jar
 ```
 
 ## Contributing
-Please check our contrib guide [contrib.md](docs/contrib.md)
+Please check our contrib guide [CONTRIBUTING.md]
 
 ## Credits
 [@lkerck](https://github.com/lkerck), [@querqueq](https://github.com/querqueq), [@Alwaysgone](https://github.com/Alwaysgone), [@a-kraschitzer](https://github.com/a-kraschitzer) and [@Laszlo32](https://github.com/Laszlo32)
@@ -41,4 +41,6 @@ Please check our contrib guide [contrib.md](docs/contrib.md)
 This project is released under the MIT Licence.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-                                                
+
+
+[CONTRIBUTING.md]: docs/CONTRIBUTING.md                                                

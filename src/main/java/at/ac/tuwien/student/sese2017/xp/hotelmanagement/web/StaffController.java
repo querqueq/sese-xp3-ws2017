@@ -1,6 +1,7 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 
 import lombok.extern.slf4j.Slf4j;
+import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +33,9 @@ public class StaffController {
   @GetMapping("/staff/customer/create")
   public String createCustomer(Model model) {
     log.info("create customer - Page called");
-    model.addAttribute("customer", new CustomerEntity());
+    CustomerEntity newCustomer = new CustomerEntity();
+    newCustomer.setDiscount(BigDecimal.ZERO);
+    model.addAttribute("customer", newCustomer);
     return "staff/customerCreate";
   }
   

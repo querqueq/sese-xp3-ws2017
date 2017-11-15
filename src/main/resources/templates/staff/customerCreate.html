@@ -39,12 +39,11 @@
 				</p>
 			  	<p>
 			  		<label for="discount">Rabatt: </label>
-			  		<input type="number" step="0.1" min="0" max="100" id="discount" th:field="*{discount}" />
-			  		%
+			  		<input type="number" step="0.1" min="0" max="100" id="discount" th:field="*{discount}" required /> %
 			  	</p>
 			  	<p>
 			  		<label for="phone">Telefonnummer: </label>
-			  		<input type="tel" id="phone" th:field="*{phoneNumber}" />
+			  		<input type="tel" id="phone" th:field="*{phoneNumber}" required/>
 				</p>
 			  	<p>
 			  		<label for="fax">Faxnummer: </label>
@@ -52,11 +51,11 @@
 				</p>
 			  	<p>
 			  		<label for="email">E-Mail: </label>
-			  		<input type="email" id="email" th:field="*{email}" />
+			  		<input type="email" id="email" th:field="*{email}" placeholder="user@example.com" required/>
 				</p>
 			  	<p>
 			  		<label for="web">Web-Adresse: </label>
-			  		<input type="url" id="web" th:field="*{webAddress}" />
+			  		<input type="url" id="web" th:field="*{webAddress}" placeholder="http://example.org"/>
 				</p>
 				<p>
 					<label for="note">Notiz: </label>

@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * Service class for all customer related functions carried out by staff.
+ * 
  * @author Michael
  * @author Johannes
  */
@@ -28,11 +29,12 @@ public class CustomerService {
 
   /**
    * Validates and saves the given entity into the underlying data store.
+   * 
    * @param entity The customer entity to create
    * @return The id of the created entity
    */
   public Long create(@Valid CustomerEntity entity) {
-    //TODO deny double entries (match for name and billing address)
+    // TODO deny double entries (match for name and billing address)
     checkPhoneNumber(entity.getFaxNumber());
     checkPhoneNumber(entity.getPhoneNumber());
     if (entity.getBirthday().isAfter(LocalDate.now())) {
@@ -40,12 +42,10 @@ public class CustomerService {
     }
     return customerRepository.save(entity).getId();
   }
-  
+
   private void checkPhoneNumber(String phoneNumber) {
-    if (phoneNumber != null
-     && !phonePattern.asPredicate().test(phoneNumber)) {
-        throw new ValidationException(String.format("%s invalid phone number", phoneNumber));
-      }
+    if (phoneNumber != null && !phonePattern.asPredicate().test(phoneNumber)) {
+      throw new ValidationException(String.format("%s invalid phone number", phoneNumber));
     }
   }
 }

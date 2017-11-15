@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 /**
+ * Service class for all customer related functions carried out by staff.
  * @author Michael
  * @author Johannes
- *
  */
 @Validated
 @Service
@@ -42,8 +42,8 @@ public class CustomerService {
   }
   
   private void checkPhoneNumber(String phoneNumber) {
-    if (phoneNumber != null) {
-      if (!phonePattern.asPredicate().test(phoneNumber)) {
+    if (phoneNumber != null
+     && !phonePattern.asPredicate().test(phoneNumber)) {
         throw new ValidationException(String.format("%s invalid phone number", phoneNumber));
       }
     }

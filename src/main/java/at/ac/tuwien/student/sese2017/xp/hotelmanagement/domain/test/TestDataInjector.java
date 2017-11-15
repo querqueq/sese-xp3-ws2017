@@ -20,6 +20,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  * This Class handles the injection of all test data for the test cases.
  *
  * @author akraschitzer
+ * @author lkerck
  */
 @Slf4j
 @Service
@@ -46,12 +47,16 @@ public class TestDataInjector {
    *
    * @param txManager Current transaction manager
    * @param em Current EM
-   * @param injecttestdata injectTestData flag
+   * @param injecttestdata injectTestData flag. Is set via command line --injecttestdata or
+   *                       via properties file injecttestdata=true. Defaults to false if not set.
    */
   @Autowired
   public TestDataInjector(
+      // Autowired, Specify correct transaction manager (multiple beans of this type can occur)
       @Qualifier("transactionManager") PlatformTransactionManager txManager,
+      // Autowired above
       EntityManager em,
+      // Injected by spring from properties
       @Value("${injecttestdata:false}") Boolean injecttestdata) {
     this.txManager = txManager;
     this.em = em;
@@ -60,6 +65,8 @@ public class TestDataInjector {
 
   /**
    * Inject the test data into the database.
+   *
+   * @author lkerck
    */
   @PostConstruct
   @Transactional

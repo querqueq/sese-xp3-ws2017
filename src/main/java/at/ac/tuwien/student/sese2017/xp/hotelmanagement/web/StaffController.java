@@ -31,14 +31,16 @@ public class StaffController {
 
   @GetMapping("/staff/customer/create")
   public String createCustomer(Model model) {
+    log.info("create customer - Page called");
     model.addAttribute("customer", new CustomerEntity());
     return "staff/customerCreate";
   }
   
   @PostMapping("/staff/customer/create")
   public String postCustomer(Model model, @ModelAttribute CustomerEntity entity) {
-    log.info("{}", entity);
+    log.info("post customer - Page called");
     Long customerId = service.create(entity);
+    log.info("created customer {}", customerId);
     model.addAttribute("note", String.format("Kunde %s erfasst! (%d)", entity.getName(), customerId));
     model.addAttribute("customer", new CustomerEntity());
     return "staff/customerCreate";

@@ -20,7 +20,8 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import lombok.Data;
 
 /**
- * This is a representation of the customer used by CustomerService and the CustomerController as DTO
+ * This is a representation of the customer used by CustomerService
+ * and the CustomerController as DTO.
  *
  * @author Michael
  * @author Johannes

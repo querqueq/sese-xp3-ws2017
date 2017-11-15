@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import org.junit.Test;
@@ -14,14 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 
 @ComponentScan(basePackages = {"at.ac.tuwien.student.sese2017.xp.hotelmanagement"})
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class CustomerServiceTest {
-  private final static String LOREM_IPSUM = "Lorem ipsum dolor sit amet, consetetur sadipscing "
+  private static final String LOREM_IPSUM = "Lorem ipsum dolor sit amet, consetetur sadipscing "
       + "elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
       + "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita "
       + "kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum "
@@ -57,14 +57,14 @@ public class CustomerServiceTest {
     assertNotNull(id);
   }
   
-  @Test(expected=ConstraintViolationException.class)
+  @Test(expected = ConstraintViolationException.class)
   public void testCreateEntityWithOneInvalidField() throws MalformedURLException {
     CustomerEntity entity = createEntity();
     entity.setPhoneNumber("This is not a phone number");
     customerService.create(entity);
   }
   
-  @Test(expected=ConstraintViolationException.class)
+  @Test(expected = ConstraintViolationException.class)
   public void testCreateEntityWithMultipleInvalidFields() throws MalformedURLException {
     CustomerEntity entity = createEntity();
     entity.setBirthday(LocalDate.now().plus(1, ChronoUnit.DAYS));
@@ -72,21 +72,21 @@ public class CustomerServiceTest {
     customerService.create(entity);
   }
   
-  @Test(expected=ConstraintViolationException.class)
+  @Test(expected = ConstraintViolationException.class)
   public void testCreateEntityWithCompulsoryNullField() throws MalformedURLException {
     CustomerEntity entity = createEntity();
     entity.setName(null);
     customerService.create(entity);
   }
   
-  @Test(expected=ConstraintViolationException.class)
+  @Test(expected = ConstraintViolationException.class)
   public void testCreateEntityWithInvalidDiscount() throws MalformedURLException {
     CustomerEntity entity = createEntity();
     entity.setDiscount(BigDecimal.valueOf(101.0D));
     customerService.create(entity);
   }
   
-  @Test(expected=ValidationException.class)
+  @Test(expected = ValidationException.class)
   public void testCreateEntityWithInvalidBirthday() throws MalformedURLException {
     CustomerEntity entity = createEntity();
     entity.setBirthday(LocalDate.now().plus(1, ChronoUnit.DAYS));

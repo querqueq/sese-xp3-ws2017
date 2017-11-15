@@ -1,9 +1,9 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 
 import java.math.BigDecimal;
-import javax.validation.ValidationException;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
+import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,7 +45,8 @@ public class StaffController {
     try {
       Long customerId = service.create(entity);
       log.info("created customer {}", customerId);
-      model.addAttribute("note", String.format("Kunde %s erfasst! (%d)", entity.getName(), customerId));
+      model.addAttribute("note",
+          String.format("Kunde %s erfasst! (%d)", entity.getName(), customerId));
       model.addAttribute("customer", new CustomerEntity());
     } catch (ValidationException e) {
       model.addAttribute("note", "Fehler");

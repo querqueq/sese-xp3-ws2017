@@ -1,7 +1,7 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 
-import javax.validation.Valid;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

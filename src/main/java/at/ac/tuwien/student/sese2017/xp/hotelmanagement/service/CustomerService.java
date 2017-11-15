@@ -27,7 +27,7 @@ public class CustomerService {
   }
 
   /**
-   * Validates and saves the given entity into the underlying data store
+   * Validates and saves the given entity into the underlying data store.
    * @param entity The customer entity to create
    * @return The id of the created entity
    */
@@ -35,14 +35,14 @@ public class CustomerService {
     //TODO deny double entries (match for name and billing address)
     checkPhoneNumber(entity.getFaxNumber());
     checkPhoneNumber(entity.getPhoneNumber());
-    if(entity.getBirthday().isAfter(LocalDate.now())) {
+    if (entity.getBirthday().isAfter(LocalDate.now())) {
       throw new ValidationException("Cannot have been born in the future!");
     }
     return customerRepository.save(entity).getId();
   }
   
   private void checkPhoneNumber(String phoneNumber) {
-    if(phoneNumber != null) {
+    if (phoneNumber != null) {
       if(!phonePattern.asPredicate().test(phoneNumber)) {
         throw new ValidationException(String.format("%s invalid phone number", phoneNumber));
       }

@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import lombok.Data;
-import lombok.extern.java.Log;
 
 /**
  * Example database entry.

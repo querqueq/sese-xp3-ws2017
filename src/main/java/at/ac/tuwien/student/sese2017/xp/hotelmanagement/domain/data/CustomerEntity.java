@@ -1,8 +1,5 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
@@ -17,6 +14,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import lombok.Data;
 
 /**

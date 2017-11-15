@@ -5,7 +5,7 @@
 * Checkout current master branch and create a new feature branch 
   (starting with "f_")
 * make changes and commits in that branch
-* if nessesary rebase the master back into your feature branch to 
+* if necessary rebase the master back into your feature branch to 
   keep it up to date
 * push branch and create a pull request to master
 * wait for the automatic tools to test your pull request
@@ -15,7 +15,18 @@
   he will request a change, otherwise he'll approve the change.
 * After successful approval, you can finally merge the branch.
 
-> Github workflow description: [Github workflow](https://guides.github.com/introduction/flow/)
+> Github workflow description: [Github workflow]
+
+## CI/CD
+Every push to a branch and every pull request will be build by travis-ci.
+Every change in master is automatically deployed to the dev heroku instance after
+build.
+ 
+Dev Heroku: [![Heroku](http://heroku-badge.herokuapp.com/?app=sese-xp-ws2017-dev&style=flat&svg=1)](https://sese-xp-ws2017-dev.herokuapp.com)
+
+All tagged releases are build and:
+* Released to GitHUB releases
+* Deployed to prod heroku: [![Heroku](http://heroku-badge.herokuapp.com/?app=sese-xp-ws2017-dev&style=flat&svg=1)](https://sese-xp3-ws2017.herokuapp.com)
 
 ## Basic development 
 
@@ -63,3 +74,7 @@ at.ac.tuwien.student.sese2017.xp
            +- util
               +- SomeStaticClass.java
 ```
+
+
+
+[Github workflow]: https://guides.github.com/introduction/flow/

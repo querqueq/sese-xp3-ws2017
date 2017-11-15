@@ -114,6 +114,28 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   }
 
   /**
+   * Find only rooms with 2bedroom in the name. (case insensitive Full match)
+   *
+   * <p>
+   *   Should return only room 2
+   * </p>
+   */
+  @Test
+  public void getAllRoomsByCriteria_fullNameCaseInsensitive() throws Exception {
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{TestDataInjector.ROOM_2};
+
+    // Execute service function
+    List<RoomEntity> allRoomsByCriteria = roomService
+        .getAllRoomsByCriteria("2bedroom", null, null, null, null);
+
+    // Check result
+    assertNotNull("Null returned by service", allRoomsByCriteria);
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+  }
+
+  /**
    * Find all rooms by providing no criteria
    */
   @Test
@@ -290,6 +312,31 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService
         .getAllRoomsByCriteria("Room", 2, 4, PriceType.SINGLE, 98.33);
+
+    // Check result
+    assertNotNull("Null returned by service", allRoomsByCriteria);
+    assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
+    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+  }
+
+  /**
+   * Find all rooms with name containing room
+   * with min and max 2 and 4
+   * and Single price below 98.33
+   *
+   * <p>
+   *   Should only return room 3
+   * </p>
+   */
+  @Test
+  public void getAllRoomsByCriteria_allCriteriasCaseInsensitive() throws Exception {
+    // Define expected result
+    RoomEntity[] expectedResult = new RoomEntity[]{
+        TestDataInjector.ROOM_2, TestDataInjector.ROOM_6
+    };
+    // Execute service function
+    List<RoomEntity> allRoomsByCriteria = roomService
+        .getAllRoomsByCriteria("room", 2, 4, PriceType.SINGLE, 98.33);
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);

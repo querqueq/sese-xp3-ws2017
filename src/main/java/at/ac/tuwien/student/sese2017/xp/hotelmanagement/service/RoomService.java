@@ -93,7 +93,7 @@ public class RoomService {
     if (priceType == null) {
       // Call repository function with all values and wrap collection in a list
       return new ArrayList<>(
-          roomRepository.findAllByNameContainingAndMaxOccupantsBetween(
+          roomRepository.findAllByNameContainingIgnoringCaseAndMaxOccupantsBetween(
               name, minOccupants, maxOccupants));
     } else {
       // Call repository function with all values and wrap collection in a list

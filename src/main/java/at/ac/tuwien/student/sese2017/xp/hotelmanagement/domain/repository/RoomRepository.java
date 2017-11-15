@@ -21,7 +21,7 @@ public interface RoomRepository extends CrudRepository<RoomEntity, Long> {
    * @param maxOccupants -
    * @return List of rooms
    */
-  Collection<RoomEntity> findAllByNameContainingAndMaxOccupantsBetween(
+  Collection<RoomEntity> findAllByNameContainingIgnoringCaseAndMaxOccupantsBetween(
       String name, Integer minOccupants, Integer maxOccupants);
 
   /**
@@ -35,7 +35,8 @@ public interface RoomRepository extends CrudRepository<RoomEntity, Long> {
    * @return List of rooms
    */
   @Query("select r from RoomEntity r join r.priceMap p where (KEY(p) = ?4 and p <= ?5) "
-      + "and r.maxOccupants >= ?2 and r.maxOccupants <= ?3 and r.name like %?1%")
+      + "and r.maxOccupants >= ?2 and r.maxOccupants <= ?3 and "
+      + "LOWER(r.name) LIKE LOWER(concat('%', ?1, '%'))")
   Collection<RoomEntity> findAll(String name, Integer minOccupants, Integer maxOccupants,
       PriceType priceType, Double maxPrice);
 }

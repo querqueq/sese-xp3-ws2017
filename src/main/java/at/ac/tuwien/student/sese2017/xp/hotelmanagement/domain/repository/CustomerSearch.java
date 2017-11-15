@@ -32,7 +32,7 @@ public class CustomerSearch {
     org.apache.lucene.search.Query query =
       queryBuilder
         .keyword()
-        .onFields("name", "billingAddress")
+        .onFields("name")
         .matching(text)
         .createQuery();
 

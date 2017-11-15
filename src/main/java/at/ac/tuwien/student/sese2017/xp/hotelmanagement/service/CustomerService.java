@@ -1,9 +1,9 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
-import java.time.LocalDate;
-import java.util.regex.Pattern;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerRepository;
+import java.time.LocalDate;
+import java.util.regex.Pattern;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;

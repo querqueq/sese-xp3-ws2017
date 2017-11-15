@@ -1,13 +1,14 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import static org.junit.Assert.assertNotNull;
+
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import org.junit.Test;

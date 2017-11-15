@@ -1,6 +1,7 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.Custom
 @Service
 public class CustomerService {
   private CustomerRepository customerRepository;
+  private Pattern phonePattern = Pattern.compile("^\\d{0,50}$");
 
   @Autowired
   public CustomerService(CustomerRepository customerRepository) {
@@ -31,9 +33,19 @@ public class CustomerService {
    */
   public Long create(@Valid CustomerEntity entity) {
     //TODO deny double entries (match for name and billing address)
+    checkPhoneNumber(entity.getFaxNumber());
+    checkPhoneNumber(entity.getPhoneNumber());
     if(entity.getBirthday().isAfter(LocalDate.now())) {
       throw new ValidationException("Cannot have been born in the future!");
     }
     return customerRepository.save(entity).getId();
+  }
+  
+  private void checkPhoneNumber(String phoneNumber) {
+    if(phoneNumber != null) {
+      if(!phonePattern.asPredicate().test(phoneNumber)) {
+        throw new ValidationException(String.format("%s invalid phone number", phoneNumber));
+      }
+    }
   }
 }

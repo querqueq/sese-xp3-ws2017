@@ -1,9 +1,9 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import static org.junit.Assert.assertNotNull;
-
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerSearch;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -39,6 +39,8 @@ public class CustomerServiceTest {
   
   @Autowired
   private CustomerService customerService;
+  @Autowired
+  private CustomerSearch customerSearch;
   
   @Test
   public void testCreateEntityWithAllFields() throws MalformedURLException {
@@ -92,6 +94,16 @@ public class CustomerServiceTest {
     CustomerEntity entity = createEntity();
     entity.setBirthday(LocalDate.now().plus(1, ChronoUnit.DAYS));
     customerService.create(entity);
+  }
+  
+  @Test
+  public void test() throws MalformedURLException {
+    CustomerEntity entity = createEntity();
+    customerService.create(entity);
+    entity = createEntity();
+    entity.setName("Another Name");
+    customerService.create(entity);
+    customerSearch.search("First").forEach(System.out::println);
   }
   
 

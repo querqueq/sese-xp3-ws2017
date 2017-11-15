@@ -2,9 +2,12 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 
 import lombok.extern.slf4j.Slf4j;
 import java.math.BigDecimal;
+import javax.validation.Valid;
+import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +17,8 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 
 /**
- * This controller handles basic requests to the staff only space of the web page.
- * For example the "/staff/index" page.
+ * This controller handles basic requests to the staff only space of the web page. For example the
+ * "/staff/index" page.
  *
  * @author akraschitzer
  */
@@ -38,15 +41,21 @@ public class StaffController {
     model.addAttribute("customer", newCustomer);
     return "staff/customerCreate";
   }
-  
+
   @PostMapping("/staff/customer/create")
   public String postCustomer(Model model, @ModelAttribute CustomerEntity entity) {
     log.info("post customer - Page called");
-    Long customerId = service.create(entity);
-    log.info("created customer {}", customerId);
-    model.addAttribute("note", String.format("Kunde %s erfasst! (%d)", entity.getName(), customerId));
-    model.addAttribute("customer", new CustomerEntity());
+    try {
+      Long customerId = service.create(entity);
+      log.info("created customer {}", customerId);
+      model.addAttribute("note", String.format("Kunde %s erfasst! (%d)", entity.getName(), customerId));
+      model.addAttribute("customer", new CustomerEntity());
+    } catch (ValidationException e) {
+      model.addAttribute("note", "Fehler");
+      model.addAttribute("customer", entity);
+    }
     return "staff/customerCreate";
+
   }
 
   /**
@@ -57,6 +66,6 @@ public class StaffController {
   @RequestMapping("/staff/index")
   public String userIndex() {
     log.info("staff index - Page called");
-    return "staff/index"; //path to the template to call
+    return "staff/index"; // path to the template to call
   }
 }

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * This controller handles basic requests to the staff only space of the web page. 
  * For example the "/staff/index" page.
  *
- * @author akraschitzer
  */
 @Slf4j
 @Controller
@@ -32,7 +31,7 @@ public class StaffController {
   }
 
   /**
-   * Blank form for creating a new customer
+   * Blank form for creating a new customer.
    * @param  model model for view
    * @return  path to template 
    */
@@ -46,8 +45,8 @@ public class StaffController {
   }
 
   /**
-   * A blank form with a note about the customer creation
-   * if there are no errors. Otherwise a partially filled
+   * A blank form with a note about the customer creation.
+   * If there are no errors. Otherwise a partially filled
    * form with error messages.
    * @param model  model for view
    * @param entity  customer entity filled out by form  

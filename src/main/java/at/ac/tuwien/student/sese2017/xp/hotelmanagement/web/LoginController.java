@@ -1,12 +1,12 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.config.SecurityConfig;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This controller handles all requests concerning login actions.

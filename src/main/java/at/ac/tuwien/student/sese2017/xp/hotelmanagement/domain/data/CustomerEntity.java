@@ -1,10 +1,11 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,10 +17,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import lombok.Data;
 
 /**
@@ -33,7 +30,7 @@ import lombok.Data;
 public class CustomerEntity {
 
   @Id
-  @GeneratedValue(strategy=GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
   @Column

@@ -90,6 +90,7 @@ public class CustomerServiceTest {
   public void testCreateEntityWithInvalidBirthday() throws MalformedURLException {
     CustomerEntity entity = createEntity();
     entity.setBirthday(LocalDate.now().plus(1, ChronoUnit.DAYS));
+    customerService.create(entity);
   }
   
 

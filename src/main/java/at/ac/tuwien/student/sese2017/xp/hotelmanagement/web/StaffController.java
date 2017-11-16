@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * This controller handles basic requests to the staff only space of the web page. For example the
- * "/staff/index" page.
+ * This controller handles basic requests to the staff only space of the web page. 
+ * For example the "/staff/index" page.
  *
- * @author akraschitzer
  */
 @Slf4j
 @Controller
@@ -32,9 +31,9 @@ public class StaffController {
   }
 
   /**
-   * Blank form for creating a new customer
-   * @param model
-   * @return 
+   * Blank form for creating a new customer.
+   * @param  model model for view
+   * @return  path to template 
    */
   @GetMapping("/staff/customer/create")
   public String createCustomer(Model model) {
@@ -46,12 +45,12 @@ public class StaffController {
   }
 
   /**
-   * A blank form with a note about the customer creation
-   * if there are no errors. Otherwise a partially filled
+   * A blank form with a note about the customer creation.
+   * If there are no errors. Otherwise a partially filled
    * form with error messages.
-   * @param model
-   * @param entity
-   * @return
+   * @param model  model for view
+   * @param entity  customer entity filled out by form  
+   * @return  path to template 
    */
   @PostMapping("/staff/customer/create")
   public String postCustomer(Model model, @ModelAttribute CustomerEntity entity) {

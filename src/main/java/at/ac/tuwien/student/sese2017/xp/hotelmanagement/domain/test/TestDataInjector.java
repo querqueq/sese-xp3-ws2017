@@ -1,5 +1,6 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test;
 
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.config.AppProperties;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
 import javax.annotation.PostConstruct;
@@ -36,10 +37,11 @@ public class TestDataInjector {
    */
   private final EntityManager em;
   /**
+   * App properties for the injectTestData property
    * is true if injectTestData flag is set true.
    * If no value is set at all it defaults to false.
    */
-  private final boolean injectTestData;
+  private final AppProperties appProperties;
 
 
   /**
@@ -47,7 +49,7 @@ public class TestDataInjector {
    *
    * @param txManager Current transaction manager
    * @param em Current EM
-   * @param injecttestdata injectTestData flag. Is set via command line --injecttestdata or
+   * @param appProperties injectTestData flag. Is set via command line --injecttestdata or
    *                       via properties file injecttestdata=true. Defaults to false if not set.
    */
   @Autowired
@@ -57,10 +59,10 @@ public class TestDataInjector {
       // Autowired above
       EntityManager em,
       // Injected by spring from properties
-      @Value("${injecttestdata:false}") Boolean injecttestdata) {
+      AppProperties appProperties) {
     this.txManager = txManager;
     this.em = em;
-    this.injectTestData = injecttestdata;
+    this.appProperties = appProperties;
   }
 
   /**
@@ -72,7 +74,7 @@ public class TestDataInjector {
   @Transactional
   public void inject() {
     // If injectData property is set to false or not set at all return
-    if (!injectTestData) {
+    if (!appProperties.isInjecttestdata()) {
       return;
     }
 

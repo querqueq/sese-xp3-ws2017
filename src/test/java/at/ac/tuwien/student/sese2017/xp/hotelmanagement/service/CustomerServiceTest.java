@@ -2,6 +2,7 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import static org.junit.Assert.assertNotNull;
 
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import org.junit.Test;
@@ -18,10 +20,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@ComponentScan(basePackages = {"at.ac.tuwien.student.sese2017.xp.hotelmanagement"})
-@RunWith(SpringRunner.class)
-@DataJpaTest
-public class CustomerServiceTest {
+@Transactional
+public class CustomerServiceTest extends HotelManagementApplicationTests{
   private static final String LOREM_IPSUM = "Lorem ipsum dolor sit amet, consetetur sadipscing "
       + "elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
       + "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita "

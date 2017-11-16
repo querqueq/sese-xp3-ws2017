@@ -74,7 +74,7 @@ public class TestDataInjector {
   @Transactional
   public void inject() {
     // If injectData property is set to false or not set at all return
-    if (!appProperties.isInjecttestdata()) {
+    if (!appProperties.isInjectTestdata()) {
       return;
     }
 

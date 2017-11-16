@@ -25,11 +25,14 @@ public class CustomerSearch {
     QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
       .buildQueryBuilder()
       .forEntity(CustomerEntity.class)
+      .overridesForField("name", "customanalyzer_query")
+      .overridesForField("billingAddress", "customanalyzer_query")
       .get();
     
     Query query = queryBuilder
         .keyword()
         .fuzzy()
+        .withEditDistanceUpTo(1)
         .onFields("name", "billingAddress")
         .matching(text)
         .createQuery();

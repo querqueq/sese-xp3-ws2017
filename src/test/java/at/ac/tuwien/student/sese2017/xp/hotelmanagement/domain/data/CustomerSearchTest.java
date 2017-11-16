@@ -1,18 +1,13 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
-import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.assertThat;
-import java.util.Arrays;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerSearch;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerSearch;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Transactional

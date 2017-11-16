@@ -42,10 +42,8 @@ public class CustomerService {
   }
   
   private void checkPhoneNumber(String phoneNumber) {
-    if (phoneNumber != null
-     && !phonePattern.asPredicate().test(phoneNumber)) {
-        throw new ValidationException(String.format("%s invalid phone number", phoneNumber));
-      }
+    if (phoneNumber != null && !phonePattern.asPredicate().test(phoneNumber)) {
+      throw new ValidationException(String.format("%s invalid phone number", phoneNumber));
     }
   }
 }

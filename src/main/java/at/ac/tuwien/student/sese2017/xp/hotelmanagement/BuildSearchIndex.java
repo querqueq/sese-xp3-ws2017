@@ -9,12 +9,11 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BuildSearchIndex
-implements ApplicationListener<ApplicationReadyEvent> {
-  
+public class BuildSearchIndex implements ApplicationListener<ApplicationReadyEvent> {
+
   @PersistenceContext
   private EntityManager entityManager;
-  
+
   /**
    * Create an initial Lucene index for the data already present in the
    * database.
@@ -24,13 +23,12 @@ implements ApplicationListener<ApplicationReadyEvent> {
   public void onApplicationEvent(final ApplicationReadyEvent event) {
     try {
       FullTextEntityManager fullTextEntityManager =
-        Search.getFullTextEntityManager(entityManager);
+          Search.getFullTextEntityManager(entityManager);
       fullTextEntityManager.createIndexer().startAndWait();
-    }
-    catch (InterruptedException e) {
+    } catch (InterruptedException e) {
       System.out.println(
-        "An error occurred trying to build the serach index: " +
-         e.toString());
+          "An error occurred trying to build the serach index: "
+              + e.toString());
     }
   }
 }

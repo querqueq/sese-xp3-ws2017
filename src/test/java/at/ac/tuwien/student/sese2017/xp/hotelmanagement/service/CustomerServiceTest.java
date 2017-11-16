@@ -1,6 +1,7 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import static org.junit.Assert.assertNotNull;
+
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
@@ -22,7 +23,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Transactional
-public class CustomerServiceTest extends HotelManagementApplicationTests{
+public class CustomerServiceTest extends HotelManagementApplicationTests {
   private static final String LOREM_IPSUM = "Lorem ipsum dolor sit amet, consetetur sadipscing "
       + "elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
       + "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita "
@@ -99,16 +100,6 @@ public class CustomerServiceTest extends HotelManagementApplicationTests{
     CustomerEntity entity = createEntity();
     entity.setBirthday(LocalDate.now().plus(1, ChronoUnit.DAYS));
     customerService.create(entity);
-  }
-
-  @Test
-  public void test() throws MalformedURLException, InterruptedException {
-//    FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-//    fullTextEntityManager.createIndexer(CustomerEntity.class).startAndWait();
-    repo.findAll().forEach(c -> System.out.println(c));
-    List<CustomerEntity> customers = customerSearch.search("Müller");
-    System.out.println(customers.size());
-    System.out.println(customers.get(0));
   }
   
   private CustomerEntity createEntity() throws MalformedURLException {

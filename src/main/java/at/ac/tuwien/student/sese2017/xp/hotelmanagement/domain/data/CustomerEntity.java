@@ -16,6 +16,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -27,6 +29,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
  * @author Johannes
  */
 @Data
+@Indexed
 @Entity
 public class CustomerEntity {
 
@@ -35,6 +38,7 @@ public class CustomerEntity {
   private Long id;
 
   @Column
+  @Field
   @NotNull
   private String name;
 
@@ -50,6 +54,7 @@ public class CustomerEntity {
   private Sex sex;
 
   @Column
+  @Field
   @NotNull
   private String billingAddress;
 

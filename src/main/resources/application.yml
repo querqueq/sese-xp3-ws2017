@@ -1,0 +1,14 @@
+
+# Set server port via command line parameter --port
+# otherwise defaults to a random port
+server:
+  port: ${port:0}
+
+# ?? TODO: explain
+spring:
+  thymeleaf:
+    cache: false
+
+# Hotel management app configuration
+appconfig:
+  injecttestdata: ${testdata:true} # TODO set to false as soon as heroku deploy is configured correctly

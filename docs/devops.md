@@ -45,6 +45,14 @@ mvn clean install
 mvn package
 ```
 
+### Run config
+
+to execute the application for development purposes we use the --port and --testdata parameter
+to fix the port and inject testdata in the otherwise empty database for testing.
+```bash
+java -jar hotelmanagementapplication.jar --port 8080 --testdata=true
+```
+
 ### Folder Structure
 
 ```

@@ -6,24 +6,26 @@
         <meta charset="utf-8" />
 	</head>
     <body>
-        <h1>Login page</h1>
         <div th:insert="fragments/header :: menu"></div>
-        <p>Test user: staff / password</p>
-        <p>Test user2: customer / password</p>
-        <p th:if="${loginError}" class="error">Wrong username or password</p>
-        <form th:action="@{/login}" method="post">
-            <table>
-                <tr>
-                    <td><label for="username">Username</label></td>
-                    <td><input type="text" id="username" name="username" autofocus="autofocus" /></td>
-                </tr>
-                <tr>
-                    <td><label for="password">Password</label></td>
-                    <td><input type="password" id="password" name="password" /></td>
-                </tr>
-            </table>
-            <input type="submit" value="Log in" />
-        </form>
-        <p><a href="/index" th:href="@{/index}">Back to home page</a></p>
+        <center>
+            <h1>Login page</h1>
+            <p>Test user: staff / password</p>
+            <p>Test user2: customer / password</p>
+            <p th:if="${loginError}" class="error">Wrong username or password</p>
+            <form th:action="@{/login}" method="post">
+                <table>
+                    <tr>
+                        <td><label for="username">Username</label></td>
+                        <td><input type="text" id="username" name="username" autofocus="autofocus" /></td>
+                    </tr>
+                    <tr>
+                        <td><label for="password">Password</label></td>
+                        <td><input type="password" id="password" name="password" /></td>
+                    </tr>
+                </table>
+                <input type="submit" value="Log in" />
+            </form>
+            <p><a href="/index" th:href="@{/index}">Back to home page</a></p>
+        </center>
     </body>
 </html>

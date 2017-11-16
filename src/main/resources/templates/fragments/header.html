@@ -7,7 +7,7 @@
 <body>
 <center>
     <div id="navcontainer" th:fragment="menu">
-        <h2>Hotel management site</h2><br/><br/>
+        <!--<h2>Hotel management site</h2><br/><br/>-->
         <form id="logoutForm" action="#" th:action="@{/logout}" method="post">
         </form>
         <ul>
@@ -17,8 +17,15 @@
             <li sec:authorize="hasRole('CUSTOMER')"><a href="/customer/index" th:href="@{/customer/index}">customerEntity pages</a></li>
             <li sec:authorize="hasRole('STAFF')"><a href="/staff/index" th:href="@{/staff/index}">staff pages</a></li>
             <li sec:authorize="hasRole('STAFF')"><a th:href="@{/staff/customer/create}">Kunde anlegen</a></li>
+            <li sec:authorize="hasRole('STAFF')"><a th:href="@{/staff/roomDirectory}">Zimmer Verwaltung</a></li>
             <!--<li><a href="#"></a></li>-->
         </ul><br/>
+        <div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
+            <center>
+                Logged in user: <span sec:authentication="name"></span> |
+                Roles: <span sec:authentication="principal.authorities"></span>
+            </center>
+        </div><br/>
     </div>
 </center>
 </body>

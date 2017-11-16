@@ -1,22 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-    <title>Hello Spring Security</title>
+    <title>Customer Index</title>
     <link rel="stylesheet" type="text/css" href="../menu.css"/>
     <meta charset="utf-8" />
 </head>
 <body>
-<!--<h1>Hello Spring Security</h1>-->
 <div th:insert="fragments/header :: menu"></div>
-<p>Welcome to the CUSTOMER space!</p>
-<div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
-    Logged in user: <span sec:authentication="name"></span> |
-    Roles: <span sec:authentication="principal.authorities"></span>
-</div>
-<!--
-<ul>
-    <li>Go to the <a href="/index" th:href="@{/index}">unsecured pages</a></li>
-</ul>
--->
+<center>
+    <h1>Customer index</h1>
+    <p>Welcome to the CUSTOMER space!</p>
+</center>
 </body>
 </html>

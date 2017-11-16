@@ -7,16 +7,18 @@
 <body>
 <center>
     <div id="navcontainer" th:fragment="menu">
-        <h1>Software Endearing Seminar</h1><br/>
         <h2>Hotel management site</h2><br/><br/>
+        <form id="logoutForm" action="#" th:action="@{/logout}" method="post">
+        </form>
         <ul>
             <li sec:authorize="!isAuthenticated()"><a href="login" th:href="@{/login}">Login</a></li>
-            <!--<li sec:authorize="isAuthenticated()"><a href="logout" th:href="@{/logout}">Logout</a></li>-->
+            <li sec:authorize="isAuthenticated()"><a href="#" onclick="document.getElementById('logoutForm').submit();">Logout</a></li>
             <li><a href="#">Search Room</a></li>
             <li sec:authorize="hasRole('CUSTOMER')"><a href="/customer/index" th:href="@{/customer/index}">customerEntity pages</a></li>
             <li sec:authorize="hasRole('STAFF')"><a href="/staff/index" th:href="@{/staff/index}">staff pages</a></li>
+            <li sec:authorize="hasRole('STAFF')"><a th:href="@{/staff/customer/create}">Kunde anlegen</a></li>
             <!--<li><a href="#"></a></li>-->
-        </ul>
+        </ul><br/>
     </div>
 </center>
 </body>

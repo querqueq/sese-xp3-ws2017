@@ -33,19 +33,20 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 /**
- * This is a representation of the customer used by CustomerService
- * and the CustomerController as DTO.
+ * This is a representation of the customer used by CustomerService and the CustomerController as
+ * DTO.
  *
  * @author Michael
  * @author Johannes
  */
-@AnalyzerDef(name = "customanalyzer", tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class), filters = {
-    @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-    @TokenFilterDef(factory = EdgeNGramFilterFactory.class, params = { @Parameter(name = "maxGramSize", value = "15") })
-})
-@AnalyzerDef(name = "customanalyzer_query", tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class), filters = {
-    @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-})
+@AnalyzerDef(name = "customanalyzer",
+    tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
+    filters = {@TokenFilterDef(factory = LowerCaseFilterFactory.class),
+        @TokenFilterDef(factory = EdgeNGramFilterFactory.class,
+            params = {@Parameter(name = "maxGramSize", value = "15")})})
+@AnalyzerDef(name = "customanalyzer_query",
+    tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
+    filters = {@TokenFilterDef(factory = LowerCaseFilterFactory.class),})
 @Data
 @Indexed
 @Entity
@@ -56,7 +57,8 @@ public class CustomerEntity {
   private Long id;
 
   @Column
-  @Field(index = Index.YES, store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "customanalyzer"))
+  @Field(index = Index.YES, store = Store.YES, analyze = Analyze.YES,
+      analyzer = @Analyzer(definition = "customanalyzer"))
   @NotNull
   private String name;
 
@@ -72,7 +74,8 @@ public class CustomerEntity {
   private Sex sex;
 
   @Column
-  @Field(index = Index.YES, store = Store.YES, analyze = Analyze.YES, analyzer = @Analyzer(definition = "customanalyzer"))
+  @Field(index = Index.YES, store = Store.YES, analyze = Analyze.YES,
+      analyzer = @Analyzer(definition = "customanalyzer"))
   @NotNull
   private String billingAddress;
 
@@ -83,10 +86,12 @@ public class CustomerEntity {
   @Lob
   private String note;
 
-  @Column @NotNull
+  @Column
+  @NotNull
   @ColumnDefault("0")
   @Digits(fraction = 2, integer = 3)
-  @Min(value = 0) @Max(value = 100)
+  @Min(value = 0)
+  @Max(value = 100)
   private BigDecimal discount;
 
   @Column

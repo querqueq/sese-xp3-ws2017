@@ -9,9 +9,9 @@
 	</head>
 	<body>
 		<div class="flash-note" th:if="${note != null}" th:text="${note}"></div>
-		
-		<h1>Kundenstammdaten erfassen</h1>
+
 		<div th:insert="fragments/header :: menu"></div>
+		<h1>Kundenstammdaten erfassen</h1>
 		<form th:action="@{/staff/customer/create}" th:object="${customer}"
 			method="post">
 				<p>

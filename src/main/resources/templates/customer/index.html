@@ -6,6 +6,9 @@
     <meta charset="utf-8" />
 </head>
 <body>
+<!--<h1>Hello Spring Security</h1>-->
+<div th:insert="fragments/header :: menu"></div>
+<p>Welcome to the CUSTOMER space!</p>
 <div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
     Logged in user: <span sec:authentication="name"></span> |
     Roles: <span sec:authentication="principal.authorities"></span>
@@ -15,9 +18,6 @@
         </form>
     </div>
 </div>
-<h1>Hello Spring Security</h1>
-<div th:insert="fragments/header :: menu"></div>
-<p>Welcome to the CUSTOMER space!</p>
 <!--
 <ul>
     <li>Go to the <a href="/index" th:href="@{/index}">unsecured pages</a></li>

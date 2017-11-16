@@ -5,6 +5,7 @@
     <title>Register new customer account</title>
 </head>
 <body>
+<div th:insert="fragments/header :: menu"></div>
     <span th:if="${registrationError}">Registration failed, please check fields below.</span>
     <form action="#" th:action="@{/register}" th:object="${customerEntity}" method="post">
         <table>

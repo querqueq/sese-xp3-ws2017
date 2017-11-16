@@ -2,6 +2,9 @@
 # COMPOSED GITIGNORE FOR COMMON JAVA DEVELOPMENT
 #
 #
+#
+
+at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity
 
 
 # JAVA GITIGNORE

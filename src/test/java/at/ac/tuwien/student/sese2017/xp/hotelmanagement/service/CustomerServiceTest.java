@@ -112,22 +112,14 @@ public class CustomerServiceTest extends HotelManagementApplicationTests{
 
   @Test
   public void test() throws MalformedURLException, InterruptedException {
-    CustomerEntity entity = createEntity();
-    entityManager.persist(entity);
-//    customerService.create(entity);
-    entity = createEntity();
-    entity.setName("Josef");
-//    customerService.create(entity);
-    entityManager.persist(entity);
-    entityManager.flush();
-    FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-    fullTextEntityManager.createIndexer(CustomerEntity.class).startAndWait();
+//    FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+//    fullTextEntityManager.createIndexer(CustomerEntity.class).startAndWait();
     repo.findAll().forEach(c -> System.out.println(c));
-    List<CustomerEntity> customers = customerSearch.search("Josef");
+    List<CustomerEntity> customers = customerSearch.search("Müller");
     System.out.println(customers.size());
+    System.out.println(customers.get(0));
   }
-
-
+  
   private CustomerEntity createEntity() throws MalformedURLException {
     CustomerEntity entity = new CustomerEntity();
     entity.setBillingAddress("Valid address");

@@ -1,7 +1,11 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test;
 
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -99,6 +103,9 @@ public class TestDataInjector {
         em.persist(ROOM_4);
         em.persist(ROOM_5);
         em.persist(ROOM_6);
+        em.persist(CUSTOMER_1);
+        em.persist(CUSTOMER_2);
+        em.persist(CUSTOMER_3);
         log.info("Finished injecting test data");
       }
     });
@@ -163,4 +170,34 @@ public class TestDataInjector {
     ROOM_6.getPriceMap().put(PriceType.SINGLE_WITH_CHILD, 130.22);
     ROOM_6.getPriceMap().put(PriceType.SINGLE_WITH_TWO_CHILDREN, 175.32);
   }
+  
+  public static final CustomerEntity CUSTOMER_1 = new CustomerEntity()
+      .setBillingAddress("Bäckerstraße 7, Wien 1010")
+      .setBirthday(LocalDate.of(1982, 7, 7))
+      .setDiscount(BigDecimal.ZERO)
+      .setEmail("hr.mueller@example.org")
+      .setName("Gerhard Müller")
+      .setSex(Sex.MALE)
+      .setPhoneNumber("01234567")
+      ;
+  
+  public static final CustomerEntity CUSTOMER_2 = new CustomerEntity()
+      .setBillingAddress("Abbey Road, London")
+      .setBirthday(LocalDate.of(1969, 10, 26))
+      .setDiscount(BigDecimal.TEN)
+      .setEmail("dieter.baecker@gmail.com")
+      .setName("Dieter Bäcker")
+      .setSex(Sex.MALE)
+      .setPhoneNumber("01234568")
+      ;
+  
+  public static final CustomerEntity CUSTOMER_3 = new CustomerEntity()
+      .setBillingAddress("Karlsplatz 1, 1040 Wien")
+      .setBirthday(LocalDate.of(1999, 1, 23))
+      .setDiscount(BigDecimal.ZERO)
+      .setEmail("foo@gmail.com")
+      .setName("Abbey Fields")
+      .setSex(Sex.FEMALE)
+      .setPhoneNumber("01234569")
+      ;
 }

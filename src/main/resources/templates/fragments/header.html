@@ -2,6 +2,7 @@
         xmlns:th="http://www.w3.org/1999/xhtml"
         xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head><title>SESE - XP3</title>
+    <link rel="stylesheet" type="text/css" href="menu.css"/>
 </head>
 <body>
 <center>
@@ -9,8 +10,10 @@
     <h2>Hotel management site</h2><br/><br/>
     <div id="navcontainer" th:fragment="menu">
         <ul>
-            <li><a href="@{/login}">Login</a></li>
+            <li><a href="login" th:href="@{/login}">Login</a></li>
             <li><a href="#">Search Room</a></li>
+            <li sec:authorize="isAuthenticated()"><a href="/customer/index" th:href="@{/customer/index}">customerEntity pages</a></li>
+            <li sec:authorize="hasRole('STAFF')"><a href="/staff/index" th:href="@{/staff/index}">staff pages</a></li>
             <!--<li><a href="#"></a></li>-->
         </ul>
     </div>

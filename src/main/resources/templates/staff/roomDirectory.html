@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <title>Hello Spring Security</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+
+<div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
+    Logged in user: <span sec:authentication="name"></span> |
+    Roles: <span sec:authentication="principal.authorities"></span>
+    <div>
+        <form action="#" th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout" />
+        </form>
+    </div>
+</div>
+
+<form th:action="@{/staff/roomDirectory}" th:object="${roomDirectorySearchCriteria}" method="post">
+    <label for="name">Name</label>:
+    <input type="text" id="name" autofocus="autofocus" th:field="*{name}"/> <br />
+    <label for="minOccupants">min. Belegzahl</label>:
+    <input type="number" id="minOccupants" th:field="*{minOccupants}"/> <br />
+    <label for="maxOccupants">max. Belegzahl</label>:
+    <input type="number" id="maxOccupants" th:field="*{maxOccupants}"/> <br />
+    <label th:for="${priceType}">Preistyp</label>:
+    <select class="form-control" th:field="*{{priceType}}">
+        <option th:each="priceType : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType).values()}"
+                th:value="${{priceType}}"
+                th:selected="${priceType == T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType)}"
+                th:text="${priceType}">
+        </option>
+    </select>
+    <label for="maxPrice">max. Preis</label>:
+    <input type="number" id="maxPrice" th:field="*{maxPrice}"/> <br />
+    <input type="submit" value="Suchen" />
+</form>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>max. Belegzahl</th>
+        <th th:each="priceType : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType).values()}"
+               th:text="${priceType}">
+        </th>
+    </tr>
+    <tr th:each="roomEntity : ${roomList}">
+        <td th:text="${roomEntity.name}">empty</td>
+        <td th:text="${roomEntity.maxOccupants}">0</td>
+        <td th:text="${roomEntity.priceMap[SINGLE]}">empty</td>
+        <td th:text="${roomEntity.priceMap[DOUBLE]}">empty</td>
+        <td th:text="${roomEntity.priceMap[TRIPLE]}">empty</td>
+        <td th:text="${roomEntity.priceMap[SINGLE_WITH_CHILD]}">empty</td>
+        <td th:text="${roomEntity.priceMap[SINGLE_WITH_TWO_CHILDREN]}">empty</td>
+        <td th:text="${roomEntity.priceMap[DOUBLE_WITH_CHILD]}">empty</td>
+    </tr>
+</table>
+</body>
+</html>

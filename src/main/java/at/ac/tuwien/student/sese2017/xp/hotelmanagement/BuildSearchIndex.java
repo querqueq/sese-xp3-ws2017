@@ -36,6 +36,7 @@ public class BuildSearchIndex implements ApplicationListener<ApplicationReadyEve
     } catch (InterruptedException e) {
       log.error(
           "An error occurred trying to build the serach index", e);
+      Thread.currentThread().interrupt();
     }
   }
 }

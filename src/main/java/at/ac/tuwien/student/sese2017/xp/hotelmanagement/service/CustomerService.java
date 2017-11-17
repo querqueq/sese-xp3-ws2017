@@ -2,7 +2,6 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerRepository;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerSearch;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -26,18 +25,15 @@ public class CustomerService {
   // of 50 digits(we had to pick something without limiting really long
   // phone numbers)
   private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{0,50}$");
-  private CustomerRepository customerRepository;
-  private CustomerSearch customerSearch;
+  private final CustomerRepository customerRepository;
 
   /**
    * Creates an instance of CustomerService.
    * @param customerRepository Repository to save CustomerEntity objects through this service.
-   * @param customerSearch Required to use full text search for CustomerEntity objects.
    */
   @Autowired
-  public CustomerService(CustomerRepository customerRepository, CustomerSearch customerSearch) {
+  public CustomerService(CustomerRepository customerRepository) {
     this.customerRepository = customerRepository;
-    this.customerSearch = customerSearch;
   }
 
   /**
@@ -57,7 +53,7 @@ public class CustomerService {
   }
 
   public List<CustomerEntity> search(String searchText) {
-    return customerSearch.search(searchText);
+    return customerRepository.search(searchText);
   }
 
   private void checkPhoneNumber(String phoneNumber) {

@@ -28,8 +28,8 @@
 	</developers>
 
 	<scm>
-		<url>https://github.com/querqueq/sese-xp3-ws2017</url>
-		<connection>scm:git:ssh://github.com/querqueq/sese-xp3-ws2017</connection>
+		<url>git@github.com:sese-xp3-ws2017/sese-xp3-ws2017.git</url>
+		<connection>scm:git:ssh://github.com/sese-xp3-ws2017/sese-xp3-ws2017</connection>
 	</scm>
 
 	<name>hotelmanagement</name>

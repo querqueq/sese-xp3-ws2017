@@ -248,6 +248,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
     assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
   }
+  
   /**
    * Find all rooms with SinglePrice below 100
    *

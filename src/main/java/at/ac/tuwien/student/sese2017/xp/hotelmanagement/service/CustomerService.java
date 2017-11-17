@@ -21,10 +21,19 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @Service
 public class CustomerService {
+  // Pattern to validate phone and fax numbers
+  // Currently phone numbers are considered validate if the have a maximum
+  // of 50 digits(we had to pick something without limiting really long
+  // phone numbers)
   private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{0,50}$");
   private CustomerRepository customerRepository;
   private CustomerSearch customerSearch;
 
+  /**
+   * Creates an instance of CustomerService.
+   * @param customerRepository Repository to save CustomerEntity objects through this service.
+   * @param customerSearch Required to use full text search for CustomerEntity objects.
+   */
   @Autowired
   public CustomerService(CustomerRepository customerRepository, CustomerSearch customerSearch) {
     this.customerRepository = customerRepository;

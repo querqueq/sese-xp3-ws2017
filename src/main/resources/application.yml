@@ -4,7 +4,7 @@
 server:
   port: ${port:0}
 
-# ?? TODO: explain
+# Disable thymeleaf cache to enable live refresh for rapid development (template hotswap)
 spring:
   thymeleaf:
     cache: false

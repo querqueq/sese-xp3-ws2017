@@ -1,6 +1,7 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.CustomerSearchCriteria;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 import java.math.BigDecimal;
 import javax.validation.ValidationException;
@@ -17,14 +18,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * This controller handles basic requests to the staff only space of the web page. 
  * For example the "/staff/index" page.
  *
+ * @author Johannes
+ * @author Michael
+ * 
  */
 @Slf4j
 @Controller
 public class StaffController {
 
+  private static final String CUSTOMER_SEARCH_CRITERIA_ATTRIBUTE_NAME = "customerSearchCriteria";
   private static final String CUSTOMER_ATTRIBUTE_NAME = "customer";
   private CustomerService service;
 
+  /**
+   * Controller for staff use cases.
+   * @param service The CustomerService to search and create CustomerEntity objects.
+   */
   @Autowired
   public StaffController(CustomerService service) {
     this.service = service;
@@ -50,7 +59,7 @@ public class StaffController {
    * form with error messages.
    * @param model  model for view
    * @param entity  customer entity filled out by form  
-   * @return  path to template 
+   * @return path to template 
    */
   @PostMapping("/staff/customer/create")
   public String postCustomer(Model model, @ModelAttribute CustomerEntity entity) {
@@ -67,6 +76,31 @@ public class StaffController {
     }
     return "staff/customerCreate";
 
+  }
+  
+  /**
+   * Gets the view for the customer search.
+   * @param model model for view
+   * @return path to template  
+   */
+  @GetMapping("/staff/customer/search")
+  public String getSearchCustomer(Model model) {
+    log.info("getSearchCustomer - Page called");
+    model.addAttribute(CUSTOMER_SEARCH_CRITERIA_ATTRIBUTE_NAME, new CustomerSearchCriteria());
+    return "staff/customerSearch";
+  }
+  
+  /**
+   * Does a full text search with the given search criteria and puts the result in the model.
+   * @param model model for view
+   * @param criteria the search criteria model
+   * @return path to template 
+   */
+  @PostMapping("/staff/customer/search")
+  public String searchCustomer(Model model, @ModelAttribute CustomerSearchCriteria criteria) {
+    log.info("search customer - Page called");
+    model.addAttribute("customerList", service.search(criteria.getSearchText()));
+    return "staff/customerSearch";
   }
 
   /**

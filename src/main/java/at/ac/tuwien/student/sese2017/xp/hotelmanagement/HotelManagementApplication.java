@@ -3,7 +3,6 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 
@@ -15,7 +14,6 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  *
  * @author lkerck
  */
-@EnableTransactionManagement
 @SpringBootApplication
 public class HotelManagementApplication {
 

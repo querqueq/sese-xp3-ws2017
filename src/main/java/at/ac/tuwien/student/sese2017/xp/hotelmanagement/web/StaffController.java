@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * This controller handles basic requests to the staff only space of the web page. 
  * For example the "/staff/index" page.
  *
+ * @author Johannes
+ * @author Michael
+ * 
  */
 @Slf4j
 @Controller
@@ -27,6 +30,10 @@ public class StaffController {
   private static final String CUSTOMER_ATTRIBUTE_NAME = "customer";
   private CustomerService service;
 
+  /**
+   * Controller for staff use cases.
+   * @param service The CustomerService to search and create CustomerEntity objects.
+   */
   @Autowired
   public StaffController(CustomerService service) {
     this.service = service;

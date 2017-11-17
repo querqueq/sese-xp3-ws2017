@@ -1,6 +1,11 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import static org.junit.Assert.assertNotNull;
+
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerRepository;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -14,10 +19,6 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerRepository;
 
 @Transactional
 public class CustomerServiceTest extends HotelManagementApplicationTests {
@@ -37,8 +38,6 @@ public class CustomerServiceTest extends HotelManagementApplicationTests {
 
   @Autowired
   private CustomerService customerService;
-  @PersistenceContext(type = PersistenceContextType.EXTENDED)
-  EntityManager entityManager;
   @Autowired
   CustomerRepository repo;
 

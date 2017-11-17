@@ -4,6 +4,7 @@
 #
 #
 
+# ignore default directory created by lucene for its search index of CustomerEntity
 at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity
 
 

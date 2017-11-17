@@ -29,7 +29,7 @@
 
 	<scm>
 		<url>git@github.com:sese-xp3-ws2017/sese-xp3-ws2017.git</url>
-		<connection>scm:git:ssh://github.com/sese-xp3-ws2017/sese-xp3-ws2017</connection>
+		<connection>scm:git:git@github.com:sese-xp3-ws2017/sese-xp3-ws2017.git</connection>
 	</scm>
 
 	<name>hotelmanagement</name>

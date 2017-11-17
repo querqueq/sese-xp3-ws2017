@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>at.ac.tuwien.student.sese2017.xp</groupId>
 	<artifactId>hotelmanagement</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<packaging>jar</packaging>
 
 	<developers>
@@ -30,7 +29,8 @@
 	<scm>
 		<url>git@github.com:sese-xp3-ws2017/sese-xp3-ws2017.git</url>
 		<connection>scm:git:git@github.com:sese-xp3-ws2017/sese-xp3-ws2017.git</connection>
-	</scm>
+	  <tag>hotelmanagement-0.0.2</tag>
+  </scm>
 
 	<name>hotelmanagement</name>
 	<description>Hotel management software for SeSE2017</description>

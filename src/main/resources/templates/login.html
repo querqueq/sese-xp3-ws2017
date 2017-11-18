@@ -2,7 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Login page</title>
-        <link rel="stylesheet" type="text/css" href="menu.css"/>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+        <!-- Custom styles for this template -->
+        <link href="/css/offcanvas.css" rel="stylesheet">
         <meta charset="utf-8" />
 	</head>
     <body>
@@ -27,5 +32,9 @@
             </form>
             <p><a href="/index" th:href="@{/index}">Back to home page</a></p>
         </center>
+        <script src="/js/jquery-3.2.1.slim.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/offcanvas.js"></script>
     </body>
 </html>

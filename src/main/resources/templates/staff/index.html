@@ -1,27 +1,25 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/offcanvas.css" rel="stylesheet">
     <title>Hello Spring Security</title>
     <meta charset="utf-8" />
 </head>
 <body>
-<div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
-    Logged in user: <span sec:authentication="name"></span> |
-    Roles: <span sec:authentication="principal.authorities"></span>
-    <div>
-        <form action="#" th:action="@{/logout}" method="post">
-            <input type="submit" value="Logout" />
-        </form>
-    </div>
-</div>
-<h1>Hello Spring Security</h1>
-<p>Welcome to the STAFF space!</p>
-<ul>
-    <li>Go to the
-        <a href="/staff/roomDirectory" th:href="@{/staff/roomDirectory}">Room Directory</a></li>
-    <li>Go to the <a href="/index" th:href="@{/index}">unsecured pages</a></li>
-    <li>Go to the <a th:href="@{customer/create}">Kunde anlegen</a></li>
-    <li>Go to the <a th:href="@{customer/search}">Kundensuche</a></li>
-</ul>
+<div th:insert="fragments/header :: menu"></div>
+<center>
+    <h1>Staff index</h1>
+    <p>Welcome to the STAFF space!</p>
+</center>
+<script src="/js/jquery-3.2.1.slim.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/offcanvas.js"></script>
+
 </body>
 </html>

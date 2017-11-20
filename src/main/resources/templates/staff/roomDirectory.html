@@ -2,41 +2,54 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title>Hello Spring Security</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/offcanvas.css" rel="stylesheet">
     <meta charset="utf-8" />
 </head>
 <body>
+<div th:insert="fragments/header :: menu"></div>
 
-<div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
-    Logged in user: <span sec:authentication="name"></span> |
-    Roles: <span sec:authentication="principal.authorities"></span>
-    <div>
-        <form action="#" th:action="@{/logout}" method="post">
-            <input type="submit" value="Logout" />
-        </form>
-    </div>
-</div>
-
-<form th:action="@{/staff/roomDirectory}" th:object="${roomDirectorySearchCriteria}" method="post">
-    <label for="name">Name</label>:
-    <input type="text" id="name" autofocus="autofocus" th:field="*{name}"/> <br />
-    <label for="minOccupants">min. Belegzahl</label>:
-    <input type="number" id="minOccupants" th:field="*{minOccupants}"/> <br />
-    <label for="maxOccupants">max. Belegzahl</label>:
-    <input type="number" id="maxOccupants" th:field="*{maxOccupants}"/> <br />
-    <label th:for="${priceType}">Preistyp</label>:
-    <select class="form-control" th:field="*{{priceType}}">
-        <option th:each="priceType : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType).values()}"
-                th:value="${{priceType}}"
-                th:selected="${priceType == T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType)}"
-                th:text="${priceType}">
-        </option>
-    </select>
-    <label for="maxPrice">max. Preis</label>:
-    <input type="number" id="maxPrice" th:field="*{maxPrice}"/> <br />
-    <input type="submit" value="Suchen" />
+<center>
+    <h1>Zimmer Verwaltung</h1>
+        <form th:action="@{/staff/roomDirectory}" th:object="${roomDirectorySearchCriteria}" method="post">
+        <table>
+            <tr>
+                <td><label for="name">Name</label></td>
+                <td><input type="text" id="name" autofocus="autofocus" th:field="*{name}"/></td>
+            </tr>
+            <tr>
+                <td><label for="minOccupants">min. Belegzahl</label></td>
+                <td><input type="number" id="minOccupants" th:field="*{minOccupants}"/></td>
+            </tr>
+            <tr>
+                <td><label for="maxOccupants">max. Belegzahl</label></td>
+                <td><input type="number" id="maxOccupants" th:field="*{maxOccupants}"/></td>
+            </tr>
+            <tr>
+                <td><label th:for="${priceType}">Preistyp</label></td>
+                <td>
+                    <select class="form-control" th:field="*{{priceType}}">
+                    <option th:each="priceType : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType).values()}"
+                            th:value="${{priceType}}"
+                            th:selected="${priceType == T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType)}"
+                            th:text="${priceType}">
+                    </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="maxPrice">max. Preis</label></td>
+                <td><input type="number" id="maxPrice" th:field="*{maxPrice}"/></td>
+            </tr>
+        </table>
+        <input type="submit" value="Suchen" />
 </form>
 
-<table>
+<table border="2">
     <tr>
         <th>Name</th>
         <th>max. Belegzahl</th>
@@ -55,5 +68,10 @@
         <td th:text="${roomEntity.priceMap[DOUBLE_WITH_CHILD]}">empty</td>
     </tr>
 </table>
+</center>
+<script src="/js/jquery-3.2.1.slim.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/offcanvas.js"></script>
 </body>
 </html>

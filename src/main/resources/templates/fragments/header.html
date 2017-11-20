@@ -1,0 +1,52 @@
+<html
+        xmlns:th="http://www.w3.org/1999/xhtml"
+        xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head><title>SESE - XP3</title>
+    <link rel="stylesheet" type="text/css" href="menu.css"/>
+</head>
+<body>
+<center>
+    <div id="navcontainer" th:fragment="menu">
+        <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item dropdown" sec:authorize="hasRole('STAFF')">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdownCust" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kunde</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownCust">
+                            <a class="dropdown-item" href="#">Kunde anlegen</a>
+                            <a class="dropdown-item" href="#">Kundenverzeichniss</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown" sec:authorize="hasRole('STAFF')">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdownRoom" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Zimmer</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownRoom">
+                            <a class="dropdown-item" href="#">Zimmer anlegen</a>
+                            <a class="dropdown-item" href="#" th:href="@{/staff/roomDirectory}">Zimmererverwaltung</a>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item inactive" sec:authorize="isAuthenticated()">
+                        <p class="nav-link" style="padding-bottom:0px;" sec:authentication="name"></p>
+                    </li>
+                    <li class="nav-item active" sec:authorize="isAuthenticated()">
+                        <a href="#" onclick="document.getElementById('logoutForm').submit();" class="nav-link">Logout</a>
+                    </li>
+                    <li class="nav-item active" sec:authorize="!isAuthenticated()">
+                        <a href="login" th:href="@{/login}" class="nav-link">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <form id="logoutForm" action="#" th:action="@{/logout}" method="post"></form>
+    </div>
+</center>
+<script src="/js/jquery-3.2.1.slim.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/offcanvas.js"></script>
+</body>
+</html>

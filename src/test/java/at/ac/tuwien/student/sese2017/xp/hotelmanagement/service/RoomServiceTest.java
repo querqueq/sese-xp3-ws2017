@@ -8,8 +8,8 @@ import static org.junit.Assert.assertThat;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.RoomRepository;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -248,6 +248,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
     assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
   }
+  
   /**
    * Find all rooms with SinglePrice below 100
    *

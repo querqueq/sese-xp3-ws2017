@@ -3,6 +3,7 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerRepository;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.regex.Pattern;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
@@ -19,9 +20,17 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @Service
 public class CustomerService {
-  private CustomerRepository customerRepository;
-  private Pattern phonePattern = Pattern.compile("^\\d{0,50}$");
+  // Pattern to validate phone and fax numbers
+  // Currently phone numbers are considered validate if the have a maximum
+  // of 50 digits(we had to pick something without limiting really long
+  // phone numbers)
+  private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{0,50}$");
+  private final CustomerRepository customerRepository;
 
+  /**
+   * Creates an instance of CustomerService.
+   * @param customerRepository Repository to save CustomerEntity objects through this service.
+   */
   @Autowired
   public CustomerService(CustomerRepository customerRepository) {
     this.customerRepository = customerRepository;
@@ -43,8 +52,12 @@ public class CustomerService {
     return customerRepository.save(entity).getId();
   }
 
+  public List<CustomerEntity> search(String searchText) {
+    return customerRepository.search(searchText);
+  }
+
   private void checkPhoneNumber(String phoneNumber) {
-    if (phoneNumber != null && !phonePattern.asPredicate().test(phoneNumber)) {
+    if (phoneNumber != null && !PHONE_PATTERN.asPredicate().test(phoneNumber)) {
       throw new ValidationException(String.format("%s invalid phone number", phoneNumber));
     }
   }

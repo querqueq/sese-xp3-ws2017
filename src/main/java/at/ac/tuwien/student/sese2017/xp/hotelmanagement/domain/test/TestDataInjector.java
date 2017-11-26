@@ -107,6 +107,13 @@ public class TestDataInjector {
         em.persist(CUSTOMER_1);
         em.persist(CUSTOMER_2);
         em.persist(CUSTOMER_3);
+        em.persist(ADDRESS_HOTEL);
+        em.persist(ADDRESS_1);
+        em.persist(ADDRESS_2);
+        em.persist(ADDRESS_3);
+        em.persist(RECEIPT_1);
+        em.persist(RECEIPT_2);
+        em.persist(RECEIPT_3);
         log.info("Finished injecting test data");
       }
     });

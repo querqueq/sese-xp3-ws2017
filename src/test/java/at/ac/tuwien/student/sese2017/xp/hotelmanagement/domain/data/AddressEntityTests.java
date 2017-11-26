@@ -3,7 +3,6 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.AddressRepository;
-import java.util.Date;
 import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ public class AddressEntityTests extends EntityTestBase {
   AddressRepository addressRepository;
 
   @Test
-  public void testExampleEntityRepo() {
+  public void testStorageOfAddressEntity() {
     AddressEntity addressEntity = new AddressEntity()
         .setName("Ira T. Adkins")
         .setStreetAddress1("215 Aenean Ave")
@@ -24,18 +23,20 @@ public class AddressEntityTests extends EntityTestBase {
         .setState("Oost-Vlaanderen");
 
     addressEntity = entityManager.persist(addressEntity);
-    List<ExampleEntity> find = addressRepository
-        .find(exampleEntity.getSecondField());
-    assertThat(find).extracting(ExampleEntity::getSecondField)
-        .containsOnly(exampleEntity.getSecondField());
-    assertThat(find).extracting(ExampleEntity::getFirstField)
-        .containsOnly(exampleEntity.getFirstField());
-    assertThat(find).extracting(ExampleEntity::getLongField)
-        .containsOnly(exampleEntity.getLongField());
-    assertThat(find).extracting(ExampleEntity::getDateField)
-        .containsOnly(exampleEntity.getDateField());
-    assertThat(find).extracting(ExampleEntity::getId)
-        .containsOnly(exampleEntity.getId());
+    List<AddressEntity> find = addressRepository
+        .findAllByNameContainingIgnoreCase(addressEntity.getName());
+    assertThat(find).extracting(AddressEntity::getName)
+        .containsOnly(addressEntity.getName());
+    assertThat(find).extracting(AddressEntity::getStreetAddress1)
+        .containsOnly(addressEntity.getStreetAddress1());
+    assertThat(find).extracting(AddressEntity::getStreetAddress2)
+        .containsOnly(addressEntity.getStreetAddress2());
+    assertThat(find).extracting(AddressEntity::getZipCode)
+        .containsOnly(addressEntity.getZipCode());
+    assertThat(find).extracting(AddressEntity::getCity)
+        .containsOnly(addressEntity.getCity());
+    assertThat(find).extracting(AddressEntity::getState)
+        .containsOnly(addressEntity.getState());
 
   }
 

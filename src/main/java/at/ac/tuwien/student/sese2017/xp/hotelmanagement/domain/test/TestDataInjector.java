@@ -1,15 +1,15 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.config.AppProperties;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+
+import com.sun.jndi.cosnaming.IiopUrl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -200,5 +200,64 @@ public class TestDataInjector {
       .setName("Abbey Fields")
       .setSex(Sex.FEMALE)
       .setPhoneNumber("01234569")
+      ;
+
+
+  public static final AddressEntity ADDRESS_HOTEL = new AddressEntity()
+      .setName("Hotel zum schoenen Urblaub")
+      .setStreetAddress1("Am Buchtaler Jockl 1")
+      .setZipCode("3024")
+      .setCity("Lungau nahe dem Pongau")
+      .setState("Austria")
+      ;
+
+  public static final AddressEntity ADDRESS_1 = new AddressEntity()
+      .setName("Abbey Fields")
+      .setStreetAddress1("Karlsplatz 1")
+      .setZipCode("1040")
+      .setCity("Wien")
+      .setState("Austria")
+      ;
+
+  public static final AddressEntity ADDRESS_2 = new AddressEntity()
+      .setName("Simon Holt")
+      .setStreetAddress1("Abbey Road 287")
+      .setZipCode("EB5 K2H")
+      .setCity("London")
+      .setState("United Kingdom")
+      ;
+
+  public static final AddressEntity ADDRESS_3 = new AddressEntity()
+      .setName("Dieter Decker")
+      .setStreetAddress1("Am Rotbahnplatz 59")
+      .setZipCode("11957")
+      .setCity("Berlin")
+      .setState("Deutschland");
+
+  public static final ReceiptEntity RECEIPT_1 = new ReceiptEntity()
+      .setCustomerAddress(ADDRESS_1)
+      .setHotelAddress(ADDRESS_HOTEL)
+      .setDurationOfStay(10)
+      .setRoom(ROOM_5)
+      .setPrice(6853.95)
+      .setDiscount(0.05)
+      ;
+
+  public static final ReceiptEntity RECEIPT_2 = new ReceiptEntity()
+      .setCustomerAddress(ADDRESS_2)
+      .setHotelAddress(ADDRESS_HOTEL)
+      .setDurationOfStay(3)
+      .setRoom(ROOM_3)
+      .setPrice(601.8)
+      .setDiscount(0.0)
+      ;
+
+  public static final ReceiptEntity RECEIPT_3 = new ReceiptEntity()
+      .setCustomerAddress(ADDRESS_3)
+      .setHotelAddress(ADDRESS_HOTEL)
+      .setDurationOfStay(1)
+      .setRoom(ROOM_5)
+      .setPrice(57.66)
+      .setDiscount(0.0)
       ;
 }

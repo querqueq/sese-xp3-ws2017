@@ -5,6 +5,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -111,9 +112,15 @@ public class TestDataInjector {
         em.persist(ADDRESS_1);
         em.persist(ADDRESS_2);
         em.persist(ADDRESS_3);
+        em.persist(ADDRESS_4);
+        em.persist(ADDRESS_5);
+        em.persist(ADDRESS_6);
         em.persist(RECEIPT_1);
         em.persist(RECEIPT_2);
         em.persist(RECEIPT_3);
+        em.persist(RECEIPT_4);
+        em.persist(RECEIPT_5);
+        em.persist(RECEIPT_6);
         log.info("Finished injecting test data");
       }
     });
@@ -241,13 +248,40 @@ public class TestDataInjector {
       .setCity("Berlin")
       .setState("Deutschland");
 
+  public static final AddressEntity ADDRESS_4 = new AddressEntity()
+      .setName("Ira T. Adkins")
+      .setStreetAddress1("215 Aenean Ave")
+      .setStreetAddress2("")
+      .setZipCode("41990-087")
+      .setCity("Sint-Denijs-Westrem")
+      .setState("Oost-Vlaanderen");
+
+  public static final AddressEntity ADDRESS_5 = new AddressEntity()
+      .setName("Cheryl A. Nielsen")
+      .setStreetAddress1("6126 Eu Ave")
+      .setStreetAddress2("")
+      .setZipCode("41687-555")
+      .setCity("Te Puke")
+      .setState("NI")
+      ;
+
+  public static final AddressEntity ADDRESS_6 = new AddressEntity()
+      .setName("Cassandra V. Noble")
+      .setStreetAddress1("1059 Augue St.")
+      .setStreetAddress2("Ap #542")
+      .setZipCode("6453")
+      .setCity("Sommariva Perno")
+      .setState("Piemonte")
+      ;
+
   public static final ReceiptEntity RECEIPT_1 = new ReceiptEntity()
       .setCustomerAddress(ADDRESS_1)
       .setHotelAddress(ADDRESS_HOTEL)
       .setDurationOfStay(10)
-      .setRoom(ROOM_5)
+      .setRoom(ROOM_1)
       .setPrice(6853.95)
       .setDiscount(0.05)
+      .setReceiptDate(new Date(1507410400000L))
       ;
 
   public static final ReceiptEntity RECEIPT_2 = new ReceiptEntity()
@@ -257,6 +291,7 @@ public class TestDataInjector {
       .setRoom(ROOM_3)
       .setPrice(601.8)
       .setDiscount(0.0)
+      .setReceiptDate(new Date(1508228400000L))
       ;
 
   public static final ReceiptEntity RECEIPT_3 = new ReceiptEntity()
@@ -266,5 +301,36 @@ public class TestDataInjector {
       .setRoom(ROOM_5)
       .setPrice(57.66)
       .setDiscount(0.0)
+      .setReceiptDate(new Date(1508433500000L))
+      ;
+
+  public static final ReceiptEntity RECEIPT_4 = new ReceiptEntity()
+      .setCustomerAddress(ADDRESS_4)
+      .setHotelAddress(ADDRESS_HOTEL)
+      .setDurationOfStay(12)
+      .setRoom(ROOM_2)
+      .setPrice(820.95)
+      .setDiscount(0.02)
+      .setReceiptDate(new Date(1507358500000L))
+      ;
+
+  public static final ReceiptEntity RECEIPT_5 = new ReceiptEntity()
+      .setCustomerAddress(ADDRESS_5)
+      .setHotelAddress(ADDRESS_HOTEL)
+      .setDurationOfStay(3)
+      .setRoom(ROOM_4)
+      .setPrice(1134.0)
+      .setDiscount(0.1)
+      .setReceiptDate(new Date(1507250500000L))
+      ;
+
+  public static final ReceiptEntity RECEIPT_6 = new ReceiptEntity()
+      .setCustomerAddress(ADDRESS_6)
+      .setHotelAddress(ADDRESS_HOTEL)
+      .setDurationOfStay(2)
+      .setRoom(ROOM_6)
+      .setPrice(350.64)
+      .setDiscount(0.0)
+      .setReceiptDate(new Date(1507105200000L))
       ;
 }

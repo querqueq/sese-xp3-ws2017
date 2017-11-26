@@ -22,9 +22,11 @@ public class ReceiptEntity {
   @ManyToOne(cascade = {CascadeType.PERSIST})
   @JoinColumn
   private AddressEntity customerAddress;
+
   @ManyToOne
   @JoinColumn
   private RoomEntity room;
+
   private Double discount;
   private Double price;
   private Integer durationOfStay;

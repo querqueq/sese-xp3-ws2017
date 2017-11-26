@@ -1,7 +1,12 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.config.AppProperties;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.*;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,7 +15,6 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import com.sun.jndi.cosnaming.IiopUrl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

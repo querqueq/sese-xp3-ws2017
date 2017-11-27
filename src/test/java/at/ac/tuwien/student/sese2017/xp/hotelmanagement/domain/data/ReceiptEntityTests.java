@@ -1,12 +1,12 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
-import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 import org.junit.Test;
@@ -19,6 +19,7 @@ public class ReceiptEntityTests extends EntityTestBase{
 
   @Test
   public void testBasicStorageOfRecipes() {
+    
     // SETUP Addresses
     AddressEntity address1 = new AddressEntity()
         .setName("Ira T. Adkins")
@@ -44,6 +45,24 @@ public class ReceiptEntityTests extends EntityTestBase{
         .setCity("Sommariva Perno")
         .setState("Piemonte");
 
+    CustomerEntity customer1 = new CustomerEntity()
+    .setBillingAddress(address1)
+    .setBirthday(LocalDate.of(1999, 1, 23))
+    .setDiscount(BigDecimal.ZERO)
+    .setEmail("N@A.gay")
+    .setName("N/A")
+    .setSex(Sex.MALE)
+    .setPhoneNumber("0");
+    
+    CustomerEntity customer2 = new CustomerEntity()
+    .setBillingAddress(address2)
+    .setBirthday(LocalDate.of(1999, 1, 23))
+    .setDiscount(BigDecimal.ZERO)
+    .setEmail("N@A.gay")
+    .setName("N/A")
+    .setSex(Sex.MALE)
+    .setPhoneNumber("0");
+    
     // Setup of an example room
     RoomEntity room1 = new RoomEntity().setName("HoneyMoonSuite")
         .setMaxOccupants(2);
@@ -54,22 +73,22 @@ public class ReceiptEntityTests extends EntityTestBase{
 
     // Setup 2 receipts
     ReceiptEntity receipt1 = new ReceiptEntity()
-        .setCustomerAddress(address1)
+        .addCustomer(customer1)
         .setHotelAddress(address3)
         .setDurationOfStay(10)
-        .setRoom(room1)
+        .addRoom(room1)
         .setPrice(6853.95)
         .setDiscount(0.05)
-        .setReceiptDate(new Date());
+        .setReceiptDate(LocalDateTime.now());
 
     ReceiptEntity receipt2 = new ReceiptEntity()
-        .setCustomerAddress(address2)
+        .addCustomer(customer2)
         .setHotelAddress(address3)
         .setDurationOfStay(3)
-        .setRoom(room1)
+        .addRoom(room1)
         .setPrice(601.8)
         .setDiscount(0.0)
-        .setReceiptDate(new Date());
+        .setReceiptDate(LocalDateTime.now());
 
     receipt1 = entityManager.persist(receipt1);
     receipt2 = entityManager.persist(receipt2);
@@ -85,17 +104,17 @@ public class ReceiptEntityTests extends EntityTestBase{
     assertEquals("Date not saved correctly", receipt1.getReceiptDate(), foundReceipt1.getReceiptDate());
 
     // Check mappings
-    assertNotNull("Customer address not saved", foundReceipt1.getCustomerAddress());
+    assertNotNull("Customer address not saved", foundReceipt1.getCustomers().get(0).getBillingAddress());
     assertNotNull("Hotel address not saved", foundReceipt1.getHotelAddress());
-    assertNotNull("Room not saved", foundReceipt1.getRoom());
+    assertNotNull("Room not saved", foundReceipt1.getRooms());
 
     // Check correctness of mapping data
-    assertEquals("Customer address not saved correctly", address1.getName(), foundReceipt1.getCustomerAddress().getName());
+    assertEquals("Customer address not saved correctly", address1.getName(), foundReceipt1.getCustomers().get(0).getBillingAddress().getName());
     assertEquals("Hotel address not saved correctly", address3.getName(), foundReceipt1.getHotelAddress().getName());
-    assertEquals("Room not saved correctly", room1.getName(), foundReceipt1.getRoom().getName());
-    assertEquals("Room not saved correctly", room1.getRoomId(), foundReceipt1.getRoom().getRoomId());
+    assertEquals("Room not saved correctly", room1.getName(), foundReceipt1.getRooms().get(0).getName());
+    assertEquals("Room not saved correctly", room1.getRoomId(), foundReceipt1.getRooms().get(0).getRoomId());
 
-    Long customerAddrId = foundReceipt1.getCustomerAddress().getAddressId();
+    Long customerAddrId = foundReceipt1.getCustomers().get(0).getBillingAddress().getAddressId();
     Long hotelAddrId = foundReceipt1.getHotelAddress().getAddressId();
 
     /*
@@ -115,7 +134,7 @@ public class ReceiptEntityTests extends EntityTestBase{
     // OPTIONAL DELETION OF ORPHANED ADDRESSES BECAUSE DIFFICULT TO IMPLEMENT
 //    assertNull("Orphaned address not deleted with receipt", entityManager.find(AddressEntity.class, customerAddrId));
 
-    customerAddrId = foundReceipt2.getCustomerAddress().getAddressId();
+    customerAddrId = foundReceipt2.getCustomers().get(0).getBillingAddress().getAddressId();
     // DELETE second entity
     entityManager.remove(receipt2);
     assertNotNull("Room deleted with receipt", entityManager.find(RoomEntity.class, room1.getRoomId()));

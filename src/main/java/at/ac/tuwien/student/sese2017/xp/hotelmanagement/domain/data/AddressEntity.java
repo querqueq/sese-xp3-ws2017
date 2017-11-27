@@ -6,9 +6,11 @@ import javax.persistence.Id;
 import lombok.Data;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 
 @Data
+@Indexed
 @Entity
 public class AddressEntity {
 
@@ -19,18 +21,18 @@ public class AddressEntity {
   @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
   private String name;
 
-  @Field
+  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
   private String streetAddress1;
 
-  @Field
+  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
   private String streetAddress2;
 
-  @Field
+  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
   private String city;
 
-  @Field
+  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
   private String state;
 
-  @Field
+  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
   private String zipCode;
 }

@@ -25,11 +25,14 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Parameter;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
+import org.hibernate.search.bridge.builtin.DefaultStringBridge;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -82,9 +85,11 @@ public class CustomerEntity {
   /* configure analyzer. Store (cache the search fragments)
    * analyze (analyze the field with the given analyzers)
    */
-  //@Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
+  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
+  @IndexedEmbedded
   @ManyToOne(cascade = {CascadeType.PERSIST})
   @JoinColumn
+  @FieldBridge(impl = DefaultStringBridge.class)
   private AddressEntity billingAddress;
 
   @Column

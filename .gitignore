@@ -4,8 +4,9 @@
 #
 #
 
-# ignore default directory created by lucene for its search index of CustomerEntity
+# ignore default directory created by lucene for its search index of CustomerEntity and AddressEntity
 at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity
+at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity
 
 
 # JAVA GITIGNORE

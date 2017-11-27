@@ -208,7 +208,7 @@ public class TestDataInjector {
 
   public static final AddressEntity ADDRESS_2 = new AddressEntity()
       .setName("Simon Holt")
-      .setStreetAddress1("Abbey Road 287")
+      .setStreetAddress1("AbbeyRoad 287")
       .setZipCode("EB5 K2H")
       .setCity("London")
       .setState("United Kingdom")

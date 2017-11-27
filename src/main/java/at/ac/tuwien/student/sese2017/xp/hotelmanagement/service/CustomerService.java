@@ -53,9 +53,7 @@ public class CustomerService {
   }
 
   public List<CustomerEntity> search(String searchText) {
-    List<CustomerEntity> entities = customerRepository.search(searchText);
-    entities.forEach(c -> System.out.println(c.getBillingAddress().toString()));
-    return entities;
+    return customerRepository.search(searchText);
   }
 
   private void checkPhoneNumber(String phoneNumber) {

@@ -2,7 +2,10 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.test;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.config.AppProperties;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataDirectory;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import javax.annotation.PostConstruct;
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import lombok.Getter;
@@ -85,8 +88,13 @@ public class TestDataInjectorService {
     try {
       Class.forName("org.springframework.boot.test.context.SpringBootTest");
     } catch (ClassNotFoundException e) {
-      log.warn("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nTEST DATA INJECTED IN DATABASE. "
-          + "USE WITH CARE\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+      log.warn("TEST DATA INJECTED IN DATABASE. USE WITH CARE");
+      // PRINT RED WARNING TO SYSTEM OUT
+      System.out.println("\u001B[31m");
+      System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      System.out.println("!! TEST DATA INJECTED IN DATABASE. USE WITH CARE  !!");
+      System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      System.out.println("\u001B[0m");
     }
 
     // Initialize a new transacton
@@ -96,19 +104,53 @@ public class TestDataInjectorService {
       protected void doInTransactionWithoutResult(@Nullable TransactionStatus status) {
         // Now we're in a thread with a valid transaction, injecting the test datasets now.
         log.info("Injecting test data");
-        em.persist(tD.ROOM_1);
-        em.persist(tD.ROOM_2);
-        em.persist(tD.ROOM_3);
-        em.persist(tD.ROOM_4);
-        em.persist(tD.ROOM_5);
-        em.persist(tD.ROOM_6);
-        em.persist(tD.CUSTOMER_1);
-        em.persist(tD.CUSTOMER_2);
-        em.persist(tD.CUSTOMER_3);
+        // Get all declared fields
+        Field[] fields = tD.getClass().getDeclaredFields();
+        // Iterate over all fields of testdata directory
+        for(Field f : fields){
+          // Get type of field
+          Class type = f.getType();
+
+          // Ignore non fields without JPA entities
+          if(!hasJPAAnnotation(type)) {
+            log.debug("Ignoring non JPA field {}", f.getName());
+            continue;
+          }
+
+          // Try to access the field and get it's value, otherwise
+          // log warning and continue with the next
+          Object object;
+          try {
+            object = f.get(tD);
+          } catch (IllegalAccessException e) {
+            log.warn("Couldn't access field {} of {}", f.getName(), tD.getClass().getName());
+            continue;
+          }
+
+          // Persist entity
+          em.persist(object);
+        }
+
         log.info("Finished injecting test data");
       }
     });
 
   }
 
+  /**
+   * Check if class has an JPA annotation
+   * @param clazz class to check
+   * @return true if @Entity is found
+   */
+  public static boolean hasJPAAnnotation(Class clazz) {
+    // Get all annotations of that class and iterate over them
+    Annotation[] declaredAnnotations = clazz.getDeclaredAnnotations();
+    for (Annotation declaredAnnotation : declaredAnnotations) {
+      // If jpa annotation found return true
+      if(declaredAnnotation.annotationType().isAssignableFrom(Entity.class)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

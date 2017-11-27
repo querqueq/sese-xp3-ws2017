@@ -1,5 +1,6 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.CustomerSearchCriteria;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
@@ -49,6 +50,7 @@ public class StaffController {
     log.info("create customer - Page called");
     CustomerEntity newCustomer = new CustomerEntity();
     newCustomer.setDiscount(BigDecimal.ZERO);
+    newCustomer.setBillingAddress(new AddressEntity());
     model.addAttribute(CUSTOMER_ATTRIBUTE_NAME, newCustomer);
     return "staff/customerCreate";
   }

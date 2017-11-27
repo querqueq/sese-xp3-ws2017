@@ -286,7 +286,7 @@ public class TestDataInjector {
       .setRoom(ROOM_1)
       .setPrice(6853.95)
       .setDiscount(0.05)
-      .setReceiptDate(new Date(1507410400000L))
+      .setReceiptDate(new Date(1507410400000L)) //Sat Oct 07 2017 23:06:40
       ;
 
   public static final ReceiptEntity RECEIPT_2 = new ReceiptEntity()
@@ -296,7 +296,7 @@ public class TestDataInjector {
       .setRoom(ROOM_3)
       .setPrice(601.8)
       .setDiscount(0.0)
-      .setReceiptDate(new Date(1508228400000L))
+      .setReceiptDate(new Date(1508228400000L)) // Tue Oct 17 2017 10:20:00
       ;
 
   public static final ReceiptEntity RECEIPT_3 = new ReceiptEntity()
@@ -306,7 +306,7 @@ public class TestDataInjector {
       .setRoom(ROOM_5)
       .setPrice(57.66)
       .setDiscount(0.0)
-      .setReceiptDate(new Date(1508433500000L))
+      .setReceiptDate(new Date(1508433500000L)) // Thu Oct 19 2017 19:18:20
       ;
 
   public static final ReceiptEntity RECEIPT_4 = new ReceiptEntity()
@@ -316,7 +316,7 @@ public class TestDataInjector {
       .setRoom(ROOM_2)
       .setPrice(820.95)
       .setDiscount(0.02)
-      .setReceiptDate(new Date(1507358500000L))
+      .setReceiptDate(new Date(1507358500000L)) // Sat Oct 07 2017 08:41:40
       ;
 
   public static final ReceiptEntity RECEIPT_5 = new ReceiptEntity()
@@ -326,7 +326,7 @@ public class TestDataInjector {
       .setRoom(ROOM_4)
       .setPrice(1134.0)
       .setDiscount(0.1)
-      .setReceiptDate(new Date(1507250500000L))
+      .setReceiptDate(new Date(1507250500000L)) // Fri Oct 06 2017 02:41:40
       ;
 
   public static final ReceiptEntity RECEIPT_6 = new ReceiptEntity()
@@ -336,6 +336,6 @@ public class TestDataInjector {
       .setRoom(ROOM_6)
       .setPrice(350.64)
       .setDiscount(0.0)
-      .setReceiptDate(new Date(1507105200000L))
+      .setReceiptDate(new Date(1507105200000L)) // Wed Oct 04 2017 10:20:00
       ;
 }

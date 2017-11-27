@@ -5,6 +5,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEnti
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.CustomerSearchCriteria;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 import java.math.BigDecimal;
+import java.util.Collections;
 import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,9 +111,18 @@ public class StaffController {
    *
    * @return String representing the path to the template that is to be shown.
    */
-  @RequestMapping("/staff/index")
-  public String userIndex() {
+  @RequestMapping({ "/staff/search", "/staff", "/staff/index" })
+  public String search(Model model) {
     log.info("staff index - Page called");
-    return "staff/index"; // path to the template to call
+    model.addAttribute(CUSTOMER_SEARCH_CRITERIA_ATTRIBUTE_NAME, new CustomerSearchCriteria());
+    return "staff/search"; 
+  }
+
+  @PostMapping("/staff/search")
+  public String postSearch(Model model, @ModelAttribute CustomerSearchCriteria criteria) {
+    log.info("search customer - Page called");
+    model.addAttribute("customers", service.search(criteria.getSearchText()));
+    model.addAttribute("receipts", Collections.emptyList());
+    return "staff/search";
   }
 }

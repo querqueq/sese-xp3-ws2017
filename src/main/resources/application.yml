@@ -8,6 +8,16 @@ server:
 spring:
   thymeleaf:
     cache: false
+spring:
+  thymeleaf:
+    prefix: file:src/main/resources/templates/
+spring:
+  resources:
+    static-locations: file:src/main/resources/static/
+spring:
+  resources:
+    cache-period: 0
+
 
 # Hotel management app configuration
 appconfig:

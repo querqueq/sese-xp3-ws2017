@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	<head>
+		<title>Hello Spring Security</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+        <!-- Custom styles for this template -->
+        <link href="/css/offcanvas.css" rel="stylesheet">
+		<meta charset="utf-8" />
+	</head>
+	<body>
+		<div class="flash-note" th:if="${note != null}" th:text="${note}"></div>
+
+		<div th:insert="fragments/header :: menu"></div>
+		<center>
+            <h1>Reservierung anlegen</h1>
+            <form th:action="@{/staff/reservation/create}" th:object="${reservationCreator}"
+                  method="post">
+                <table>
+                    <tr>
+                        <td><label for="startDate">Von</label></td>
+                        <td><input type="date" id="startDate" th:field="*{startDate}" required /></td>
+                    </tr>
+                    <tr>
+                        <td><label for="endDate">Bis</label></td>
+                        <td><input type="date" id="endDate" th:field="*{endDate}" required /></td>
+                    </tr>
+                    <tr>
+                        <td>Selected Rooms</td>
+                    </tr>
+                    <tr th:each="roomEntity : ${selectedRooms}">
+                        <td th:text="${roomEntity.name}">empty</td>
+                        <td>
+                            <select class="form-control" th:field="*{{room}">
+                                <option th:each="priceType : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType).values()}"
+                                        th:value="${{priceType}}"
+                                        th:selected="${priceType == T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType)}"
+                                        th:text="${priceType}">
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Search Room</td>
+                    </tr>
+                    <!--<tr>
+                        <form th:action="@{/staff/reservation/create}" th:object="${roomDirectorySearchCriteria}" method="post">
+                            <table>
+                                <tr>
+                                    <td><label for="name">Name</label></td>
+                                    <td><input type="text" id="name" autofocus="autofocus" th:field="*{name}"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="minOccupants">min. Belegzahl</label></td>
+                                    <td><input type="number" id="minOccupants" th:field="*{minOccupants}"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="maxOccupants">max. Belegzahl</label></td>
+                                    <td><input type="number" id="maxOccupants" th:field="*{maxOccupants}"/></td>
+                                </tr>
+                                <tr>
+                                    <td><label th:for="${priceType}">Preistyp</label></td>
+                                    <td>
+                                        <select class="form-control" th:field="*{{priceType}}">
+                                            <option th:each="priceType : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType).values()}"
+                                                    th:value="${{priceType}}"
+                                                    th:selected="${priceType == T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType)}"
+                                                    th:text="${priceType}">
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="maxPrice">max. Preis</label></td>
+                                    <td><input type="number" id="maxPrice" th:field="*{maxPrice}"/></td>
+                                </tr>
+                            </table>
+                            <input type="submit" value="Suchen" />
+                        </form>
+                    </tr>
+                    <tr>
+                        <table border="2">
+                            <tr>
+                                <th>Name</th>
+                                <th>max. Belegzahl</th>
+                                <th th:each="priceType : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType).values()}"
+                                    th:text="${priceType}">
+                                </th>
+                            </tr>
+                            <tr th:each="roomEntity : ${roomList}">
+                                <td th:text="${roomEntity.name}">empty</td>
+                                <td th:text="${roomEntity.maxOccupants}">0</td>
+                                <td th:text="${roomEntity.priceMap[SINGLE]}">empty</td>
+                                <td th:text="${roomEntity.priceMap[DOUBLE]}">empty</td>
+                                <td th:text="${roomEntity.priceMap[TRIPLE]}">empty</td>
+                                <td th:text="${roomEntity.priceMap[SINGLE_WITH_CHILD]}">empty</td>
+                                <td th:text="${roomEntity.priceMap[SINGLE_WITH_TWO_CHILDREN]}">empty</td>
+                                <td th:text="${roomEntity.priceMap[DOUBLE_WITH_CHILD]}">empty</td>
+                            </tr>
+                        </table>
+                    </tr>
+                </table>-->
+                    <input type="submit" value="Speichern" />
+            </form>
+		</center>
+        <script src="/js/jquery-3.2.1.slim.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/offcanvas.js"></script>
+	</body>
+</html>

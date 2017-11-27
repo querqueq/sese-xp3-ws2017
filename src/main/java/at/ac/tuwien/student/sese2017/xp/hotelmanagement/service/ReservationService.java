@@ -1,6 +1,10 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationError;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationError.ReservationOverlapError;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationWarning;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
@@ -48,38 +52,47 @@ public class ReservationService {
     }
 
     if (start == null) {
-      throw new IllegalArgumentException("start date list is invalid");
+      throw new IllegalArgumentException("start date is invalid");
     }
 
     if (end == null) {
-      throw new IllegalArgumentException("end date list is invalid");
+      throw new IllegalArgumentException("end date is invalid");
     }
 
     if (start.isAfter(end)) {
       throw new IllegalArgumentException("end date is before start date");
     }
 
-
-    //TODO check for überschneidungen
-
-
-    //TODO check for mängel
-
+    List<ReservationError> reservationErrors = new ArrayList<>();
+    List<ReservationWarning> reservationWarnings = new ArrayList<>();
+    // Check for overlapping bookings
     for (RoomEntity room : rooms) {
+      // if reservation is ok continue
+      if(reservationRepository.checkForOverlapping(room, start, end).isEmpty()) {
+        continue;
+      }
+      // otherwise add the overlapping error to the reservation errors list
+      reservationErrors.add(
+          ReservationOverlapError.builder().overlappingRoom(room.getRoomId()).build());
 
+      //TODO check for mängel
     }
 
-    ReservationEntity reservationEntity = new ReservationEntity()
-        .setCustomers(customers)
-        .setRooms(rooms)
-        .setStartTime(start)
-        .setEndTime(end)
+    if(reservationErrors.isEmpty()) {
+      ReservationEntity reservationEntity = new ReservationEntity()
+          .setCustomers(customers)
+          .setRooms(rooms)
+          .setStartTime(start)
+          .setEndTime(end)
 //        .setDiscount(discount)
 //        .setPrice(price)
-    ;
+          ;
 
-    builder.reservation(reservationEntity);
-   return builder.build();
+      builder.reservation(reservationEntity);
+    }
+    builder.errors(reservationErrors);
+    builder.warnings(reservationWarnings);
+    return builder.build();
   }
   
   public Long confirmReservation(ReservationEntity reservation) throws IllegalArgumentException {

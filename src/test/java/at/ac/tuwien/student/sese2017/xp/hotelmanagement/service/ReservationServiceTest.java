@@ -1,6 +1,9 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -9,13 +12,16 @@ import static org.junit.Assert.assertTrue;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.*;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationError;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationError.ReservationOverlapError;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationExplanation;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.*;
 import lombok.extern.slf4j.Slf4j;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,20 +34,26 @@ import java.util.List;
 @Transactional
 public class ReservationServiceTest extends HotelManagementApplicationTests {
 
-  public static final ReservationExplanation RESERVATION_EXPLANATION_ROOMALREADYBOOKED;
 
-  static {
-    List<ReservationError> errors = new ArrayList<>();
-    errors.add(ReservationError.ReservationOverlapError.builder().build());
-    RESERVATION_EXPLANATION_ROOMALREADYBOOKED =
-        ReservationExplanation.builder().errors(errors).build();
-  }
+  private ReservationExplanation RESERVATION_EXPLANATION_ROOMALREADYBOOKED;
+
 
   @Autowired
   ReservationService reservationService;
 
   @Autowired
-  TestDataDirectory testDataDirectory;
+  TestDataDirectory tD;
+
+  @PostConstruct
+  public void init() {
+    List<ReservationError> errors = new ArrayList<>();
+    errors.add(ReservationError.ReservationOverlapError.builder().
+        overlappingRoom(tD.ROOM_1.getRoomId()).build());
+    errors.add(ReservationError.ReservationOverlapError.builder().
+        overlappingRoom(tD.ROOM_6.getRoomId()).build());
+    RESERVATION_EXPLANATION_ROOMALREADYBOOKED =
+        ReservationExplanation.builder().errors(errors).build();
+  }
 
   /**
    * Create a reservation
@@ -87,7 +99,7 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
   public void checkReservation_validMultipleCustomers() {
     // Define expected result
     ReservationEntity expectedResult = createDummyReservation();
-    expectedResult.getCustomers().add(testDataDirectory.CUSTOMER_2);
+    expectedResult.getCustomers().add(tD.CUSTOMER_2);
 
     // Execute service function
     ReservationExplanation explanation = reservationService.checkReservation(
@@ -112,7 +124,7 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
   public void checkReservation_validMultipleRooms() throws Exception {
     // Define expected result
     ReservationEntity expectedResult = createDummyReservation();
-    expectedResult.getRooms().add(testDataDirectory.ROOM_2);
+    expectedResult.getRooms().add(tD.ROOM_2);
 
     // Execute service function
     ReservationExplanation explanation = reservationService.checkReservation(
@@ -130,6 +142,20 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
     equalReservationEntity(explanation.getReservation().get(), expectedResult);
   }
 
+  @Test
+  public void x() {
+    List<ReservationOverlapError> build = new ArrayList<>();
+    build.add(ReservationOverlapError.builder().
+        overlappingRoom(tD.ROOM_1.getRoomId()).build());
+    List<ReservationOverlapError> build2 = new ArrayList<>();
+    build2.add(ReservationOverlapError.builder().
+        overlappingRoom(tD.ROOM_1.getRoomId()).build());
+
+    assertThat("Not the right elements returned", build,
+        hasItems(Matchers.hasProperty("overlappingRoom", equalTo(tD.ROOM_1.getRoomId()))));
+
+  }
+
   /**
    * A reservation can not be created for a room that is already reserved.
    *
@@ -142,40 +168,42 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
 
     // Execute service function
     ReservationExplanation explanation = reservationService.checkReservation(
-        testDataDirectory.RESERVATION_1.getCustomers(),
-        testDataDirectory.RESERVATION_1.getRooms(),
-        testDataDirectory.RESERVATION_1.getStartTime(),
-        testDataDirectory.RESERVATION_1.getEndTime()
+        tD.RESERVATION_1.getCustomers(),
+        tD.RESERVATION_1.getRooms(),
+        tD.RESERVATION_1.getStartTime(),
+        tD.RESERVATION_1.getEndTime()
     );
 
     // Check result
     assertNotNull("Null returned by service", explanation);
     assertNotNull("Returned Errors is null", explanation.getErrors());
     assertNotNull("Returned Warnings is null", explanation.getWarnings());
-    assertEquals("Result size not correct", explanation.getErrors().size(),
-        expectedResult.getErrors().size());
-    assertEquals("Result size not correct", explanation.getWarnings().size(), 0);
+    assertEquals("Result size not correct", expectedResult.getErrors().size(),
+        explanation.getErrors().size());
+    assertEquals("Result size not correct", 0, explanation.getWarnings().size());
     assertThat("Not the right elements returned", explanation.getErrors(),
-        containsInAnyOrder(expectedResult.getErrors()));
+        hasItems(Matchers.hasProperty("overlappingRoom", equalTo(tD.ROOM_1.getRoomId()))));
+    assertThat("Not the right elements returned", explanation.getErrors(),
+        hasItems(Matchers.hasProperty("overlappingRoom", equalTo(tD.ROOM_6.getRoomId()))));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void checkReservation_nullRooms() throws Exception {
     reservationService.checkReservation(
         null,
-        testDataDirectory.RESERVATION_1.getRooms(),
-        testDataDirectory.RESERVATION_1.getStartTime(),
-        testDataDirectory.RESERVATION_1.getEndTime()
+        tD.RESERVATION_1.getRooms(),
+        tD.RESERVATION_1.getStartTime(),
+        tD.RESERVATION_1.getEndTime()
     );
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void checkReservation_emptyRooms() throws Exception {
     reservationService.checkReservation(
-        testDataDirectory.RESERVATION_1.getCustomers(),
+        tD.RESERVATION_1.getCustomers(),
         new ArrayList<>(),
-        testDataDirectory.RESERVATION_1.getStartTime(),
-        testDataDirectory.RESERVATION_1.getEndTime()
+        tD.RESERVATION_1.getStartTime(),
+        tD.RESERVATION_1.getEndTime()
     );
   }
 
@@ -183,9 +211,9 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
   public void checkReservation_nullCustomers() throws Exception {
     reservationService.checkReservation(
         null,
-        testDataDirectory.RESERVATION_1.getRooms(),
-        testDataDirectory.RESERVATION_1.getStartTime(),
-        testDataDirectory.RESERVATION_1.getEndTime()
+        tD.RESERVATION_1.getRooms(),
+        tD.RESERVATION_1.getStartTime(),
+        tD.RESERVATION_1.getEndTime()
     );
   }
 
@@ -193,28 +221,28 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
   public void checkReservation_emptyCustomers() throws Exception {
     reservationService.checkReservation(
         new ArrayList<>(),
-        testDataDirectory.RESERVATION_1.getRooms(),
-        testDataDirectory.RESERVATION_1.getStartTime(),
-        testDataDirectory.RESERVATION_1.getEndTime()
+        tD.RESERVATION_1.getRooms(),
+        tD.RESERVATION_1.getStartTime(),
+        tD.RESERVATION_1.getEndTime()
     );
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void checkReservation_nullStartDate() throws Exception {
     reservationService.checkReservation(
-        testDataDirectory.RESERVATION_1.getCustomers(),
-        testDataDirectory.RESERVATION_1.getRooms(),
+        tD.RESERVATION_1.getCustomers(),
+        tD.RESERVATION_1.getRooms(),
         null,
-        testDataDirectory.RESERVATION_1.getEndTime()
+        tD.RESERVATION_1.getEndTime()
     );
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void checkReservation_nullEndDate() throws Exception {
     reservationService.checkReservation(
-        testDataDirectory.RESERVATION_1.getCustomers(),
-        testDataDirectory.RESERVATION_1.getRooms(),
-        testDataDirectory.RESERVATION_1.getStartTime(),
+        tD.RESERVATION_1.getCustomers(),
+        tD.RESERVATION_1.getRooms(),
+        tD.RESERVATION_1.getStartTime(),
         null
     );
   }
@@ -222,20 +250,20 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
   @Test(expected = IllegalArgumentException.class)
   public void checkReservation_endBeforeStartDate() throws Exception {
     reservationService.checkReservation(
-        testDataDirectory.RESERVATION_1.getCustomers(),
-        testDataDirectory.RESERVATION_1.getRooms(),
-        testDataDirectory.RESERVATION_1.getEndTime(),
-        testDataDirectory.RESERVATION_1.getStartTime()
+        tD.RESERVATION_1.getCustomers(),
+        tD.RESERVATION_1.getRooms(),
+        tD.RESERVATION_1.getEndTime(),
+        tD.RESERVATION_1.getStartTime()
     );
   }
 
   private ReservationEntity createDummyReservation() {
     ReservationEntity reservationEntity = new ReservationEntity();
     List<CustomerEntity> customers = new ArrayList<>();
-    customers.add(testDataDirectory.CUSTOMER_1);
+    customers.add(tD.CUSTOMER_1);
     reservationEntity.setCustomers(customers);
     List<RoomEntity> rooms = new ArrayList<>();
-    rooms.add(testDataDirectory.ROOM_6);
+    rooms.add(tD.ROOM_6);
     reservationEntity.setRooms(rooms);
     reservationEntity.setStartTime(LocalDateTime.of(2017, 10, 17, 1, 1));
     reservationEntity.setStartTime(LocalDateTime.of(2017, 10, 22, 1, 1));

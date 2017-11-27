@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReservationRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.RoomRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataDirectory;
 import java.util.List;
@@ -23,6 +24,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
 
   @Autowired
   RoomService roomService;
+
+  @Autowired
+  ReservationRepository reservationRepository;
   
   @Autowired
   private TestDataDirectory tD;
@@ -54,6 +58,8 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void getAllRooms_emptyDB() throws Exception {
+    // Clear all reservations prior to the room clearing because of foreign keys
+    reservationRepository.deleteAll();
     // Clear rooms from database
     roomRepository.deleteAll();
     // Define expected result

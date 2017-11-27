@@ -130,6 +130,7 @@ public class TestDataDirectory implements InjectableDataDirectory {
     customers.add(CUSTOMER_1);
     List<RoomEntity> rooms = new ArrayList<>();
     rooms.add(ROOM_1);
+    rooms.add(ROOM_6);
     this.RESERVATION_1 = new ReservationEntity()
         .setCustomers(customers)
         .setRooms(rooms)

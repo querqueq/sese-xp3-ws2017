@@ -27,8 +27,8 @@ import org.springframework.transaction.support.TransactionTemplate;
  * @author lkerck
  */
 @Slf4j
-@Service
-
+//@Service
+@Deprecated
 public class TestDataInjector {
 
   /**
@@ -181,7 +181,7 @@ public class TestDataInjector {
       .setSex(Sex.MALE)
       .setPhoneNumber("01234567")
       ;
-  
+
   public static final CustomerEntity CUSTOMER_2 = new CustomerEntity()
       .setBillingAddress("Abbey Road, London")
       .setBirthday(LocalDate.of(1969, 10, 26))
@@ -191,7 +191,7 @@ public class TestDataInjector {
       .setSex(Sex.MALE)
       .setPhoneNumber("01234568")
       ;
-  
+
   public static final CustomerEntity CUSTOMER_3 = new CustomerEntity()
       .setBillingAddress("Karlsplatz 1, 1040 Wien")
       .setBirthday(LocalDate.of(1999, 1, 23))

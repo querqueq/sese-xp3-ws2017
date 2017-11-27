@@ -5,7 +5,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataDirectory;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
@@ -19,6 +20,9 @@ public class CustomerSearchTest extends HotelManagementApplicationTests {
   @Autowired
   private CustomerRepository customerRepository;
 
+  @Autowired
+  private TestDataDirectory tD;
+
   /**
    * Find 2 matching customers whose name or address contains "Bäcker".
    * Should find Müller and Bäcker. 
@@ -26,10 +30,10 @@ public class CustomerSearchTest extends HotelManagementApplicationTests {
   @Test
   public void testSearchPartialMatch() {
     assertThat(
-        customerRepository.search("Bäcker").stream().map(c -> c.getName()).collect(Collectors.toList()),
+        customerRepository.search("Bäcker").stream().map(CustomerEntity::getName).collect(Collectors.toList()),
         Matchers.<Collection<String>>allOf(hasSize(2),
-            hasItem(TestDataInjector.CUSTOMER_1.getName()),
-            hasItem(TestDataInjector.CUSTOMER_2.getName())));
+            hasItem(tD.CUSTOMER_1.getName()),
+            hasItem(tD.CUSTOMER_2.getName())));
   }
 
   /**
@@ -39,9 +43,9 @@ public class CustomerSearchTest extends HotelManagementApplicationTests {
   @Test
   public void testSearchExactMatches() {
     assertThat(
-        customerRepository.search("Müller").stream().map(c -> c.getName()).collect(Collectors.toList()),
+        customerRepository.search("Müller").stream().map(CustomerEntity::getName).collect(Collectors.toList()),
         Matchers.<Collection<String>>allOf(hasSize(1),
-            hasItem(TestDataInjector.CUSTOMER_1.getName())));
+            hasItem(tD.CUSTOMER_1.getName())));
   }
   
   /**
@@ -51,10 +55,10 @@ public class CustomerSearchTest extends HotelManagementApplicationTests {
   @Test
   public void testSearchExactMatchDifferentFields() {
     assertThat(
-        customerRepository.search("Abbey").stream().map(c -> c.getName()).collect(Collectors.toList()),
+        customerRepository.search("Abbey").stream().map(CustomerEntity::getName).collect(Collectors.toList()),
         Matchers.<Collection<String>>allOf(hasSize(2),
-            hasItem(TestDataInjector.CUSTOMER_2.getName()),
-            hasItem(TestDataInjector.CUSTOMER_3.getName())));
+            hasItem(tD.CUSTOMER_2.getName()),
+            hasItem(tD.CUSTOMER_3.getName())));
   }
   
   /**
@@ -64,10 +68,10 @@ public class CustomerSearchTest extends HotelManagementApplicationTests {
   @Test
   public void testSearchExactMatchAddress() {
     assertThat(
-        customerRepository.search("Wien").stream().map(c -> c.getName()).collect(Collectors.toList()),
+        customerRepository.search("Wien").stream().map(CustomerEntity::getName).collect(Collectors.toList()),
         Matchers.<Collection<String>>allOf(hasSize(2),
-            hasItem(TestDataInjector.CUSTOMER_1.getName()),
-            hasItem(TestDataInjector.CUSTOMER_3.getName())));
+            hasItem(tD.CUSTOMER_1.getName()),
+            hasItem(tD.CUSTOMER_3.getName())));
   }
   
   /**
@@ -77,11 +81,11 @@ public class CustomerSearchTest extends HotelManagementApplicationTests {
   @Test
   public void testSearchMultipleExactMatches() {
     assertThat(
-        customerRepository.search("Abbey Wien").stream().map(c -> c.getName()).collect(Collectors.toList()),
+        customerRepository.search("Abbey Wien").stream().map(CustomerEntity::getName).collect(Collectors.toList()),
         Matchers.<Collection<String>>allOf(hasSize(3),
-            hasItem(TestDataInjector.CUSTOMER_1.getName()),
-            hasItem(TestDataInjector.CUSTOMER_2.getName()),
-            hasItem(TestDataInjector.CUSTOMER_3.getName())));
+            hasItem(tD.CUSTOMER_1.getName()),
+            hasItem(tD.CUSTOMER_2.getName()),
+            hasItem(tD.CUSTOMER_3.getName())));
   }
 
   /**
@@ -92,10 +96,10 @@ public class CustomerSearchTest extends HotelManagementApplicationTests {
   @Test
   public void testSearchSpellingError() {
     assertThat(
-        customerRepository.search("Abbay").stream().map(c -> c.getName()).collect(Collectors.toList()),
+        customerRepository.search("Abbay").stream().map(CustomerEntity::getName).collect(Collectors.toList()),
         Matchers.<Collection<String>>allOf(hasSize(2),
-            hasItem(TestDataInjector.CUSTOMER_2.getName()),
-            hasItem(TestDataInjector.CUSTOMER_3.getName())));
+            hasItem(tD.CUSTOMER_2.getName()),
+            hasItem(tD.CUSTOMER_3.getName())));
   }
 
   /**
@@ -104,7 +108,7 @@ public class CustomerSearchTest extends HotelManagementApplicationTests {
    */
   @Test
   public void testSearchUnfindable() {
-    assertThat(customerRepository.search("Xyczzte").stream().map(c -> c.getName())
+    assertThat(customerRepository.search("Xyczzte").stream().map(CustomerEntity::getName)
         .collect(Collectors.toList()), hasSize(0));
   }
 
@@ -114,7 +118,7 @@ public class CustomerSearchTest extends HotelManagementApplicationTests {
   @Test
   public void testSearchOneCharacter() {
     assertThat(
-        customerRepository.search("b").stream().map(c -> c.getName()).collect(Collectors.toList()),
+        customerRepository.search("b").stream().map(CustomerEntity::getName).collect(Collectors.toList()),
         hasSize(0));
   }
 
@@ -124,7 +128,7 @@ public class CustomerSearchTest extends HotelManagementApplicationTests {
   @Test
   public void testSearchTwoCharacter() {
     assertThat(
-        customerRepository.search("bb").stream().map(c -> c.getName()).collect(Collectors.toList()),
+        customerRepository.search("bb").stream().map(CustomerEntity::getName).collect(Collectors.toList()),
         hasSize(0));
   }
 
@@ -135,10 +139,10 @@ public class CustomerSearchTest extends HotelManagementApplicationTests {
   @Test
   public void testSearchThreeCharacter() {
     assertThat(
-        customerRepository.search("bbe").stream().map(c -> c.getName()).collect(Collectors.toList()),
+        customerRepository.search("bbe").stream().map(CustomerEntity::getName).collect(Collectors.toList()),
         Matchers.<Collection<String>>allOf(hasSize(2),
-            hasItem(TestDataInjector.CUSTOMER_2.getName()),
-            hasItem(TestDataInjector.CUSTOMER_3.getName())));
+            hasItem(tD.CUSTOMER_2.getName()),
+            hasItem(tD.CUSTOMER_3.getName())));
   }
 
   /**
@@ -147,7 +151,7 @@ public class CustomerSearchTest extends HotelManagementApplicationTests {
   @Test
   public void testSearchEmpty() {
     assertThat(
-        customerRepository.search("").stream().map(c -> c.getName()).collect(Collectors.toList()),
+        customerRepository.search("").stream().map(CustomerEntity::getName).collect(Collectors.toList()),
         hasSize(0));
   }
 
@@ -157,7 +161,7 @@ public class CustomerSearchTest extends HotelManagementApplicationTests {
   @Test
   public void testSearchNull() {
     assertThat(
-        customerRepository.search(null).stream().map(c -> c.getName()).collect(Collectors.toList()),
+        customerRepository.search(null).stream().map(CustomerEntity::getName).collect(Collectors.toList()),
         hasSize(0));
   }
 }

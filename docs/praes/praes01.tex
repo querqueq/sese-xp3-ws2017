@@ -1,0 +1,63 @@
+\documentclass{beamer}
+%\usetheme{CambridgeUS}
+%\useoutertheme{infolines}
+\mode<presentation>{\usetheme{Warsaw}}
+\setbeamercovered{transparent}
+
+\usepackage{tikz}
+
+\newcommand\RBox[1]{%
+  \tikz\node[draw,rounded corners,align=center,] {#1};%
+}
+
+%\setbeamerfont{author in head/foot}{size={\fontsize{3pt}{4pt}\selectfont}}
+\author[Bauer \& Just \& Hernadi \& Kerck \& Kraschitzer]
+{%
+   \texorpdfstring{
+        \begin{columns}
+%            \column{.45\linewidth}
+%            \centering
+%            \includegraphics[width=\linewidth]{ctanlion}
+            \column{.45\linewidth}
+%            \centering
+            \RBox{Andreas Kraschitzer}\\[0.5ex]
+            \RBox{Johannes Just}\\[0.5ex]
+            \RBox{Laszlo Hernadi}\\[0.5ex]
+            \RBox{Lukas Kerck}\\[0.5ex]
+            \RBox{Michael Bauer}
+        \end{columns}
+   }
+   {Bauer, Just, Hernadi, Kerck, Kraschitzer}
+}
+\title{Seminar Software Engineering 2017}
+\subtitle{XP-3 - first presentation}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+\begin{frame}{Table of contents}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents[hideallsubsections]
+\end{frame}
+
+\section{Verwendete Technologien}
+
+\begin{frame}{Verwendete Technologien}
+    \begin{description}
+        \item<1-> [github] Versionierung + issues
+        \item<2-> [spring] Webserver
+        \item<3-> [hibernate] Database manager
+        \item<4-> [slack] Basis Kommunikation
+        \item<4-> [teamSpeak] Meetings
+        \item<5-> [code climate] Code coverage tool
+        \item<5-> [coveralls] Code coverage tool
+        \item<6-> [sonarcloud] Quality checker
+        \item<7-> [\LaTeX] Presentation
+    \end{description}
+\end{frame}
+
+\end{document}

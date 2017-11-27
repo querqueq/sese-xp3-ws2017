@@ -6,6 +6,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,6 +14,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class TestDataDirectory {
+
+  /*
+    ALL fields with Entity objects get injected into the database by TestDataInjectorService
+
+    The order in which the entities get injected can be specified with the @Order annotation
+   */
+
   public final RoomEntity ROOM_1;
   public final RoomEntity ROOM_2;
   public final RoomEntity ROOM_3;

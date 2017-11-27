@@ -7,14 +7,12 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -125,6 +123,7 @@ public class TestDataInjector {
         em.persist(RECEIPT_4);
         em.persist(RECEIPT_5);
         em.persist(RECEIPT_6);
+        em.flush();
         log.info("Finished injecting test data");
       }
     });
@@ -277,65 +276,93 @@ public class TestDataInjector {
       .setPhoneNumber("01234569")
       ;
 
+  public static final CustomerEntity CUSTOMER_4 = new CustomerEntity()
+      .setBillingAddress(ADDRESS_4)
+      .setBirthday(LocalDate.of(1999, 1, 23))
+      .setDiscount(BigDecimal.ZERO)
+      .setEmail("N@A.gay")
+      .setName("N/A")
+      .setSex(Sex.MALE)
+      .setPhoneNumber("0")
+      ;
 
+  public static final CustomerEntity CUSTOMER_5 = new CustomerEntity()
+      .setBillingAddress(ADDRESS_5)
+      .setBirthday(LocalDate.of(1999, 1, 23))
+      .setDiscount(BigDecimal.ZERO)
+      .setEmail("N@A.gay")
+      .setName("N/A")
+      .setSex(Sex.MALE)
+      .setPhoneNumber("0")
+      ;
+  
+  public static final CustomerEntity CUSTOMER_6 = new CustomerEntity()
+      .setBillingAddress(ADDRESS_6)
+      .setBirthday(LocalDate.of(1999, 1, 23))
+      .setDiscount(BigDecimal.ZERO)
+      .setEmail("N@A.gay")
+      .setName("N/A")
+      .setSex(Sex.MALE)
+      .setPhoneNumber("0")
+      ;
 
   public static final ReceiptEntity RECEIPT_1 = new ReceiptEntity()
-      .setCustomerAddress(ADDRESS_1)
+      .addCustomer(CUSTOMER_1)
       .setHotelAddress(ADDRESS_HOTEL)
       .setDurationOfStay(10)
-      .setRoom(ROOM_1)
+      .addRoom(ROOM_1)
       .setPrice(6853.95)
       .setDiscount(0.05)
-      .setReceiptDate(new Date(1507410400000L)) //Sat Oct 07 2017 23:06:40
+      .setReceiptDate(LocalDateTime.of(2017, 10, 7, 21, 6))
       ;
 
   public static final ReceiptEntity RECEIPT_2 = new ReceiptEntity()
-      .setCustomerAddress(ADDRESS_2)
+      .addCustomer(CUSTOMER_2)
       .setHotelAddress(ADDRESS_HOTEL)
       .setDurationOfStay(3)
-      .setRoom(ROOM_3)
+      .addRoom(ROOM_3)
       .setPrice(601.8)
       .setDiscount(0.0)
-      .setReceiptDate(new Date(1508228400000L)) // Tue Oct 17 2017 10:20:00
+      .setReceiptDate(LocalDateTime.of(2017, 10, 17, 8, 20))
       ;
 
   public static final ReceiptEntity RECEIPT_3 = new ReceiptEntity()
-      .setCustomerAddress(ADDRESS_3)
+      .addCustomer(CUSTOMER_3)
       .setHotelAddress(ADDRESS_HOTEL)
       .setDurationOfStay(1)
-      .setRoom(ROOM_5)
+      .addRoom(ROOM_5)
       .setPrice(57.66)
       .setDiscount(0.0)
-      .setReceiptDate(new Date(1508433500000L)) // Thu Oct 19 2017 19:18:20
+      .setReceiptDate(LocalDateTime.of(2017, 10, 19, 17, 18))
       ;
 
   public static final ReceiptEntity RECEIPT_4 = new ReceiptEntity()
-      .setCustomerAddress(ADDRESS_4)
+      .addCustomer(CUSTOMER_4)
       .setHotelAddress(ADDRESS_HOTEL)
       .setDurationOfStay(12)
-      .setRoom(ROOM_2)
+      .addRoom(ROOM_2)
       .setPrice(820.95)
       .setDiscount(0.02)
-      .setReceiptDate(new Date(1507358500000L)) // Sat Oct 07 2017 08:41:40
+      .setReceiptDate(LocalDateTime.of(2017, 10, 7, 6, 41))
       ;
 
   public static final ReceiptEntity RECEIPT_5 = new ReceiptEntity()
-      .setCustomerAddress(ADDRESS_5)
+      .addCustomer(CUSTOMER_5)
       .setHotelAddress(ADDRESS_HOTEL)
       .setDurationOfStay(3)
-      .setRoom(ROOM_4)
+      .addRoom(ROOM_4)
       .setPrice(1134.0)
       .setDiscount(0.1)
-      .setReceiptDate(new Date(1507250500000L)) // Fri Oct 06 2017 02:41:40
+      .setReceiptDate(LocalDateTime.of(2017, 10, 6, 0, 41))
       ;
 
   public static final ReceiptEntity RECEIPT_6 = new ReceiptEntity()
-      .setCustomerAddress(ADDRESS_6)
+      .addCustomer(CUSTOMER_6)
       .setHotelAddress(ADDRESS_HOTEL)
       .setDurationOfStay(2)
-      .setRoom(ROOM_6)
+      .addRoom(ROOM_6)
       .setPrice(350.64)
       .setDiscount(0.0)
-      .setReceiptDate(new Date(1507105200000L)) // Wed Oct 04 2017 10:20:00
+      .setReceiptDate(LocalDateTime.of(2017, 10, 4, 8, 20))
       ;
 }

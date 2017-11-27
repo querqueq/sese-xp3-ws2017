@@ -17,6 +17,8 @@ import javax.persistence.PersistenceContextType;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
+
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -97,7 +99,7 @@ public class CustomerServiceTest extends HotelManagementApplicationTests {
 
   private CustomerEntity createEntity() throws MalformedURLException {
     CustomerEntity entity = new CustomerEntity();
-    entity.setBillingAddress("Valid address");
+    entity.setBillingAddress(TestDataInjector.ADDRESS_1);
     entity.setBirthday(LocalDate.now().minus(2, ChronoUnit.DECADES));
     entity.setCompanyName("Company");
     entity.setDiscount(BigDecimal.ZERO);

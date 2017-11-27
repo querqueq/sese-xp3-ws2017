@@ -3,12 +3,15 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
@@ -76,13 +79,13 @@ public class CustomerEntity {
   @NotNull
   private Sex sex;
 
-  @Column
   /* configure analyzer. Store (cache the search fragments)
    * analyze (analyze the field with the given analyzers)
    */
-  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
-  @NotNull
-  private String billingAddress;
+  //@Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
+  @ManyToOne(cascade = {CascadeType.PERSIST})
+  @JoinColumn
+  private AddressEntity billingAddress;
 
   @Column
   private String companyName;

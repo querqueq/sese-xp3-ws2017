@@ -190,37 +190,6 @@ public class TestDataInjector {
     ROOM_6.getPriceMap().put(PriceType.SINGLE_WITH_TWO_CHILDREN, 175.32);
   }
   
-  public static final CustomerEntity CUSTOMER_1 = new CustomerEntity()
-      .setBillingAddress("Bäckerstraße 7, Wien 1010")
-      .setBirthday(LocalDate.of(1982, 7, 7))
-      .setDiscount(BigDecimal.ZERO)
-      .setEmail("hr.mueller@example.org")
-      .setName("Gerhard Müller")
-      .setSex(Sex.MALE)
-      .setPhoneNumber("01234567")
-      ;
-  
-  public static final CustomerEntity CUSTOMER_2 = new CustomerEntity()
-      .setBillingAddress("Abbey Road, London")
-      .setBirthday(LocalDate.of(1969, 10, 26))
-      .setDiscount(BigDecimal.TEN)
-      .setEmail("dieter.baecker@gmail.com")
-      .setName("Dieter Bäcker")
-      .setSex(Sex.MALE)
-      .setPhoneNumber("01234568")
-      ;
-  
-  public static final CustomerEntity CUSTOMER_3 = new CustomerEntity()
-      .setBillingAddress("Karlsplatz 1, 1040 Wien")
-      .setBirthday(LocalDate.of(1999, 1, 23))
-      .setDiscount(BigDecimal.ZERO)
-      .setEmail("foo@gmail.com")
-      .setName("Abbey Fields")
-      .setSex(Sex.FEMALE)
-      .setPhoneNumber("01234569")
-      ;
-
-
   public static final AddressEntity ADDRESS_HOTEL = new AddressEntity()
       .setName("Hotel zum schoenen Urblaub")
       .setStreetAddress1("Am Buchtaler Jockl 1")
@@ -277,6 +246,38 @@ public class TestDataInjector {
       .setCity("Sommariva Perno")
       .setState("Piemonte")
       ;
+
+  public static final CustomerEntity CUSTOMER_1 = new CustomerEntity()
+      .setBillingAddress(ADDRESS_1)
+      .setBirthday(LocalDate.of(1982, 7, 7))
+      .setDiscount(BigDecimal.ZERO)
+      .setEmail("hr.mueller@example.org")
+      .setName("Abbey Fields")
+      .setSex(Sex.MALE)
+      .setPhoneNumber("01234567")
+      ;
+
+  public static final CustomerEntity CUSTOMER_2 = new CustomerEntity()
+      .setBillingAddress(ADDRESS_2)
+      .setBirthday(LocalDate.of(1969, 10, 26))
+      .setDiscount(BigDecimal.TEN)
+      .setEmail("dieter.baecker@gmail.com")
+      .setName("Simon Holt")
+      .setSex(Sex.MALE)
+      .setPhoneNumber("01234568")
+      ;
+
+  public static final CustomerEntity CUSTOMER_3 = new CustomerEntity()
+      .setBillingAddress(ADDRESS_3)
+      .setBirthday(LocalDate.of(1999, 1, 23))
+      .setDiscount(BigDecimal.ZERO)
+      .setEmail("foo@gmail.com")
+      .setName("Dieter Decker")
+      .setSex(Sex.FEMALE)
+      .setPhoneNumber("01234569")
+      ;
+
+
 
   public static final ReceiptEntity RECEIPT_1 = new ReceiptEntity()
       .setCustomerAddress(ADDRESS_1)

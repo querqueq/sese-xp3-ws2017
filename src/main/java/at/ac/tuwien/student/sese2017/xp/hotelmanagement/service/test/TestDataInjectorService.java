@@ -1,7 +1,7 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.test;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.config.AppProperties;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataDirectory;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.InjectableDataDirectory;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +43,7 @@ public class TestDataInjectorService {
    * Test data directory with all entity objects included.
    */
   @Getter
-  private final TestDataDirectory tD;
+  private final InjectableDataDirectory tD;
 
   /**
    * Transaction manager to initialize and commit a transaction.
@@ -68,6 +68,8 @@ public class TestDataInjectorService {
    * @param em Current EM
    * @param appProperties injectTestData flag. Is set via command line --injecttestdata or
    *                       via properties file injecttestdata=true. Defaults to false if not set.
+   * @param testDataDirectory bean implementing InjectableDataDirectory with entities set as
+   *                        public fields.
    */
   @Autowired
   public TestDataInjectorService(
@@ -78,7 +80,7 @@ public class TestDataInjectorService {
       // Injected by spring from properties
       AppProperties appProperties,
       // Test data entities
-      TestDataDirectory testDataDirectory) {
+      InjectableDataDirectory testDataDirectory) {
     this.txManager = txManager;
     this.em = em;
     this.appProperties = appProperties;
@@ -113,6 +115,20 @@ public class TestDataInjectorService {
       System.out.println("\u001B[0m");
     }
 
+    // Analyzes the InjectableDataDirectory for entity objects and orders them
+    // according to their Order value
+    List<Object> objects = prepareTestData();
+
+    // Create a transaction and persist all objects to db
+    persistAll(objects);
+  }
+
+  /**
+   * Analyzes the InjectableDataDirectory for entity objects and orders them
+   * according to their Order value
+   * @return ordered list of entity objects
+   */
+  public List<Object> prepareTestData() {
     log.info("Preparing test data");
 
     // Prioritized data objects
@@ -146,8 +162,14 @@ public class TestDataInjectorService {
     }
 
     // Flatten priority data into a ordered list
-    List<Object> toPersist = reduceHashList(data);
+    return reduceHashList(data);
+  }
 
+  /**
+   * Write all elements in that list to database
+   * @param toPersist list with entity elements
+   */
+  private void persistAll(List<Object> toPersist) {
     // Initialize a new transacton
     TransactionTemplate tmpl = new TransactionTemplate(txManager);
     tmpl.execute(new TransactionCallbackWithoutResult() {
@@ -162,9 +184,7 @@ public class TestDataInjectorService {
         log.info("Finished injecting test data");
       }
     });
-
   }
-
 
   /**
    * Add a new element to a priority value

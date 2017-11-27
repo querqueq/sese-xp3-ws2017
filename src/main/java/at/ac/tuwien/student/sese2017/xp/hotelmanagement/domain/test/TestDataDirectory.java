@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * Object wrapper for test data instances
  */
 @Component
-public class TestDataDirectory {
+public class TestDataDirectory implements InjectableDataDirectory {
 
   /*
     ALL fields with Entity objects get injected into the database by TestDataInjectorService

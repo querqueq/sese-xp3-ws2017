@@ -2,10 +2,15 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +35,7 @@ public class TestDataDirectory implements InjectableDataDirectory {
   public final CustomerEntity CUSTOMER_1;
   public final CustomerEntity CUSTOMER_2;
   public final CustomerEntity CUSTOMER_3;
+  public final ReservationEntity RESERVATION_1;
 
   public TestDataDirectory() {
     // ROOMS
@@ -119,5 +125,17 @@ public class TestDataDirectory implements InjectableDataDirectory {
         .setName("Abbey Fields")
         .setSex(Sex.FEMALE)
         .setPhoneNumber("01234569");
+
+    List<CustomerEntity> customers = new ArrayList<>();
+    customers.add(CUSTOMER_1);
+    List<RoomEntity> rooms = new ArrayList<>();
+    rooms.add(ROOM_1);
+    this.RESERVATION_1 = new ReservationEntity()
+        .setCustomers(customers)
+        .setRooms(rooms)
+        .setStartTime(LocalDateTime.of(2017, 10, 1, 17,20))
+        .setEndTime(LocalDateTime.of(2017, 10, 6, 9,20))
+        .setDiscount(BigDecimal.valueOf(0.0))
+        .setPrice(700.0);
   }
 }

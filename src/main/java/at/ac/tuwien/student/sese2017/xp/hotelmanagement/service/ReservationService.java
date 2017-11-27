@@ -5,9 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationError.ReservationOverlapError;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationExplanation;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationExplanation.ReservationExplanationBuilder;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationExplanation;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationExplanation.ReservationExplanationBuilder;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReservationRepository;
 import lombok.extern.slf4j.Slf4j;
 

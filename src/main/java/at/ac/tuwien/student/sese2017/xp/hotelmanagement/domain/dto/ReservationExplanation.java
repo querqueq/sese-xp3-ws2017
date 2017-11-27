@@ -1,5 +1,6 @@
-package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
+package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto;
 
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationEntity;
 import java.util.List;
 import java.util.Optional;
 import lombok.Builder;

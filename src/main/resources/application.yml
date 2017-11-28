@@ -2,7 +2,7 @@
 # Set server port via command line parameter --port
 # otherwise defaults to a random port
 server:
-  port: ${port:0}
+  port: 8080 # ${port:0}
 
 # Disable thymeleaf cache to enable live refresh for rapid development (template hotswap)
 spring:

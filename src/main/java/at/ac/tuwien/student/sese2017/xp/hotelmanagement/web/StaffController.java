@@ -2,10 +2,12 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.CustomerSearchCriteria;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria.SearchOption;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.Optional;
 import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * This controller handles basic requests to the staff only space of the web page. 
- * For example the "/staff/index" page.
+ * This controller handles basic requests to the staff only space of the web page. For example the
+ * "/staff/index" page.
  *
  * @author Johannes
  * @author Michael
@@ -28,12 +30,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class StaffController {
 
-  private static final String CUSTOMER_SEARCH_CRITERIA_ATTRIBUTE_NAME = "customerSearchCriteria";
+  private static final String SEARCH_CRITERIA = "searchCriteria";
   private static final String CUSTOMER_ATTRIBUTE_NAME = "customer";
   private CustomerService service;
 
   /**
    * Controller for staff use cases.
+   * 
    * @param service The CustomerService to search and create CustomerEntity objects.
    */
   @Autowired
@@ -43,8 +46,9 @@ public class StaffController {
 
   /**
    * Blank form for creating a new customer.
-   * @param  model model for view
-   * @return  path to template 
+   * 
+   * @param model model for view
+   * @return path to template
    */
   @GetMapping("/staff/customer/create")
   public String createCustomer(Model model) {
@@ -57,12 +61,12 @@ public class StaffController {
   }
 
   /**
-   * A blank form with a note about the customer creation.
-   * If there are no errors. Otherwise a partially filled
-   * form with error messages.
-   * @param model  model for view
-   * @param entity  customer entity filled out by form  
-   * @return path to template 
+   * A blank form with a note about the customer creation. If there are no errors. Otherwise a
+   * partially filled form with error messages.
+   * 
+   * @param model model for view
+   * @param entity customer entity filled out by form
+   * @return path to template
    */
   @PostMapping("/staff/customer/create")
   public String postCustomer(Model model, @ModelAttribute CustomerEntity entity) {
@@ -80,27 +84,29 @@ public class StaffController {
     return "staff/customerCreate";
 
   }
-  
+
   /**
    * Gets the view for the customer search.
+   * 
    * @param model model for view
-   * @return path to template  
+   * @return path to template
    */
   @GetMapping("/staff/customer/search")
   public String getSearchCustomer(Model model) {
     log.info("getSearchCustomer - Page called");
-    model.addAttribute(CUSTOMER_SEARCH_CRITERIA_ATTRIBUTE_NAME, new CustomerSearchCriteria());
+    model.addAttribute(SEARCH_CRITERIA, new StaffSearchCriteria());
     return "staff/customerSearch";
   }
-  
+
   /**
    * Does a full text search with the given search criteria and puts the result in the model.
+   * 
    * @param model model for view
    * @param criteria the search criteria model
-   * @return path to template 
+   * @return path to template
    */
   @PostMapping("/staff/customer/search")
-  public String searchCustomer(Model model, @ModelAttribute CustomerSearchCriteria criteria) {
+  public String searchCustomer(Model model, @ModelAttribute StaffSearchCriteria criteria) {
     log.info("search customer - Page called");
     model.addAttribute("customerList", service.search(criteria.getSearchText()));
     return "staff/customerSearch";
@@ -111,18 +117,34 @@ public class StaffController {
    *
    * @return String representing the path to the template that is to be shown.
    */
-  @RequestMapping({ "/staff/search", "/staff", "/staff/index" })
+  @RequestMapping({"/staff/search", "/staff", "/staff/index"})
   public String search(Model model) {
     log.info("staff index - Page called");
-    model.addAttribute(CUSTOMER_SEARCH_CRITERIA_ATTRIBUTE_NAME, new CustomerSearchCriteria());
-    return "staff/search"; 
+    StaffSearchCriteria staffSearchCriteria = new StaffSearchCriteria();
+    staffSearchCriteria.setSearchOption(SearchOption.CUSTOMERS);
+    model.addAttribute(SEARCH_CRITERIA, staffSearchCriteria);
+    return "staff/search";
   }
 
   @PostMapping("/staff/search")
-  public String postSearch(Model model, @ModelAttribute CustomerSearchCriteria criteria) {
+  public String postSearch(Model model,
+      @ModelAttribute(SEARCH_CRITERIA) StaffSearchCriteria criteria) {
     log.info("search customer - Page called");
-    model.addAttribute("customers", service.search(criteria.getSearchText()));
-    model.addAttribute("receipts", Collections.emptyList());
+    Optional.ofNullable(criteria).map(StaffSearchCriteria::getSearchOption)
+        .ifPresent(searchOption -> {
+          switch (searchOption) {
+            case CUSTOMERS:
+              model.addAttribute("customers", service.search(criteria.getSearchText()));
+              break;
+            case RECEIPTS:
+              model.addAttribute("receipts", Collections.emptyList());
+              break;
+            default:
+              break;
+          }
+        });
+    criteria.setSearchText(null);
+    model.addAttribute(SEARCH_CRITERIA, criteria);
     return "staff/search";
   }
 }

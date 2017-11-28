@@ -9,9 +9,17 @@ import lombok.Data;
  *
  */
 @Data
-public class CustomerSearchCriteria {
+public class StaffSearchCriteria {
   /**
    * Search String for full text search.
    */
   private String searchText;
+  
+  private SearchOption searchOption;
+  
+  public static enum SearchOption {
+    CUSTOMERS,
+    RECEIPTS,
+    RESERVATIONS
+  }
 }

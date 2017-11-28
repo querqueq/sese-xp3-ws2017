@@ -39,8 +39,54 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><label for="billing">Rechnungsadresse</label></td>
-                        <td><input type="text" size="40" id="billing" th:field="*{billingAddress}" required /></td>
+                        <td>Rechnungsanschrift</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><label for="billingName">Name</label></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="address1">Adresse</label></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="address2">Adresszusatz</label></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="zipCode">Postleitzahl</label></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="city">Stadt</label></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="state">Land</label></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><input type="text" size="40" id="billingName" th:field="*{billingAddress.name}" required /></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" size="40" id="address1" th:field="*{billingAddress.streetAddress1}" required
+                                    /></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" size="40" id="address2" th:field="*{billingAddress.streetAddress2}" required /></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" size="40" id="zipCode" th:field="*{billingAddress.zipCode}" required /></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" size="40" id="city" th:field="*{billingAddress.city}" required /></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" size="40" id="state" th:field="*{billingAddress.state}" required /></td>
+                                </tr>
+                            </table>
+                        </td>
                     </tr>
                     <tr>
                         <td><label for="company">Firma</label></td>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="../../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}">
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/offcanvas.css" rel="stylesheet" th:href="@{/css/offcanvas.css}">
+    <title>Staff</title>
+    <meta charset="utf-8" />
+    <style type="text/css">
+    .card-block {
+        padding: 10px;
+    }
+
+    article {
+        margin-bottom: 10px;
+    }
+    .row {
+        margin-top: 10px;
+    }
+    </style>
+</head>
+
+<body>
+    <div th:insert="fragments/header :: menu"></div>
+    <div class="container">
+        <div class="search">
+            <form action="staff/search" method="post" th:action="@{/staff/search}" th:object="${searchCriteria}">
+                <div class="row">
+                    <div class="col-md-12 input-group">
+                        <input type="text" class="form-control input-lg" id="searchText" autofocus="autofocus" placeholder="Kundenname oder Adresse oder Rechungsdatum ..." th:field="*{searchText}" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="searchOption" value="customers" th:field="*{searchOption}" th:value="${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria.SearchOption).CUSTOMERS}" checked><i class="fa fa-user" aria-hidden="true"></i> Kunden
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="searchOption" value="receipts" th:field="*{searchOption}" th:value="${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria.SearchOption).RECEIPTS}"><i class="fa fa-file-text-o" aria-hidden="true"></i> Rechnungen
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline disabled">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="searchOption" value="reservations" th:field="*{searchOption}" th:value="${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria.SearchOption).RESERVATIONS}" disabled><i class="fa fa-clock-o" aria-hidden="true"></i>
+ Reservierungen
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="search-results">
+            <div class="row alerts">
+                <div class="col-md-12">
+                    <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(customers)}">
+                        <strong>Keine Treffer!</strong> Passen Sie Ihre Suche an oder konsultieren Sie die <a href="#">Hilfe</a>.
+                    </div>
+                    <div class="alert alert-danger" role="alert" th:if="${false}">
+                        <strong>Fehler!</strong> Bitte versuchen Sie es später nochmal.
+                    </div>
+                </div>
+            </div>
+            <span th:each="customer : ${customers}" th:if="${not #lists.isEmpty(customers)}">
+                <article class="card">
+                    <h3 class="card-header">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <b th:text="${customer.name}">Abbey Fields</b>
+                    </h3>
+                    <div class="row card-block">
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <p>
+                                <b>Telefonnummer</b>
+                                <br><span th:text="${customer.phoneNumber}">+4306850944</span>
+            </p>
+            <p>
+                <b>Geburtstag</b>
+                <br><span th:text="${#temporals.format(customer.birthday,'dd.MM.yyyy')}">01.02.1989</span>
+            </p>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <p>
+                <b>E-Mail</b>
+                <br><span th:text="${customer.email}">abbey@gmail.com</span>
+            </p>
+            <p>
+                <b>Website</b>
+                <br><span th:text="${customer.webAddress}">http://www.abbey-fields.com</span>
+            </p>
+        </div>
+        <div class="col-lg-3  col-md-6 col-sm-12">
+            <p>
+                <b>Rechnungs-Adressen</b>
+                <br><span>Abbey Fields, Karlsplatz, 1040 Wien, Austria</span>
+            </p>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12" style="padding-bottom: 5px">
+            <a href="#" class="btn btn-primary btn-block float-right">Bearbeiten</a>
+            <a href="#" class="btn btn-primary btn-block float-right">Reservierungen 
+                                <span class="badge badge-pill badge-info">1</span>
+                            </a>
+            <a href="#" class="btn btn-primary btn-block float-right">Rechnungen 
+                                <span class="badge badge-pill badge-info">5</span>
+                            </a>
+        </div>
+    </div>
+    </article>
+    </span>
+    <span th:each="receipt : ${receipts}" th:if="${not #lists.isEmpty(receipts)}">
+                <article class="card">
+                    <h3 class="card-header">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                        <b>28.07.2017 14:11</b>
+                    </h3>
+                    <div class="row card-block">
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <p>
+                                <b>Rabbat</b>
+                                <br> 12 %
+                            </p>
+                            <p>
+                                <b>Endsumme</b>
+                                <br> € 422.30
+                            </p>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <p>
+                                <b>Zimmer</b> (3)
+                                <br> Raum 101
+                                <br> Raum 102
+                                <br> Raum 105
+                            </p>
+                        </div>
+                        <div class="col-lg-3  col-md-6 col-sm-12">
+                            <p>
+                                <b>Rechnungs-Adressen</b>
+                                <br> Abbey Fields, Karlsplatz, 1040 Wien, Austria
+                            </p>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12" style="padding-bottom: 5px">
+                            <a href="#" class="btn btn-primary btn-block float-right">Stornieren</a>
+                            <a href="#" class="btn btn-primary btn-block float-right">Details</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <script src="../../static/js/jquery-3.2.1.slim.min.js" th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+        <script src="../../static/js/popper.min.js" th:src="@{/js/popper.min.js}"></script>
+        <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+        <script src="../../static/js/offcanvas.js" th:src="@{/js/offcanvas.js}"></script>
+    </body>
+
+    </html>

@@ -1,35 +1,32 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.RoomRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
 import java.util.List;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-//@TestExecutionListeners({TransactionalTestExecutionListener.class})
-@Slf4j
 @Transactional
 public class RoomServiceTest extends HotelManagementApplicationTests {
 
   @Autowired
   RoomService roomService;
 
-  @Autowired
-  private EntityManager entityManager;
 
   @Autowired
   private RoomRepository roomRepository;
+
+  @Autowired
+  private ReceiptRepository receiptRepository;
 
   /**
    * Find all rooms
@@ -47,7 +44,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
@@ -55,6 +54,8 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void getAllRooms_emptyDB() throws Exception {
+    // Clear all receipts to enable room removal
+    receiptRepository.deleteAll();
     // Clear rooms from database
     roomRepository.deleteAll();
     // Define expected result
@@ -65,7 +66,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
@@ -88,7 +91,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
@@ -110,7 +115,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
@@ -132,7 +139,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
@@ -152,8 +161,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
-  }
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }}
 
   /**
    * Find all rooms with occupants grater or equal 2
@@ -176,7 +186,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
@@ -200,7 +212,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
@@ -223,7 +237,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
@@ -246,9 +262,11 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }
   }
-  
+
   /**
    * Find all rooms with SinglePrice below 100
    *
@@ -269,7 +287,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
@@ -292,7 +312,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
@@ -317,7 +339,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
@@ -342,7 +366,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for(int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(), is(expectedResult[i].getRoomId()));
+    }
   }
 
   /*

@@ -3,30 +3,43 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.ToString;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
 import org.apache.lucene.analysis.ngram.EdgeNGramFilterFactory;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Parameter;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
+import org.hibernate.search.bridge.builtin.DefaultStringBridge;
+import org.hibernate.search.bridge.builtin.impl.BuiltinIterableBridge;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -51,6 +64,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
     // Applied to the tokens for normalisation
     filters = {@TokenFilterDef(factory = LowerCaseFilterFactory.class),})
 @Data
+@ToString(exclude = "receipts")
 @Indexed
 @Entity
 public class CustomerEntity {
@@ -76,13 +90,15 @@ public class CustomerEntity {
   @NotNull
   private Sex sex;
 
-  @Column
   /* configure analyzer. Store (cache the search fragments)
    * analyze (analyze the field with the given analyzers)
    */
   @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
-  @NotNull
-  private String billingAddress;
+  @IndexedEmbedded
+  @ManyToOne(cascade = {CascadeType.PERSIST})
+  @JoinColumn
+  @FieldBridge(impl = DefaultStringBridge.class)
+  private AddressEntity billingAddress;
 
   @Column
   private String companyName;
@@ -121,4 +137,13 @@ public class CustomerEntity {
 
   @Column
   private String faxNumber;
+  
+  @ContainedIn
+  @Field
+  @FieldBridge(impl = BuiltinIterableBridge.class)
+  @ManyToMany(cascade = {CascadeType.PERSIST})
+  @JoinTable(name = "Customer_Receipt",
+      joinColumns = { @JoinColumn(name = "customerEntity_id", referencedColumnName = "id") }, 
+      inverseJoinColumns = { @JoinColumn(name = "receiptEntity_id", referencedColumnName = "receiptId") })
+  private List<ReceiptEntity> receipts = new ArrayList<>();
 }

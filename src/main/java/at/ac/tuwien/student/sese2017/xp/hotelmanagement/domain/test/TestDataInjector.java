@@ -1,12 +1,15 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.config.AppProperties;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -107,6 +110,20 @@ public class TestDataInjector {
         em.persist(CUSTOMER_1);
         em.persist(CUSTOMER_2);
         em.persist(CUSTOMER_3);
+        em.persist(ADDRESS_HOTEL);
+        em.persist(ADDRESS_1);
+        em.persist(ADDRESS_2);
+        em.persist(ADDRESS_3);
+        em.persist(ADDRESS_4);
+        em.persist(ADDRESS_5);
+        em.persist(ADDRESS_6);
+        em.persist(RECEIPT_1);
+        em.persist(RECEIPT_2);
+        em.persist(RECEIPT_3);
+        em.persist(RECEIPT_4);
+        em.persist(RECEIPT_5);
+        em.persist(RECEIPT_6);
+        em.flush();
         log.info("Finished injecting test data");
       }
     });
@@ -172,33 +189,180 @@ public class TestDataInjector {
     ROOM_6.getPriceMap().put(PriceType.SINGLE_WITH_TWO_CHILDREN, 175.32);
   }
   
+  public static final AddressEntity ADDRESS_HOTEL = new AddressEntity()
+      .setName("Hotel zum schoenen Urblaub")
+      .setStreetAddress1("Am Buchtaler Jockl 1")
+      .setZipCode("3024")
+      .setCity("Lungau nahe dem Pongau")
+      .setState("Austria")
+      ;
+
+  public static final AddressEntity ADDRESS_1 = new AddressEntity()
+      .setName("Abbey Fields")
+      .setStreetAddress1("Karlsplatz 1")
+      .setZipCode("1040")
+      .setCity("Wien")
+      .setState("Austria")
+      ;
+
+  public static final AddressEntity ADDRESS_2 = new AddressEntity()
+      .setName("Simon Holt")
+      .setStreetAddress1("AbbeyRoad 287")
+      .setZipCode("EB5 K2H")
+      .setCity("London")
+      .setState("United Kingdom")
+      ;
+
+  public static final AddressEntity ADDRESS_3 = new AddressEntity()
+      .setName("Dieter Decker")
+      .setStreetAddress1("Am Rotbahnplatz 59")
+      .setZipCode("11957")
+      .setCity("Berlin")
+      .setState("Deutschland");
+
+  public static final AddressEntity ADDRESS_4 = new AddressEntity()
+      .setName("Ira T. Adkins")
+      .setStreetAddress1("215 Aenean Ave")
+      .setStreetAddress2("")
+      .setZipCode("41990-087")
+      .setCity("Sint-Denijs-Westrem")
+      .setState("Oost-Vlaanderen");
+
+  public static final AddressEntity ADDRESS_5 = new AddressEntity()
+      .setName("Cheryl A. Nielsen")
+      .setStreetAddress1("6126 Eu Ave")
+      .setStreetAddress2("")
+      .setZipCode("41687-555")
+      .setCity("Te Puke")
+      .setState("NI")
+      ;
+
+  public static final AddressEntity ADDRESS_6 = new AddressEntity()
+      .setName("Cassandra V. Noble")
+      .setStreetAddress1("1059 Augue St.")
+      .setStreetAddress2("Ap #542")
+      .setZipCode("6453")
+      .setCity("Sommariva Perno")
+      .setState("Piemonte")
+      ;
+
   public static final CustomerEntity CUSTOMER_1 = new CustomerEntity()
-      .setBillingAddress("Bäckerstraße 7, Wien 1010")
+      .setBillingAddress(ADDRESS_1)
       .setBirthday(LocalDate.of(1982, 7, 7))
       .setDiscount(BigDecimal.ZERO)
       .setEmail("hr.mueller@example.org")
-      .setName("Gerhard Müller")
+      .setName("Abbey Fields")
       .setSex(Sex.MALE)
       .setPhoneNumber("01234567")
       ;
-  
+
   public static final CustomerEntity CUSTOMER_2 = new CustomerEntity()
-      .setBillingAddress("Abbey Road, London")
+      .setBillingAddress(ADDRESS_2)
       .setBirthday(LocalDate.of(1969, 10, 26))
       .setDiscount(BigDecimal.TEN)
       .setEmail("dieter.baecker@gmail.com")
-      .setName("Dieter Bäcker")
+      .setName("Simon Holt")
       .setSex(Sex.MALE)
       .setPhoneNumber("01234568")
       ;
-  
+
   public static final CustomerEntity CUSTOMER_3 = new CustomerEntity()
-      .setBillingAddress("Karlsplatz 1, 1040 Wien")
+      .setBillingAddress(ADDRESS_3)
       .setBirthday(LocalDate.of(1999, 1, 23))
       .setDiscount(BigDecimal.ZERO)
       .setEmail("foo@gmail.com")
-      .setName("Abbey Fields")
+      .setName("Dieter Decker")
       .setSex(Sex.FEMALE)
       .setPhoneNumber("01234569")
+      ;
+
+  public static final CustomerEntity CUSTOMER_4 = new CustomerEntity()
+      .setBillingAddress(ADDRESS_4)
+      .setBirthday(LocalDate.of(1999, 1, 23))
+      .setDiscount(BigDecimal.ZERO)
+      .setEmail("N@A.nope")
+      .setName("N/A")
+      .setSex(Sex.MALE)
+      .setPhoneNumber("0")
+      ;
+
+  public static final CustomerEntity CUSTOMER_5 = new CustomerEntity()
+      .setBillingAddress(ADDRESS_5)
+      .setBirthday(LocalDate.of(1999, 1, 23))
+      .setDiscount(BigDecimal.ZERO)
+      .setEmail("N@A.nope")
+      .setName("N/A")
+      .setSex(Sex.MALE)
+      .setPhoneNumber("0")
+      ;
+  
+  public static final CustomerEntity CUSTOMER_6 = new CustomerEntity()
+      .setBillingAddress(ADDRESS_6)
+      .setBirthday(LocalDate.of(1999, 1, 23))
+      .setDiscount(BigDecimal.ZERO)
+      .setEmail("N@A.nope")
+      .setName("N/A")
+      .setSex(Sex.MALE)
+      .setPhoneNumber("0")
+      ;
+
+  public static final ReceiptEntity RECEIPT_1 = new ReceiptEntity()
+      .addCustomer(CUSTOMER_1)
+      .setHotelAddress(ADDRESS_HOTEL)
+      .setDurationOfStay(10)
+      .addRoom(ROOM_1)
+      .setPrice(6853.95)
+      .setDiscount(0.05)
+      .setReceiptDate(LocalDateTime.of(2017, 10, 7, 21, 6))
+      ;
+
+  public static final ReceiptEntity RECEIPT_2 = new ReceiptEntity()
+      .addCustomer(CUSTOMER_2)
+      .setHotelAddress(ADDRESS_HOTEL)
+      .setDurationOfStay(3)
+      .addRoom(ROOM_3)
+      .setPrice(601.8)
+      .setDiscount(0.0)
+      .setReceiptDate(LocalDateTime.of(2017, 10, 17, 8, 20))
+      ;
+
+  public static final ReceiptEntity RECEIPT_3 = new ReceiptEntity()
+      .addCustomer(CUSTOMER_3)
+      .setHotelAddress(ADDRESS_HOTEL)
+      .setDurationOfStay(1)
+      .addRoom(ROOM_5)
+      .setPrice(57.66)
+      .setDiscount(0.0)
+      .setReceiptDate(LocalDateTime.of(2017, 10, 19, 17, 18))
+      ;
+
+  public static final ReceiptEntity RECEIPT_4 = new ReceiptEntity()
+      .addCustomer(CUSTOMER_4)
+      .setHotelAddress(ADDRESS_HOTEL)
+      .setDurationOfStay(12)
+      .addRoom(ROOM_2)
+      .setPrice(820.95)
+      .setDiscount(0.02)
+      .setReceiptDate(LocalDateTime.of(2017, 10, 7, 6, 41))
+      ;
+
+  public static final ReceiptEntity RECEIPT_5 = new ReceiptEntity()
+      .addCustomer(CUSTOMER_5)
+      .setHotelAddress(ADDRESS_HOTEL)
+      .setDurationOfStay(3)
+      .addRoom(ROOM_4)
+      .setPrice(1134.0)
+      .setDiscount(0.1)
+      .setReceiptDate(LocalDateTime.of(2017, 10, 6, 0, 41))
+      ;
+
+  public static final ReceiptEntity RECEIPT_6 = new ReceiptEntity()
+      .addCustomer(CUSTOMER_6)
+      .setHotelAddress(ADDRESS_HOTEL)
+      .setDurationOfStay(2)
+      .addRoom(ROOM_6)
+      .setPrice(350.64)
+      .setDiscount(0.0)
+      .setReceiptDate(LocalDateTime.of(2017, 10, 4, 8, 20))
       ;
 }

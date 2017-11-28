@@ -266,7 +266,7 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
     rooms.add(tD.ROOM_6);
     reservationEntity.setRooms(rooms);
     reservationEntity.setStartTime(LocalDateTime.of(2017, 10, 17, 1, 1));
-    reservationEntity.setStartTime(LocalDateTime.of(2017, 10, 22, 1, 1));
+    reservationEntity.setEndTime(LocalDateTime.of(2017, 10, 22, 1, 1));
     reservationEntity.setDiscount(BigDecimal.valueOf(0.0));
     reservationEntity.setPrice(200.0);
     return reservationEntity;

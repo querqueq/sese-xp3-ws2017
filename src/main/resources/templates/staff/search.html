@@ -20,7 +20,7 @@
     .row {
         margin-top: 10px;
     }
-    </style>
+</style>
 </head>
 
 <body>
@@ -52,8 +52,7 @@
                         </div>
                         <div class="form-check form-check-inline disabled">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="radio" name="searchOption" value="reservations" th:field="*{searchOption}" th:value="${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria.SearchOption).RESERVATIONS}" disabled><i class="fa fa-clock-o" aria-hidden="true"></i>
- Reservierungen
+                                <input class="form-check-input" type="radio" name="searchOption" value="reservations" th:field="*{searchOption}" th:value="${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria.SearchOption).RESERVATIONS}" disabled><i class="fa fa-clock-o" aria-hidden="true"></i> Reservierungen
                             </label>
                         </div>
                     </div>
@@ -82,69 +81,71 @@
                             <p>
                                 <b>Telefonnummer</b>
                                 <br><span th:text="${customer.phoneNumber}">+4306850944</span>
-            </p>
-            <p>
-                <b>Geburtstag</b>
-                <br><span th:text="${#temporals.format(customer.birthday,'dd.MM.yyyy')}">01.02.1989</span>
-            </p>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
-            <p>
-                <b>E-Mail</b>
-                <br><span th:text="${customer.email}">abbey@gmail.com</span>
-            </p>
-            <p>
-                <b>Website</b>
-                <br><span th:text="${customer.webAddress}">http://www.abbey-fields.com</span>
-            </p>
-        </div>
-        <div class="col-lg-3  col-md-6 col-sm-12">
-            <p>
-                <b>Rechnungs-Adressen</b>
-                <br><span>Abbey Fields, Karlsplatz, 1040 Wien, Austria</span>
-            </p>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-12" style="padding-bottom: 5px">
-            <a href="#" class="btn btn-primary btn-block float-right">Bearbeiten</a>
-            <a href="#" class="btn btn-primary btn-block float-right">Reservierungen 
-                                <span class="badge badge-pill badge-info">1</span>
-                            </a>
-            <a href="#" class="btn btn-primary btn-block float-right">Rechnungen 
-                                <span class="badge badge-pill badge-info">5</span>
-                            </a>
-        </div>
-    </div>
-    </article>
-    </span>
-    <span th:each="receipt : ${receipts}" th:if="${not #lists.isEmpty(receipts)}">
-                <article class="card">
-                    <h3 class="card-header">
-                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                        <b>28.07.2017 14:11</b>
-                    </h3>
-                    <div class="row card-block">
-                        <div class="col-lg-3 col-md-6 col-sm-12">
-                            <p>
-                                <b>Rabbat</b>
-                                <br> 12 %
                             </p>
                             <p>
-                                <b>Endsumme</b>
-                                <br> € 422.30
+                                <b>Geburtstag</b>
+                                <br><span th:text="${#temporals.format(customer.birthday,'dd.MM.yyyy')}">01.02.1989</span>
                             </p>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-12">
                             <p>
-                                <b>Zimmer</b> (3)
-                                <br> Raum 101
-                                <br> Raum 102
-                                <br> Raum 105
+                                <b>E-Mail</b>
+                                <br><span th:text="${customer.email}">abbey@gmail.com</span>
+                            </p>
+                            <p>
+                                <b>Website</b>
+                                <br><span th:text="${customer.webAddress}">http://www.abbey-fields.com</span>
                             </p>
                         </div>
                         <div class="col-lg-3  col-md-6 col-sm-12">
                             <p>
                                 <b>Rechnungs-Adressen</b>
-                                <br> Abbey Fields, Karlsplatz, 1040 Wien, Austria
+                                <br><span th:text="${customer.billingAddress}">Abbey Fields, Karlsplatz, 1040 Wien, Austria</span>
+                            </p>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12" style="padding-bottom: 5px">
+                            <a href="#" class="btn btn-primary btn-block float-right">Bearbeiten</a>
+                            <a href="#" class="btn btn-primary btn-block float-right">Reservierungen 
+                                <span class="badge badge-pill badge-info">1</span>
+                            </a>
+                            <a href="#" class="btn btn-primary btn-block float-right">Rechnungen 
+                                <span class="badge badge-pill badge-info">5</span>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </span>
+            <span th:each="receipt : ${receipts}" th:if="${not #lists.isEmpty(receipts)}">
+                <article class="card">
+                    <h3 class="card-header">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                        <b th:text="${#temporals.format(receipt.receiptDate,'dd.MM.yyyy hh:mm')}">28.07.2017 14:11</b>
+                    </h3>
+                    <div class="row card-block">
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <p>
+                                <b>Rabatt</b>
+                                <br><span th:text="${receipt.discount}">12</span> %
+                            </p>
+                            <p> 
+                                <b>Endsumme</b>
+                                <br>€ <span th:text="${#numbers.formatDecimal(receipt.price, 1, 2)}">422.30</span> 
+                            </p>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12">
+                            <p>
+                                <b>Zimmer</b> (<span th:text="${#lists.size(receipt.rooms)}">1</span>)
+                                <span th:each="room : ${receipt.rooms}">
+                                    <br><span th:text="${room.name}">Zimmer 104</span>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-lg-3  col-md-6 col-sm-12">
+                            <p>
+                                <b>Rechnungs-Adressen</b>
+                                <span th:each="customer : ${receipt.customers}">
+                                    <br><span th:text="${customer.billingAddress}">Abbey Fields, Karlsplatz, 1040 Wien, Austria</span>
+                                </span>
                             </p>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-12" style="padding-bottom: 5px">

@@ -110,6 +110,7 @@ public class TestDataInjector {
         em.persist(CUSTOMER_1);
         em.persist(CUSTOMER_2);
         em.persist(CUSTOMER_3);
+        em.persist(CUSTOMER_7);
         em.persist(ADDRESS_HOTEL);
         em.persist(ADDRESS_1);
         em.persist(ADDRESS_2);
@@ -260,7 +261,7 @@ public class TestDataInjector {
       .setBillingAddress(ADDRESS_2)
       .setBirthday(LocalDate.of(1969, 10, 26))
       .setDiscount(BigDecimal.TEN)
-      .setEmail("dieter.baecker@gmail.com")
+      .setEmail("simon.holt@gmail.com")
       .setName("Simon Holt")
       .setSex(Sex.MALE)
       .setPhoneNumber("01234568")
@@ -278,30 +279,40 @@ public class TestDataInjector {
 
   public static final CustomerEntity CUSTOMER_4 = new CustomerEntity()
       .setBillingAddress(ADDRESS_4)
-      .setBirthday(LocalDate.of(1999, 1, 23))
+      .setBirthday(LocalDate.of(1999, 1, 24))
       .setDiscount(BigDecimal.ZERO)
-      .setEmail("N@A.nope")
-      .setName("N/A")
+      .setEmail("josef87@gmx.at")
+      .setName("Josef Gold")
       .setSex(Sex.MALE)
       .setPhoneNumber("0")
       ;
 
   public static final CustomerEntity CUSTOMER_5 = new CustomerEntity()
       .setBillingAddress(ADDRESS_5)
-      .setBirthday(LocalDate.of(1999, 1, 23))
+      .setBirthday(LocalDate.of(1999, 1, 25))
       .setDiscount(BigDecimal.ZERO)
-      .setEmail("N@A.nope")
-      .setName("N/A")
+      .setEmail("andrè.maier@student.tuwien.ac.at")
+      .setName("Andrè Volker Maier")
       .setSex(Sex.MALE)
       .setPhoneNumber("0")
       ;
   
   public static final CustomerEntity CUSTOMER_6 = new CustomerEntity()
       .setBillingAddress(ADDRESS_6)
-      .setBirthday(LocalDate.of(1999, 1, 23))
+      .setBirthday(LocalDate.of(1999, 1, 26))
       .setDiscount(BigDecimal.ZERO)
-      .setEmail("N@A.nope")
-      .setName("N/A")
+      .setEmail("sascha402@gmail.com")
+      .setName("Sascha Völker")
+      .setSex(Sex.MALE)
+      .setPhoneNumber("0")
+      ;
+
+  public static final CustomerEntity CUSTOMER_7 = new CustomerEntity()
+      .setBillingAddress(ADDRESS_6)
+      .setBirthday(LocalDate.of(1999, 1, 26))
+      .setDiscount(BigDecimal.ZERO)
+      .setEmail("goldstein@gmail.com")
+      .setName("Hermann Goldstein")
       .setSex(Sex.MALE)
       .setPhoneNumber("0")
       ;

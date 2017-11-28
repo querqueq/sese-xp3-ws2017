@@ -13,28 +13,28 @@ import org.hibernate.search.annotations.Store;
 @Data
 @Indexed
 @Entity
-@ClassBridge(impl = AddressBridge.class)
+//@ClassBridge(impl = AddressBridge.class)
 public class AddressEntity {
 
   @Id
   @GeneratedValue
   private long addressId;
 
-  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
+  @Field
   private String name;
 
-  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
+  @Field
   private String streetAddress1;
 
-  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
+  @Field
   private String streetAddress2;
 
-  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
+  @Field
   private String city;
 
-  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
+  @Field
   private String state;
 
-  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
+  @Field
   private String zipCode;
 }

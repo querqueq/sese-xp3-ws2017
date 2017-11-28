@@ -3,31 +3,32 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.*;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationRoomBooking;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationError;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationError.ReservationOverlapError;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationExplanation;
-
-import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
-
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.*;
-import com.sun.javaws.exceptions.InvalidArgumentException;
-import lombok.extern.slf4j.Slf4j;
-
-import org.hamcrest.Matchers;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataDirectory;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+import org.hamcrest.Matchers;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 @Transactional

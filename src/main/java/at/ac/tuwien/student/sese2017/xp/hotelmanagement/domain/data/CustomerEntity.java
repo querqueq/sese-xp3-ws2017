@@ -39,6 +39,7 @@ import org.hibernate.search.annotations.Store;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.search.bridge.builtin.DefaultStringBridge;
+import org.hibernate.search.bridge.builtin.impl.BuiltinIterableBridge;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -138,6 +139,8 @@ public class CustomerEntity {
   private String faxNumber;
   
   @ContainedIn
+  @Field
+  @FieldBridge(impl = BuiltinIterableBridge.class)
   @ManyToMany(cascade = {CascadeType.PERSIST})
   @JoinTable(name = "Customer_Receipt",
       joinColumns = { @JoinColumn(name = "customerEntity_id", referencedColumnName = "id") }, 

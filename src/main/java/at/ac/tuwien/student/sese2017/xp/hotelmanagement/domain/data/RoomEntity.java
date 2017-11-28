@@ -18,9 +18,9 @@ import lombok.ToString;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
+import org.hibernate.search.bridge.builtin.impl.BuiltinIterableBridge;
 
 /**
  * Representation of a hotel room.
@@ -58,6 +58,8 @@ public class RoomEntity {
   private Map<PriceType, Double> priceMap = new HashMap<>();
   
   @ContainedIn
+  @Field
+  @FieldBridge(impl = BuiltinIterableBridge.class)
   @ManyToMany(cascade = {CascadeType.PERSIST})
   @JoinTable(name = "Room_Receipt",
       joinColumns = { @JoinColumn(name = "roomEntity_id", referencedColumnName = "roomId") }, 

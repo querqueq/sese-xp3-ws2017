@@ -13,7 +13,6 @@ import org.hibernate.search.annotations.Store;
 @Data
 @Indexed
 @Entity
-//@ClassBridge(impl = AddressBridge.class)
 public class AddressEntity {
 
   @Id

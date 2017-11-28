@@ -62,7 +62,7 @@
         <div class="search-results">
             <div class="row alerts">
                 <div class="col-md-12">
-                    <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(customers)}">
+                    <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(customers) && #lists.isEmpty(receipts)}">
                         <strong>Keine Treffer!</strong> Passen Sie Ihre Suche an oder konsultieren Sie die <a href="#">Hilfe</a>.
                     </div>
                     <div class="alert alert-danger" role="alert" th:if="${false}">
@@ -100,16 +100,19 @@
                         <div class="col-lg-3  col-md-6 col-sm-12">
                             <p>
                                 <b>Rechnungs-Adressen</b>
-                                <br><span th:text="${customer.billingAddress}">Abbey Fields, Karlsplatz, 1040 Wien, Austria</span>
+                                <br><span th:text="${customer.billingAddress.name}">Abbey Fields</span>,
+                                <span th:text="${customer.billingAddress.streetAddress1}">Karlsplatz</span>,
+                                <span th:text="${customer.billingAddress.zipCode}">1040 Wien</span>,
+                                <span th:text="${customer.billingAddress.state}">Austria</span>
                             </p>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-12" style="padding-bottom: 5px">
-                            <a href="#" class="btn btn-primary btn-block float-right">Bearbeiten</a>
-                            <a href="#" class="btn btn-primary btn-block float-right">Reservierungen 
-                                <span class="badge badge-pill badge-info">1</span>
+                            <a href="#" class="btn btn-primary btn-block float-right" disabled>Bearbeiten</a>
+                            <a href="#" class="btn btn-primary btn-block float-right" disabled>Reservierungen 
+                                <span class="badge badge-pill badge-info">0</span>
                             </a>
                             <a href="#" class="btn btn-primary btn-block float-right">Rechnungen 
-                                <span class="badge badge-pill badge-info">5</span>
+                                <span class="badge badge-pill badge-info" th:text="${#lists.size(customer.receipts)}">5</span>
                             </a>
                         </div>
                     </div>
@@ -144,7 +147,10 @@
                             <p>
                                 <b>Rechnungs-Adressen</b>
                                 <span th:each="customer : ${receipt.customers}">
-                                    <br><span th:text="${customer.billingAddress}">Abbey Fields, Karlsplatz, 1040 Wien, Austria</span>
+                                    <br><span th:text="${customer.billingAddress.name}">Abbey Fields</span>, 
+                                    <span th:text="${customer.billingAddress.streetAddress1}">Karlsplatz</span>,
+                                    <span th:text="${customer.billingAddress.zipCode}">1040 Wien</span>,
+                                    <span th:text="${customer.billingAddress.state}">Austria</span>
                                 </span>
                             </p>
                         </div>

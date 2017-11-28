@@ -2,13 +2,16 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationError;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationError.ReservationOverlapError;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationRoomBooking;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationWarning;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,8 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.Reserv
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 
+ *
+ * @author lkerck
  * @author johannes
  */
 @Service
@@ -37,8 +41,8 @@ public class ReservationService {
   }
   
   public ReservationExplanation checkReservation(
-      List<CustomerEntity> customers, List<RoomEntity> rooms,
-      LocalDateTime start, LocalDateTime end)
+          List<CustomerEntity> customers, List<ReservationRoomBooking> rooms,
+          LocalDateTime start, LocalDateTime end, BigDecimal discount)
       throws IllegalArgumentException {
 
     ReservationExplanationBuilder builder = ReservationExplanation.builder();
@@ -63,17 +67,29 @@ public class ReservationService {
       throw new IllegalArgumentException("end date is before start date");
     }
 
+    if (discount == null || discount.compareTo(BigDecimal.ZERO) < 0 || discount.compareTo(BigDecimal.valueOf(100)) > 0) {
+      throw new IllegalArgumentException("discount is invalid");
+    }
+
     List<ReservationError> reservationErrors = new ArrayList<>();
     List<ReservationWarning> reservationWarnings = new ArrayList<>();
+    Double price = 0.0;
+    Long days = start.until(end, ChronoUnit.DAYS);
     // Check for overlapping bookings
-    for (RoomEntity room : rooms) {
+    for (ReservationRoomBooking room : rooms) {
       // if reservation is ok continue
-      if(reservationRepository.checkForOverlapping(room, start, end).isEmpty()) {
+      if(reservationRepository.checkForOverlapping(room.getRoomEntity(), start, end).isEmpty()) {
+        Double roomPrice = room.getRoomEntity().getPriceMap().get(room.getPriceType());
+        if(roomPrice == null) {
+          throw new IllegalArgumentException("Room " + room.getRoomEntity().getName() + " doesn't have a price for " + room.getPriceType().toString());
+        }
+        double multiplicand = 1 - (discount.doubleValue() / 100);
+        price += Math.round((multiplicand * roomPrice * days) * 100.0)/100.0;
         continue;
       }
       // otherwise add the overlapping error to the reservation errors list
       reservationErrors.add(
-          ReservationOverlapError.builder().overlappingRoom(room.getRoomId()).build());
+          ReservationOverlapError.builder().overlappingRoom(room.getRoomEntity().getRoomId()).build());
 
       //TODO check for mängel
     }
@@ -84,8 +100,8 @@ public class ReservationService {
           .setRooms(rooms)
           .setStartTime(start)
           .setEndTime(end)
-//        .setDiscount(discount)
-//        .setPrice(price)
+          .setDiscount(discount)
+          .setPrice(price)
           ;
 
       builder.reservation(reservationEntity);

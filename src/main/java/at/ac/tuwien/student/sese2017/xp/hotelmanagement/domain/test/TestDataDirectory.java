@@ -1,10 +1,7 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test;
 
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -128,9 +125,9 @@ public class TestDataDirectory implements InjectableDataDirectory {
 
     List<CustomerEntity> customers = new ArrayList<>();
     customers.add(CUSTOMER_1);
-    List<RoomEntity> rooms = new ArrayList<>();
-    rooms.add(ROOM_1);
-    rooms.add(ROOM_6);
+    List<ReservationRoomBooking> rooms = new ArrayList<>();
+    rooms.add(new ReservationRoomBooking().setRoomEntity(ROOM_1).setPriceType(PriceType.DOUBLE));
+    rooms.add(new ReservationRoomBooking().setRoomEntity(ROOM_6).setPriceType(PriceType.SINGLE));
     this.RESERVATION_1 = new ReservationEntity()
         .setCustomers(customers)
         .setRooms(rooms)

@@ -4,10 +4,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.*;
@@ -19,9 +16,11 @@ import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.*;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import lombok.extern.slf4j.Slf4j;
 
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -59,6 +58,7 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
    * Create a reservation
    */
   @Test
+  @Ignore // Currently not implemented
   public void confirmReservation() {
     // Execute service function
     Long id = reservationService.confirmReservation(createDummyReservation());
@@ -75,21 +75,22 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
     // Define expected result
     ReservationEntity expectedResult = createDummyReservation();
     expectedResult.setStartTime(expectedResult.getEndTime());
+    expectedResult.setPrice(0.0);
 
     // Execute service function
     ReservationExplanation explanation = reservationService.checkReservation(
         expectedResult.getCustomers(),
         expectedResult.getRooms(),
         expectedResult.getStartTime(),
-        expectedResult.getEndTime()
-    );
+        expectedResult.getEndTime(),
+        expectedResult.getDiscount());
 
     // Check result
     assertNotNull("Null returned by service (ReservationExplanation)", explanation);
     assertTrue("returned ReservationEntity is null", explanation.getReservation().isPresent());
     assertEquals("Result size (errors) not correct", explanation.getErrors().size(), 0);
     assertEquals("Result size (warnings) not correct", explanation.getWarnings().size(), 0);
-    equalReservationEntity(explanation.getReservation().get(), expectedResult);
+    equalReservationEntity(expectedResult, explanation.getReservation().get());
   }
 
   /**
@@ -106,16 +107,43 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
         expectedResult.getCustomers(),
         expectedResult.getRooms(),
         expectedResult.getStartTime(),
-        expectedResult.getEndTime()
-    );
+        expectedResult.getEndTime(),
+        expectedResult.getDiscount());
 
     // Check result
     assertNotNull("Null returned by service (ReservationExplanation)", explanation);
     assertTrue("returned ReservationEntity is null", explanation.getReservation().isPresent());
     assertEquals("Result size (errors) not correct", explanation.getErrors().size(), 0);
     assertEquals("Result size (warnings) not correct", explanation.getWarnings().size(), 0);
-    equalReservationEntity(explanation.getReservation().get(), expectedResult);
+    equalReservationEntity(expectedResult, explanation.getReservation().get());
   }
+
+  /**
+   * Check a reservation with discount.
+   */
+  @Test
+  public void checkReservation_validDiscount() {
+    // Define expected result
+    ReservationEntity expectedResult = createDummyReservation();
+    expectedResult.setDiscount(BigDecimal.valueOf(20));
+    expectedResult.setPrice(expectedResult.getPrice()*0.8);
+
+    // Execute service function
+    ReservationExplanation explanation = reservationService.checkReservation(
+            expectedResult.getCustomers(),
+            expectedResult.getRooms(),
+            expectedResult.getStartTime(),
+            expectedResult.getEndTime(),
+            expectedResult.getDiscount());
+
+    // Check result
+    assertNotNull("Null returned by service (ReservationExplanation)", explanation);
+    assertTrue("returned ReservationEntity is null", explanation.getReservation().isPresent());
+    assertEquals("Result size (errors) not correct", explanation.getErrors().size(), 0);
+    assertEquals("Result size (warnings) not correct", explanation.getWarnings().size(), 0);
+    equalReservationEntity(expectedResult, explanation.getReservation().get());
+  }
+
 
   /**
    * Check a reservation for multiple rooms.
@@ -124,22 +152,48 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
   public void checkReservation_validMultipleRooms() throws Exception {
     // Define expected result
     ReservationEntity expectedResult = createDummyReservation();
-    expectedResult.getRooms().add(tD.ROOM_2);
+    expectedResult.getRooms().add(new ReservationRoomBooking(tD.ROOM_2, PriceType.SINGLE));
+    expectedResult.setPrice(expectedResult.getPrice() + 351.9);
 
     // Execute service function
     ReservationExplanation explanation = reservationService.checkReservation(
         expectedResult.getCustomers(),
         expectedResult.getRooms(),
         expectedResult.getStartTime(),
-        expectedResult.getEndTime()
-    );
+        expectedResult.getEndTime(),
+        expectedResult.getDiscount());
 
     // Check result
     assertNotNull("Null returned by service (ReservationExplanation)", explanation);
     assertTrue("returned ReservationEntity is null", explanation.getReservation().isPresent());
     assertEquals("Result size (errors) not correct", explanation.getErrors().size(), 0);
     assertEquals("Result size (warnings) not correct", explanation.getWarnings().size(), 0);
-    equalReservationEntity(explanation.getReservation().get(), expectedResult);
+    equalReservationEntity(expectedResult, explanation.getReservation().get());
+  }
+
+  /**
+   * Check Reservation with invalid room booking.
+   */
+  @Test
+  public void checkReservation_invalidBooking() throws Exception {
+    // Define expected result
+    ReservationEntity expectedResult = createDummyReservation();
+    expectedResult.getRooms().add(new ReservationRoomBooking(tD.ROOM_2, PriceType.TRIPLE));
+    expectedResult.setPrice(expectedResult.getPrice() + 351.9);
+
+    // Execute service function
+    try {
+      ReservationExplanation explanation = reservationService.checkReservation(
+              expectedResult.getCustomers(),
+              expectedResult.getRooms(),
+              expectedResult.getStartTime(),
+              expectedResult.getEndTime(),
+              expectedResult.getDiscount());
+      fail();
+    } catch(IllegalArgumentException e) {
+      // Success
+    }
+
   }
 
   @Test
@@ -171,8 +225,8 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
         tD.RESERVATION_1.getCustomers(),
         tD.RESERVATION_1.getRooms(),
         tD.RESERVATION_1.getStartTime(),
-        tD.RESERVATION_1.getEndTime()
-    );
+        tD.RESERVATION_1.getEndTime(),
+        tD.RESERVATION_1.getDiscount());
 
     // Check result
     assertNotNull("Null returned by service", explanation);
@@ -193,8 +247,8 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
         null,
         tD.RESERVATION_1.getRooms(),
         tD.RESERVATION_1.getStartTime(),
-        tD.RESERVATION_1.getEndTime()
-    );
+        tD.RESERVATION_1.getEndTime(),
+        tD.RESERVATION_1.getDiscount());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -203,8 +257,8 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
         tD.RESERVATION_1.getCustomers(),
         new ArrayList<>(),
         tD.RESERVATION_1.getStartTime(),
-        tD.RESERVATION_1.getEndTime()
-    );
+        tD.RESERVATION_1.getEndTime(),
+        tD.RESERVATION_1.getDiscount());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -213,8 +267,8 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
         null,
         tD.RESERVATION_1.getRooms(),
         tD.RESERVATION_1.getStartTime(),
-        tD.RESERVATION_1.getEndTime()
-    );
+        tD.RESERVATION_1.getEndTime(),
+        tD.RESERVATION_1.getDiscount());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -223,8 +277,8 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
         new ArrayList<>(),
         tD.RESERVATION_1.getRooms(),
         tD.RESERVATION_1.getStartTime(),
-        tD.RESERVATION_1.getEndTime()
-    );
+        tD.RESERVATION_1.getEndTime(),
+        tD.RESERVATION_1.getDiscount());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -233,8 +287,8 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
         tD.RESERVATION_1.getCustomers(),
         tD.RESERVATION_1.getRooms(),
         null,
-        tD.RESERVATION_1.getEndTime()
-    );
+        tD.RESERVATION_1.getEndTime(),
+        tD.RESERVATION_1.getDiscount());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -243,8 +297,38 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
         tD.RESERVATION_1.getCustomers(),
         tD.RESERVATION_1.getRooms(),
         tD.RESERVATION_1.getStartTime(),
-        null
-    );
+        null,
+        tD.RESERVATION_1.getDiscount());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void checkReservation_nullDiscount() throws Exception {
+    reservationService.checkReservation(
+            tD.RESERVATION_1.getCustomers(),
+            tD.RESERVATION_1.getRooms(),
+            tD.RESERVATION_1.getStartTime(),
+            tD.RESERVATION_1.getEndTime(),
+            null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void checkReservation_negativeDiscount() throws Exception {
+    reservationService.checkReservation(
+            tD.RESERVATION_1.getCustomers(),
+            tD.RESERVATION_1.getRooms(),
+            tD.RESERVATION_1.getStartTime(),
+            tD.RESERVATION_1.getEndTime(),
+            BigDecimal.valueOf(-2.0));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void checkReservation_discountToBig() throws Exception {
+    reservationService.checkReservation(
+            tD.RESERVATION_1.getCustomers(),
+            tD.RESERVATION_1.getRooms(),
+            tD.RESERVATION_1.getStartTime(),
+            tD.RESERVATION_1.getEndTime(),
+            BigDecimal.valueOf(101.0));
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -253,8 +337,8 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
         tD.RESERVATION_1.getCustomers(),
         tD.RESERVATION_1.getRooms(),
         tD.RESERVATION_1.getEndTime(),
-        tD.RESERVATION_1.getStartTime()
-    );
+        tD.RESERVATION_1.getStartTime(),
+        tD.RESERVATION_1.getDiscount());
   }
 
   private ReservationEntity createDummyReservation() {
@@ -262,23 +346,26 @@ public class ReservationServiceTest extends HotelManagementApplicationTests {
     List<CustomerEntity> customers = new ArrayList<>();
     customers.add(tD.CUSTOMER_1);
     reservationEntity.setCustomers(customers);
-    List<RoomEntity> rooms = new ArrayList<>();
-    rooms.add(tD.ROOM_6);
+    List<ReservationRoomBooking> rooms = new ArrayList<>();
+    rooms.add(new ReservationRoomBooking(tD.ROOM_6, PriceType.DOUBLE));
     reservationEntity.setRooms(rooms);
     reservationEntity.setStartTime(LocalDateTime.of(2017, 10, 17, 1, 1));
     reservationEntity.setEndTime(LocalDateTime.of(2017, 10, 22, 1, 1));
     reservationEntity.setDiscount(BigDecimal.valueOf(0.0));
-    reservationEntity.setPrice(200.0);
+    reservationEntity.setPrice(850.8);
     return reservationEntity;
   }
 
-  private void equalReservationEntity(ReservationEntity resA, ReservationEntity resB) {
-    assertThat("Customers list did not match", resA.getCustomers(),
-        containsInAnyOrder(resB.getCustomers()));
-    assertThat("Rooms list did not match", resA.getRooms(), containsInAnyOrder(resB.getRooms()));
-    assertEquals("StartTime did not match", resA.getStartTime(), resB.getStartTime());
-    assertEquals("EndTime did not match", resA.getEndTime(), resB.getEndTime());
-    assertEquals("Discount did not match", resA.getDiscount(), resB.getDiscount());
-    assertEquals("Price did not match", resA.getPrice(), resB.getPrice());
+  private void equalReservationEntity(ReservationEntity expected, ReservationEntity actual) {
+    List<CustomerEntity> customers1 = expected.getCustomers();
+    List<CustomerEntity> customers2 = actual.getCustomers();
+    assertEquals(customers1.get(0), customers2.get(0));
+    assertThat("Customers list did not match", actual.getCustomers(),
+        containsInAnyOrder(expected.getCustomers().toArray()));
+    assertThat("Rooms list did not match", actual.getRooms(), containsInAnyOrder(expected.getRooms().toArray()));
+    assertEquals("StartTime did not match", expected.getStartTime(), actual.getStartTime());
+    assertEquals("EndTime did not match", expected.getEndTime(), actual.getEndTime());
+    assertEquals("Discount did not match", expected.getDiscount(), actual.getDiscount());
+    assertEquals("Price did not match", expected.getPrice(), actual.getPrice());
   }
 }

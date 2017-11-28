@@ -3,11 +3,7 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -31,9 +27,9 @@ public class ReservationEntity {
   @GeneratedValue
   private Long reservationId;
   
-  @OneToMany
+  @OneToMany(cascade = {CascadeType.ALL})
   @Size(min=1)
-  private List<RoomEntity> rooms;
+  private List<ReservationRoomBooking> rooms;
 
   @OneToMany
   @Size(min=1)

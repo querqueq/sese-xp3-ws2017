@@ -10,8 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface ReservationRepository extends CrudRepository<ReservationEntity, Long> {
 
-  @Query("select r from ReservationEntity r where "
-      + "?1 member r.rooms and "
+  @Query("select r from ReservationEntity r join r.rooms p where "
+      + "?1 = p.roomEntity and "
       + "(r.startTime between ?2 AND ?3 "
       + "OR r.endTime between ?2 AND ?3 "
       + "OR (r.startTime < ?2 AND r.endTime > ?2))")

@@ -29,17 +29,21 @@ import org.apache.lucene.analysis.ngram.EdgeNGramFilterFactory;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.CalendarBridge;
 import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Parameter;
+import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.search.bridge.builtin.DefaultStringBridge;
 import org.hibernate.search.bridge.builtin.impl.BuiltinIterableBridge;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -50,19 +54,6 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
  * @author Michael
  * @author Johannes
  */
-@AnalyzerDef(name = "customanalyzer",
-    // How is a search value split and searched
-    tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
-    // Applied to the tokens for normalisation
-    filters = {@TokenFilterDef(factory = LowerCaseFilterFactory.class),
-        // Disassembles token into engrams.
-        @TokenFilterDef(factory = EdgeNGramFilterFactory.class,
-            params = {@Parameter(name = "maxGramSize", value = "15")})})
-@AnalyzerDef(name = "customanalyzer_query",
-    // How is a search value split and searched
-    tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
-    // Applied to the tokens for normalisation
-    filters = {@TokenFilterDef(factory = LowerCaseFilterFactory.class),})
 @Data
 @ToString(exclude = "receipts")
 @Indexed
@@ -74,10 +65,7 @@ public class CustomerEntity {
   private Long id;
 
   @Column
-  /* configure analyzer. Store (cache the search fragments)
-   * analyze (analyze the field with the given analyzers)
-   */
-  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
+  @Field
   @NotNull
   private String name;
 
@@ -90,14 +78,9 @@ public class CustomerEntity {
   @NotNull
   private Sex sex;
 
-  /* configure analyzer. Store (cache the search fragments)
-   * analyze (analyze the field with the given analyzers)
-   */
-  @Field(store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
   @IndexedEmbedded
   @ManyToOne(cascade = {CascadeType.PERSIST})
   @JoinColumn
-  @FieldBridge(impl = DefaultStringBridge.class)
   private AddressEntity billingAddress;
 
   @Column
@@ -128,7 +111,7 @@ public class CustomerEntity {
   private String phoneNumber;
 
   @Column
-  @Email
+//  @Email
   @NotNull
   private String email;
 
@@ -139,8 +122,8 @@ public class CustomerEntity {
   private String faxNumber;
   
   @ContainedIn
-  @Field
-  @FieldBridge(impl = BuiltinIterableBridge.class)
+//  @Field
+//  @FieldBridge(impl = BuiltinIterableBridge.class)
   @ManyToMany(cascade = {CascadeType.PERSIST})
   @JoinTable(name = "Customer_Receipt",
       joinColumns = { @JoinColumn(name = "customerEntity_id", referencedColumnName = "id") }, 

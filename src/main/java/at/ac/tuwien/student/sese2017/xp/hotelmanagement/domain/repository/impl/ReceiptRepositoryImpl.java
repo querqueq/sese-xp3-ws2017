@@ -54,28 +54,22 @@ public class ReceiptRepositoryImpl implements CustomSearchRepository<ReceiptEnti
     QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
         .buildQueryBuilder()
         .forEntity(ReceiptEntity.class)
-        .overridesForField("hotelAddress.name", "customanalyzer_query")
-        .overridesForField("hotelAddress.streetAddress1", "customanalyzer_query")
-        .overridesForField("rooms.name", "customanalyzer_query")
-        .overridesForField("customers.name", "customanalyzer_query")
-        .overridesForField("customers.billingAddress.name", "customanalyzer_query")
-        .overridesForField("customers.billingAddress.streetAddress1", "customanalyzer_query")
         .get();
 
     Query query = queryBuilder
         .keyword()
         .fuzzy()
         .withEditDistanceUpTo(1)
-        .onFields(
-            "hotelAddress.name",
-            "hotelAddress.streetAddress1")
+        .onField("hotelAddress.name")
+        .andField("hotelAddress.streetAddress1")
         .andField("customers.name").boostedTo(5F)
         .andField("customers.billingAddress.name").boostedTo(4F)
         .andField("customers.billingAddress.streetAddress1").boostedTo(3F)
+        .andField("customers.billingAddress.streetAddress2").boostedTo(3F)
         .andField("rooms.name").boostedTo(3F)
-        .andField("receiptDate").ignoreFieldBridge()
+        //TODO add matching for receiptDate 
         .matching(text)
         .createQuery();
-     return fullTextEntityManager.createFullTextQuery(query, CustomerEntity.class).getResultList();
+     return fullTextEntityManager.createFullTextQuery(query, ReceiptEntity.class).getResultList();
   }
 }

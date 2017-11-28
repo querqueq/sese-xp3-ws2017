@@ -53,13 +53,6 @@ public class CustomerRepositoryImpl implements CustomSearchRepository<CustomerEn
     QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
         .buildQueryBuilder()
         .forEntity(CustomerEntity.class)
-        .overridesForField("name", "customanalyzer_query")
-        .overridesForField("billingAddress.name", "customanalyzer_query")
-        .overridesForField("billingAddress.streetAddress1", "customanalyzer_query")
-        .overridesForField("billingAddress.streetAddress2", "customanalyzer_query")
-        .overridesForField("billingAddress.city", "customanalyzer_query")
-        .overridesForField("billingAddress.state", "customanalyzer_query")
-        .overridesForField("billingAddress.zipCode", "customanalyzer_query")
         .get();
 
     Query query = queryBuilder

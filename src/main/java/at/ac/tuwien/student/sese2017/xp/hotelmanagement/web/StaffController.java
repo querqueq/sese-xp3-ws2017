@@ -5,6 +5,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEnti
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria.SearchOption;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.ReceiptService;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Optional;
@@ -32,16 +33,18 @@ public class StaffController {
 
   private static final String SEARCH_CRITERIA = "searchCriteria";
   private static final String CUSTOMER_ATTRIBUTE_NAME = "customer";
-  private CustomerService service;
+  private CustomerService customerService;
+  private ReceiptService receiptService;
 
   /**
    * Controller for staff use cases.
    * 
-   * @param service The CustomerService to search and create CustomerEntity objects.
+   * @param customerService The CustomerService to search and create CustomerEntity objects.
    */
   @Autowired
-  public StaffController(CustomerService service) {
-    this.service = service;
+  public StaffController(CustomerService customerService, ReceiptService receiptService) {
+    this.customerService = customerService;
+    this.receiptService = receiptService;
   }
 
   /**
@@ -72,7 +75,7 @@ public class StaffController {
   public String postCustomer(Model model, @ModelAttribute CustomerEntity entity) {
     log.info("post customer - Page called");
     try {
-      Long customerId = service.create(entity);
+      Long customerId = customerService.create(entity);
       log.info("created customer {}", customerId);
       model.addAttribute("note",
           String.format("Kunde %s erfasst! (%d)", entity.getName(), customerId));
@@ -108,7 +111,7 @@ public class StaffController {
   @PostMapping("/staff/customer/search")
   public String searchCustomer(Model model, @ModelAttribute StaffSearchCriteria criteria) {
     log.info("search customer - Page called");
-    model.addAttribute("customerList", service.search(criteria.getSearchText()));
+    model.addAttribute("customerList", customerService.search(criteria.getSearchText()));
     return "staff/customerSearch";
   }
 
@@ -134,10 +137,10 @@ public class StaffController {
         .ifPresent(searchOption -> {
           switch (searchOption) {
             case CUSTOMERS:
-              model.addAttribute("customers", service.search(criteria.getSearchText()));
+              model.addAttribute("customers", customerService.search(criteria.getSearchText()));
               break;
             case RECEIPTS:
-              model.addAttribute("receipts", Collections.emptyList());
+              model.addAttribute("receipts", receiptService.search(criteria.getSearchText()));
               break;
             default:
               break;

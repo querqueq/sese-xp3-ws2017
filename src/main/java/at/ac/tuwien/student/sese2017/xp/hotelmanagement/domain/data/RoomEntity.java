@@ -44,7 +44,7 @@ public class RoomEntity {
   /**
    * Room name or room number.
    */
-  @Field(analyzer = @Analyzer(definition = "customanalyzer"))
+  @Field
   @Column(nullable = false, unique = true)
   private String name;
 
@@ -58,8 +58,6 @@ public class RoomEntity {
   private Map<PriceType, Double> priceMap = new HashMap<>();
   
   @ContainedIn
-  @Field
-  @FieldBridge(impl = BuiltinIterableBridge.class)
   @ManyToMany(cascade = {CascadeType.PERSIST})
   @JoinTable(name = "Room_Receipt",
       joinColumns = { @JoinColumn(name = "roomEntity_id", referencedColumnName = "roomId") }, 

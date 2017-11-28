@@ -51,20 +51,20 @@ public class ReceiptServiceTest extends HotelManagementApplicationTests {
    *   Should return only receipts 1, 2 and 4
    * </p>
    */
-//  @Test
-//  public void getAllReceiptsByReceiptDate() throws Exception {
-//    // Define expected result
-//    ReceiptEntity[] expectedResult = new ReceiptEntity[]{
-//        TestDataInjector.RECEIPT_1, TestDataInjector.RECEIPT_2, TestDataInjector.RECEIPT_4
-//    };
-//    // Execute service function
-//    List<ReceiptEntity> allReceiptsByCriteria = receiptService.search("2017");
-//
-//    // Check result
-//    assertNotNull("Null returned by service", allReceiptsByCriteria);
-//    assertEquals("Result size not correct", expectedResult.length, allReceiptsByCriteria.size());
-//    assertThat("Not the right elements returned", allReceiptsByCriteria, containsInAnyOrder(expectedResult));
-//  }
+  @Test
+  public void getAllReceiptsByReceiptDate() throws Exception {
+    // Define expected result
+    ReceiptEntity[] expectedResult = new ReceiptEntity[]{
+        TestDataInjector.RECEIPT_1, TestDataInjector.RECEIPT_2, TestDataInjector.RECEIPT_4
+    };
+    // Execute service function
+    List<ReceiptEntity> allReceiptsByCriteria = receiptService.search("2017");
+
+    // Check result
+    assertNotNull("Null returned by service", allReceiptsByCriteria);
+    assertEquals("Result size not correct", expectedResult.length, allReceiptsByCriteria.size());
+    assertThat("Not the right elements returned", allReceiptsByCriteria, containsInAnyOrder(expectedResult));
+  }
 
   /**
    * Find only receipts for Rooms with "Suit" in the name.
@@ -81,7 +81,7 @@ public class ReceiptServiceTest extends HotelManagementApplicationTests {
     };
 
     // Execute service function
-    List<ReceiptEntity> allReceiptsByCriteria = receiptService.search("Hotel zum schoenen Urblaub");
+    List<ReceiptEntity> allReceiptsByCriteria = receiptService.search("presidentialSuite");
     
     receiptRepository.findAll()
     .forEach(r -> System.out.println(r));

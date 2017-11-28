@@ -49,7 +49,7 @@ public class ReceiptEntityTests extends EntityTestBase{
     .setBillingAddress(address1)
     .setBirthday(LocalDate.of(1999, 1, 23))
     .setDiscount(BigDecimal.ZERO)
-    .setEmail("N@A.gay")
+    .setEmail("N@A.nope")
     .setName("N/A")
     .setSex(Sex.MALE)
     .setPhoneNumber("0");
@@ -58,7 +58,7 @@ public class ReceiptEntityTests extends EntityTestBase{
     .setBillingAddress(address2)
     .setBirthday(LocalDate.of(1999, 1, 23))
     .setDiscount(BigDecimal.ZERO)
-    .setEmail("N@A.gay")
+    .setEmail("N@A.nope")
     .setName("N/A")
     .setSex(Sex.MALE)
     .setPhoneNumber("0");

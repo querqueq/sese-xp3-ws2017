@@ -21,11 +21,11 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 import org.hibernate.search.bridge.builtin.DefaultStringBridge;
+import org.hibernate.search.bridge.builtin.impl.BuiltinIterableBridge;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Data
-//@ToString(exclude = {"rooms", "customers"})
 @Indexed
 @Entity
 public class ReceiptEntity {
@@ -46,7 +46,7 @@ public class ReceiptEntity {
   joinColumns = { @JoinColumn(name = "receiptEntity_id", referencedColumnName = "receiptId") }, 
   inverseJoinColumns = { @JoinColumn(name = "customerEntity_id", referencedColumnName = "id") })
   @IndexedEmbedded
-  @FieldBridge(impl = DefaultStringBridge.class)
+  @FieldBridge(impl = BuiltinIterableBridge.class)
   private List<CustomerEntity> customers = new ArrayList<>();
 
   @Field(index = Index.YES, store = Store.YES, analyzer = @Analyzer(definition = "customanalyzer"))
@@ -55,7 +55,7 @@ public class ReceiptEntity {
   joinColumns = { @JoinColumn(name = "receiptEntity_id", referencedColumnName = "receiptId") }, 
   inverseJoinColumns = { @JoinColumn(name = "roomEntity_id", referencedColumnName = "roomId") })
   @IndexedEmbedded
-  @FieldBridge(impl = DefaultStringBridge.class)
+  @FieldBridge(impl = BuiltinIterableBridge.class)
   private List<RoomEntity> rooms = new ArrayList<>();
 
   private Double discount;

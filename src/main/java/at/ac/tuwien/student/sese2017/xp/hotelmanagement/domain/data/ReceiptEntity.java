@@ -17,6 +17,10 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+/**
+ * Representation of a receipt.
+ * @author akaschitzer
+ */
 @Data
 @Indexed
 @Entity
@@ -49,7 +53,6 @@ public class ReceiptEntity {
   private Integer durationOfStay;
 
   @DateTimeFormat(iso = ISO.DATE_TIME)
-  //  @Field
   private LocalDateTime receiptDate;
 
   public ReceiptEntity addCustomer(CustomerEntity customer) {

@@ -7,6 +7,10 @@ import lombok.Data;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
+/**
+ * Representation of an address.
+ * @author akaschitzer
+ */
 @Data
 @Indexed
 @Entity

@@ -134,6 +134,12 @@ public class StaffController {
     return "staff/search";
   }
 
+  /**
+   * A view with an evaluated search.
+   * @param model with search criteria and receipts
+   * @param criteria specified search criteria
+   * @return view path
+   */
   @PostMapping("/staff/search")
   public String postSearch(Model model,
       @ModelAttribute(SEARCH_CRITERIA) StaffSearchCriteria criteria) {
@@ -156,6 +162,12 @@ public class StaffController {
     return "staff/search";
   }
   
+  /**
+   * A view with all receipts of a specific customer.
+   * @param model with search criteria and receipts
+   * @param customerId specific customer
+   * @return view path
+   */
   @GetMapping("/staff/customers/{customerId}/receipts")
   public String getReceipts(Model model, @PathVariable("customerId") Long customerId) {
     List<ReceiptEntity> receiptsForCustomer = receiptService.getReceiptsForCustomer(customerId);

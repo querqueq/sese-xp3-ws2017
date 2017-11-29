@@ -3,6 +3,7 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ public class ReceiptEntityTests extends EntityTestBase{
 
   @Test
   public void testBasicStorageOfRecipes() {
-    
+
     // SETUP Addresses
     AddressEntity address1 = new AddressEntity()
         .setName("Ira T. Adkins")
@@ -46,23 +47,23 @@ public class ReceiptEntityTests extends EntityTestBase{
         .setState("Piemonte");
 
     CustomerEntity customer1 = new CustomerEntity()
-    .setBillingAddress(address1)
-    .setBirthday(LocalDate.of(1999, 1, 23))
-    .setDiscount(BigDecimal.ZERO)
-    .setEmail("N@A.nope")
-    .setName("N/A")
-    .setSex(Sex.MALE)
-    .setPhoneNumber("0");
-    
+        .setBillingAddress(address1)
+        .setBirthday(LocalDate.of(1999, 1, 23))
+        .setDiscount(BigDecimal.ZERO)
+        .setEmail("N@A.nope")
+        .setName("N/A")
+        .setSex(Sex.MALE)
+        .setPhoneNumber("0");
+
     CustomerEntity customer2 = new CustomerEntity()
-    .setBillingAddress(address2)
-    .setBirthday(LocalDate.of(1999, 1, 23))
-    .setDiscount(BigDecimal.ZERO)
-    .setEmail("N@A.nope")
-    .setName("N/A")
-    .setSex(Sex.MALE)
-    .setPhoneNumber("0");
-    
+        .setBillingAddress(address2)
+        .setBirthday(LocalDate.of(1999, 1, 23))
+        .setDiscount(BigDecimal.ZERO)
+        .setEmail("N@A.nope")
+        .setName("N/A")
+        .setSex(Sex.MALE)
+        .setPhoneNumber("0");
+
     // Setup of an example room
     RoomEntity room1 = new RoomEntity().setName("HoneyMoonSuite")
         .setMaxOccupants(2);
@@ -132,14 +133,14 @@ public class ReceiptEntityTests extends EntityTestBase{
     assertNotNull("Room deleted with receipt", entityManager.find(RoomEntity.class, room1.getRoomId()));
     assertNotNull("Hotel address deleted with receipt", entityManager.find(AddressEntity.class, hotelAddrId));
     // OPTIONAL DELETION OF ORPHANED ADDRESSES BECAUSE DIFFICULT TO IMPLEMENT
-//    assertNull("Orphaned address not deleted with receipt", entityManager.find(AddressEntity.class, customerAddrId));
+    //    assertNull("Orphaned address not deleted with receipt", entityManager.find(AddressEntity.class, customerAddrId));
 
     customerAddrId = foundReceipt2.getCustomers().get(0).getBillingAddress().getAddressId();
     // DELETE second entity
     entityManager.remove(receipt2);
     assertNotNull("Room deleted with receipt", entityManager.find(RoomEntity.class, room1.getRoomId()));
     // OPTIONAL DELETION OF ORPHANED ADDRESSES BECAUSE DIFFICULT TO IMPLEMENT
-//    assertNull("Orphaned address not deleted with receipt", entityManager.find(AddressEntity.class, customerAddrId));
+    //    assertNull("Orphaned address not deleted with receipt", entityManager.find(AddressEntity.class, customerAddrId));
 
 
 

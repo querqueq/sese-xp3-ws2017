@@ -4,11 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import lombok.Data;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.ClassBridge;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
 
 @Data
 @Indexed

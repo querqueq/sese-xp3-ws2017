@@ -3,6 +3,7 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 import static org.junit.Assert.assertNotNull;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerRepository;
@@ -17,6 +18,8 @@ import javax.persistence.PersistenceContextType;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
+
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,14 +46,14 @@ public class CustomerServiceTest extends HotelManagementApplicationTests {
 
   @Test
   public void testCreateEntityWithAllFields() throws MalformedURLException {
-    CustomerEntity entity = createEntity();
+    CustomerEntity entity = createCustomerEntity();
     Long id = customerService.create(entity);
     assertNotNull(id);
   }
 
   @Test
   public void testCreateEntityWithCompulsoryFields() throws MalformedURLException {
-    CustomerEntity entity = createEntity();
+    CustomerEntity entity = createCustomerEntity();
     entity.setCompanyName(null);
     entity.setFaxNumber(null);
     entity.setNote(null);
@@ -61,14 +64,14 @@ public class CustomerServiceTest extends HotelManagementApplicationTests {
 
   @Test(expected = ConstraintViolationException.class)
   public void testCreateEntityWithOneInvalidField() throws MalformedURLException {
-    CustomerEntity entity = createEntity();
+    CustomerEntity entity = createCustomerEntity();
     entity.setPhoneNumber("This is not a phone number");
     customerService.create(entity);
   }
 
   @Test(expected = ConstraintViolationException.class)
   public void testCreateEntityWithMultipleInvalidFields() throws MalformedURLException {
-    CustomerEntity entity = createEntity();
+    CustomerEntity entity = createCustomerEntity();
     entity.setBirthday(LocalDate.now().plus(1, ChronoUnit.DAYS));
     entity.setEmail("invalid email");
     customerService.create(entity);
@@ -76,28 +79,28 @@ public class CustomerServiceTest extends HotelManagementApplicationTests {
 
   @Test(expected = ConstraintViolationException.class)
   public void testCreateEntityWithCompulsoryNullField() throws MalformedURLException {
-    CustomerEntity entity = createEntity();
+    CustomerEntity entity = createCustomerEntity();
     entity.setName(null);
     customerService.create(entity);
   }
 
   @Test(expected = ConstraintViolationException.class)
   public void testCreateEntityWithInvalidDiscount() throws MalformedURLException {
-    CustomerEntity entity = createEntity();
+    CustomerEntity entity = createCustomerEntity();
     entity.setDiscount(BigDecimal.valueOf(101.0D));
     customerService.create(entity);
   }
 
   @Test(expected = ValidationException.class)
   public void testCreateEntityWithInvalidBirthday() throws MalformedURLException {
-    CustomerEntity entity = createEntity();
+    CustomerEntity entity = createCustomerEntity();
     entity.setBirthday(LocalDate.now().plus(1, ChronoUnit.DAYS));
     customerService.create(entity);
   }
 
-  private CustomerEntity createEntity() throws MalformedURLException {
+  private CustomerEntity createCustomerEntity() throws MalformedURLException {
     CustomerEntity entity = new CustomerEntity();
-    entity.setBillingAddress("Valid address");
+    entity.setBillingAddress(createAddressEntity());
     entity.setBirthday(LocalDate.now().minus(2, ChronoUnit.DECADES));
     entity.setCompanyName("Company");
     entity.setDiscount(BigDecimal.ZERO);
@@ -109,5 +112,14 @@ public class CustomerServiceTest extends HotelManagementApplicationTests {
     entity.setSex(Sex.FEMALE);
     entity.setWebAddress(URI.create("http://localhost").toURL());
     return entity;
+  }
+  
+  private AddressEntity createAddressEntity() {
+    return new AddressEntity()
+        .setName("Abbey Fields")
+        .setStreetAddress1("Karlsplatz 1")
+        .setZipCode("1040")
+        .setCity("Wien")
+        .setState("Austria");
   }
 }

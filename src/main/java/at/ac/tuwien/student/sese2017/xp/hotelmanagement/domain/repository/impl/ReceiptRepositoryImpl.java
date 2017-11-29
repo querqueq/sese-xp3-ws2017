@@ -1,6 +1,7 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.impl;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.custom.CustomSearchRepository;
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +18,7 @@ import org.springframework.util.StringUtils;
  *
  * @author Michael
  */
-public class CustomerRepositoryImpl implements CustomSearchRepository<CustomerEntity> {
+public class ReceiptRepositoryImpl implements CustomSearchRepository<ReceiptEntity> {
   /**
    * Entity manager.
    */
@@ -28,22 +29,22 @@ public class CustomerRepositoryImpl implements CustomSearchRepository<CustomerEn
    * @param entityManager current entity manager.
    */
   @Autowired
-  public CustomerRepositoryImpl(EntityManager entityManager) {
+  public ReceiptRepositoryImpl(EntityManager entityManager) {
     this.entityManager = entityManager;
   }
 
   /**
-   * Provides full text search for CustomerEntity over its name and billingAddress fields.
+   * Provides full text search for ReceiptEntity over fields.
    *
-   * <p>Does a full text search over all CustomerEntities for search Strings longer
+   * <p>Does a full text search over all ReceiptEntities for search Strings longer
    * than 2 characters.</p>
    * @param text The text to do the full text search with.
-   * @return The list of matching CustomerEntity objects.
+   * @return The list of matching ReceiptEntity objects.
    * @author Michael
    */
   @SuppressWarnings("unchecked")
   @Override
-  public List<CustomerEntity> search(String text) {
+  public List<ReceiptEntity> search(String text) {
     if (StringUtils.isEmpty(text) || text.length() < 3) {
       return Collections.emptyList();
     }
@@ -52,23 +53,23 @@ public class CustomerRepositoryImpl implements CustomSearchRepository<CustomerEn
 
     QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
         .buildQueryBuilder()
-        .forEntity(CustomerEntity.class)
+        .forEntity(ReceiptEntity.class)
         .get();
 
     Query query = queryBuilder
         .keyword()
         .fuzzy()
         .withEditDistanceUpTo(1)
-        .onFields(
-            "billingAddress.city",
-            "billingAddress.state",
-            "billingAddress.zipCode")
-        .andField("name").boostedTo(5F)
-        .andField("billingAddress.name").boostedTo(4F)
-        .andField("billingAddress.streetAddress1").boostedTo(3F)
-        .andField("billingAddress.streetAddress2").boostedTo(3F)
+        .onField("hotelAddress.name")
+        .andField("hotelAddress.streetAddress1")
+        .andField("customers.name").boostedTo(5F)
+        .andField("customers.billingAddress.name").boostedTo(4F)
+        .andField("customers.billingAddress.streetAddress1").boostedTo(3F)
+        .andField("customers.billingAddress.streetAddress2").boostedTo(3F)
+        .andField("rooms.name").boostedTo(3F)
+        //TODO add matching for receiptDate 
         .matching(text)
         .createQuery();
-    return fullTextEntityManager.createFullTextQuery(query, CustomerEntity.class).getResultList();
+    return fullTextEntityManager.createFullTextQuery(query, ReceiptEntity.class).getResultList();
   }
 }

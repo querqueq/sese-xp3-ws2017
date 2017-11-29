@@ -17,6 +17,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -94,7 +95,7 @@ public class CustomerEntity {
   private String phoneNumber;
 
   @Column
-//  @Email
+  @Email
   @NotNull
   private String email;
 
@@ -105,8 +106,6 @@ public class CustomerEntity {
   private String faxNumber;
   
   @ContainedIn
-//  @Field
-//  @FieldBridge(impl = BuiltinIterableBridge.class)
   @ManyToMany(cascade = {CascadeType.PERSIST})
   @JoinTable(name = "Customer_Receipt",
       joinColumns = { @JoinColumn(name = "customerEntity_id", referencedColumnName = "id") }, 

@@ -2,20 +2,24 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria.SearchOption;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.ReceiptService;
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -31,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class StaffController {
 
+  private static final String RECEIPTS = "receipts";
   private static final String SEARCH_CRITERIA = "searchCriteria";
   private static final String CUSTOMER_ATTRIBUTE_NAME = "customer";
   private CustomerService customerService;
@@ -140,7 +145,7 @@ public class StaffController {
               model.addAttribute("customers", customerService.search(criteria.getSearchText()));
               break;
             case RECEIPTS:
-              model.addAttribute("receipts", receiptService.search(criteria.getSearchText()));
+              model.addAttribute(RECEIPTS, receiptService.search(criteria.getSearchText()));
               break;
             default:
               break;
@@ -148,6 +153,17 @@ public class StaffController {
         });
     criteria.setSearchText(null);
     model.addAttribute(SEARCH_CRITERIA, criteria);
+    return "staff/search";
+  }
+  
+  @GetMapping("/staff/customers/{customerId}/receipts")
+  public String getReceipts(Model model, @PathVariable("customerId") Long customerId) {
+    List<ReceiptEntity> receiptsForCustomer = receiptService.getReceiptsForCustomer(customerId);
+    StaffSearchCriteria criteria = new StaffSearchCriteria();
+    criteria.setSearchText(null);
+    criteria.setSearchOption(SearchOption.RECEIPTS);
+    model.addAttribute(SEARCH_CRITERIA, criteria);
+    model.addAttribute(RECEIPTS, receiptsForCustomer);
     return "staff/search";
   }
 }

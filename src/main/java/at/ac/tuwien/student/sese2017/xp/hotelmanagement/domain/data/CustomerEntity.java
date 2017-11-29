@@ -78,7 +78,7 @@ public class CustomerEntity {
    * Store user discount as double.
    *
    * <p>
-   *   Percent value, Min value  is 0 max value is 100. Default is 0
+   * Percent value, Min value is 0 max value is 100. Default is 0
    * </p>
    */
   @Column
@@ -104,11 +104,12 @@ public class CustomerEntity {
 
   @Column
   private String faxNumber;
-  
+
   @ContainedIn
   @ManyToMany(cascade = {CascadeType.PERSIST})
   @JoinTable(name = "Customer_Receipt",
-      joinColumns = { @JoinColumn(name = "customerEntity_id", referencedColumnName = "id") }, 
-      inverseJoinColumns = { @JoinColumn(name = "receiptEntity_id", referencedColumnName = "receiptId") })
+      joinColumns = {@JoinColumn(name = "customerEntity_id", referencedColumnName = "id")},
+      inverseJoinColumns = {
+          @JoinColumn(name = "receiptEntity_id", referencedColumnName = "receiptId")})
   private List<ReceiptEntity> receipts = new ArrayList<>();
 }

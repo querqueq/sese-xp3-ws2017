@@ -53,14 +53,15 @@ public class RoomEntity {
 
   @ElementCollection
   private Map<PriceType, Double> priceMap = new HashMap<>();
-  
+
   @ContainedIn
   @ManyToMany(cascade = {CascadeType.PERSIST})
   @JoinTable(name = "Room_Receipt",
-      joinColumns = { @JoinColumn(name = "roomEntity_id", referencedColumnName = "roomId") }, 
-      inverseJoinColumns = { @JoinColumn(name = "receiptEntity_id", referencedColumnName = "receiptId") })
+      joinColumns = {@JoinColumn(name = "roomEntity_id", referencedColumnName = "roomId")},
+      inverseJoinColumns = {
+          @JoinColumn(name = "receiptEntity_id", referencedColumnName = "receiptId")})
   private List<ReceiptEntity> receipts = new ArrayList<>();
-  
+
   public RoomEntity addReceipt(ReceiptEntity receipt) {
     receipts.add(receipt);
     return this;

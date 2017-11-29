@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class StaffController {
 
+  private static final String STAFF_SEARCH_VIEW = "staff/search";
   private static final String RECEIPTS = "receipts";
   private static final String SEARCH_CRITERIA = "searchCriteria";
   private static final String CUSTOMER_ATTRIBUTE_NAME = "customer";
@@ -131,7 +132,7 @@ public class StaffController {
     StaffSearchCriteria staffSearchCriteria = new StaffSearchCriteria();
     staffSearchCriteria.setSearchOption(SearchOption.CUSTOMERS);
     model.addAttribute(SEARCH_CRITERIA, staffSearchCriteria);
-    return "staff/search";
+    return STAFF_SEARCH_VIEW;
   }
 
   /**
@@ -159,7 +160,7 @@ public class StaffController {
         });
     criteria.setSearchText(null);
     model.addAttribute(SEARCH_CRITERIA, criteria);
-    return "staff/search";
+    return STAFF_SEARCH_VIEW;
   }
   
   /**
@@ -170,12 +171,11 @@ public class StaffController {
    */
   @GetMapping("/staff/customers/{customerId}/receipts")
   public String getReceipts(Model model, @PathVariable("customerId") Long customerId) {
-    List<ReceiptEntity> receiptsForCustomer = receiptService.getReceiptsForCustomer(customerId);
     StaffSearchCriteria criteria = new StaffSearchCriteria();
     criteria.setSearchText(null);
     criteria.setSearchOption(SearchOption.RECEIPTS);
     model.addAttribute(SEARCH_CRITERIA, criteria);
-    model.addAttribute(RECEIPTS, receiptsForCustomer);
-    return "staff/search";
+    model.addAttribute(RECEIPTS, receiptService.getReceiptsForCustomer(customerId));
+    return STAFF_SEARCH_VIEW;
   }
 }

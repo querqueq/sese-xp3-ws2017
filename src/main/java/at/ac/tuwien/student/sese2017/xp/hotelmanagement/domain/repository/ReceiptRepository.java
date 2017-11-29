@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * ReceiptRepository with basic CRUD.
  */
-public interface ReceiptRepository extends CrudRepository<ReceiptEntity, Long>,
-CustomSearchRepository<ReceiptEntity> {
+public interface ReceiptRepository
+    extends CrudRepository<ReceiptEntity, Long>, CustomSearchRepository<ReceiptEntity> {
 }

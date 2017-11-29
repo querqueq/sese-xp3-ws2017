@@ -69,6 +69,6 @@ public class CustomerRepositoryImpl implements CustomSearchRepository<CustomerEn
         .andField("billingAddress.streetAddress2").boostedTo(3F)
         .matching(text)
         .createQuery();
-     return fullTextEntityManager.createFullTextQuery(query, CustomerEntity.class).getResultList();
+    return fullTextEntityManager.createFullTextQuery(query, CustomerEntity.class).getResultList();
   }
 }

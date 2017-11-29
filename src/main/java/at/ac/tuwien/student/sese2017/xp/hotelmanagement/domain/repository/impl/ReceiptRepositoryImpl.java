@@ -70,6 +70,6 @@ public class ReceiptRepositoryImpl implements CustomSearchRepository<ReceiptEnti
         //TODO add matching for receiptDate 
         .matching(text)
         .createQuery();
-     return fullTextEntityManager.createFullTextQuery(query, ReceiptEntity.class).getResultList();
+    return fullTextEntityManager.createFullTextQuery(query, ReceiptEntity.class).getResultList();
   }
 }

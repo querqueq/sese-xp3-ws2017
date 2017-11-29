@@ -3,14 +3,10 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.custom.CustomSearchRepository;
-import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.springframework.beans.factory.annotation.Autowired;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.custom.CustomSearchRepository;
 
 @Transactional
 public abstract class SearchTestBase extends HotelManagementApplicationTests {

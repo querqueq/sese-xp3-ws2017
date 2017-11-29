@@ -1,14 +1,11 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.RoomRepository;
-import java.util.Date;
 import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;

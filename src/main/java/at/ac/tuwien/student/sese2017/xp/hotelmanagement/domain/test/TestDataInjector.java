@@ -30,8 +30,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  * @author lkerck
  */
 @Slf4j
-@Service
-
+@Deprecated
 public class TestDataInjector {
 
   /**

@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Transactional
-public class ReceiptServiceTest extends HotelManagementApplicationTests {
+public class ReceiptServiceTest extends HotelManagementApplicationTests.Default {
 
   @Autowired
   ReceiptService receiptService;

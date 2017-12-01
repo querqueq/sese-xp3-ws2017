@@ -17,4 +17,11 @@ public class AppProperties {
    * Defaults to false
    */
   private boolean injectTestdata;
+
+
+  /**
+   * Specify test data version.
+   * Defaults to -1 (latest)
+   */
+  private int testdataVersion = -1;
 }

@@ -1,6 +1,9 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.util;
 
 public class AnsiCodes {
+
+  private AnsiCodes() {}
+
   public static final String RESET = "\u001B[0m";
   public static final String BOLD = "\u001B[1m";
 

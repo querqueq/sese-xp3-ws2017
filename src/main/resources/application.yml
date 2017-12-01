@@ -22,4 +22,4 @@ spring:
 
 # Hotel management app configuration
 appconfig:
-  injecttestdata: ${testdata:true} # TODO set to false as soon as heroku deploy is configured correctly
+  injectTestdata: ${testdata:true} # TODO set to false as soon as heroku deploy is configured correctly

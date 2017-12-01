@@ -26,7 +26,8 @@ public class ReceiptService {
    * @param customerRepository the customer repository
    */
   @Autowired
-  public ReceiptService(ReceiptRepository receiptRepository, CustomerRepository customerRepository) {
+  public ReceiptService(ReceiptRepository receiptRepository,
+                        CustomerRepository customerRepository) {
     this.receiptRepository = receiptRepository;
     this.customerRepository = customerRepository;
   }

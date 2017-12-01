@@ -1,30 +1,26 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
-import static org.junit.Assert.assertNotNull;
-
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerRepository;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
-import javax.transaction.Transactional;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
 
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.Assert.assertNotNull;
 
 @Transactional
-public class CustomerServiceTest extends HotelManagementApplicationTests {
+public class CustomerServiceTest extends HotelManagementApplicationTests.Default {
   private static final String LOREM_IPSUM = "Lorem ipsum dolor sit amet, consetetur sadipscing "
       + "elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, "
       + "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita "

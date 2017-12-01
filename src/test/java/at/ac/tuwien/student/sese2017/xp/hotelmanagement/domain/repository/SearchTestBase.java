@@ -9,7 +9,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicati
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.custom.CustomSearchRepository;
 
 @Transactional
-public abstract class SearchTestBase extends HotelManagementApplicationTests {
+public abstract class SearchTestBase extends HotelManagementApplicationTests.Default {
 
   protected abstract CustomSearchRepository<?> getSearch();
 

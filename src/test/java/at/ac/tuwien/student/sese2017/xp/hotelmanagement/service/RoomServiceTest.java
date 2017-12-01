@@ -1,22 +1,23 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.RoomRepository;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
-import java.util.List;
-import javax.transaction.Transactional;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataV1;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataV2;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.transaction.Transactional;
+import java.util.List;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
+
 @Transactional
-public class RoomServiceTest extends HotelManagementApplicationTests {
+public class RoomServiceTest extends HotelManagementApplicationTests.V1 {
 
   @Autowired
   RoomService roomService;
@@ -28,6 +29,9 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   @Autowired
   private ReceiptRepository receiptRepository;
 
+  @Autowired
+  private TestDataV1 testDataV1;
+
   /**
    * Find all rooms.
    */
@@ -35,8 +39,8 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   public void getAllRooms_fullDB() throws Exception {
     // Define expected result
     RoomEntity[] expectedResult =
-        new RoomEntity[] {TestDataInjector.ROOM_1, TestDataInjector.ROOM_2, TestDataInjector.ROOM_3,
-            TestDataInjector.ROOM_4, TestDataInjector.ROOM_5, TestDataInjector.ROOM_6};
+        new RoomEntity[] {testDataV1.ROOM_1, testDataV1.ROOM_2, testDataV1.ROOM_3,
+            testDataV1.ROOM_4, testDataV1.ROOM_5, testDataV1.ROOM_6};
     // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService.getAllRooms();
 
@@ -82,8 +86,8 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   @Test
   public void getAllRoomsByCriteria_partialNameOnly() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_2,
-        TestDataInjector.ROOM_3, TestDataInjector.ROOM_6};
+    RoomEntity[] expectedResult = new RoomEntity[] {testDataV1.ROOM_2,
+        testDataV1.ROOM_3, testDataV1.ROOM_6};
     // Execute service function
     List<RoomEntity> allRoomsByCriteria =
         roomService.getAllRoomsByCriteria("BedRoom", null, null, null, null);
@@ -107,7 +111,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   @Test
   public void getAllRoomsByCriteria_fullNameOnly() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_2};
+    RoomEntity[] expectedResult = new RoomEntity[] {testDataV1.ROOM_2};
 
     // Execute service function
     List<RoomEntity> allRoomsByCriteria =
@@ -132,7 +136,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   @Test
   public void getAllRoomsByCriteria_fullNameCaseInsensitive() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_2};
+    RoomEntity[] expectedResult = new RoomEntity[] {testDataV1.ROOM_2};
 
     // Execute service function
     List<RoomEntity> allRoomsByCriteria =
@@ -154,8 +158,8 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   public void getAllRoomsByCriteria_noCriteria() throws Exception {
     // Define expected result
     RoomEntity[] expectedResult =
-        new RoomEntity[] {TestDataInjector.ROOM_1, TestDataInjector.ROOM_2, TestDataInjector.ROOM_3,
-            TestDataInjector.ROOM_4, TestDataInjector.ROOM_5, TestDataInjector.ROOM_6};
+        new RoomEntity[] {testDataV1.ROOM_1, testDataV1.ROOM_2, testDataV1.ROOM_3,
+            testDataV1.ROOM_4, testDataV1.ROOM_5, testDataV1.ROOM_6};
     // Execute service function
     List<RoomEntity> allRoomsByCriteria =
         roomService.getAllRoomsByCriteria(null, null, null, null, null);
@@ -180,8 +184,8 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   public void getAllRoomsByCriteria_minOccupants() throws Exception {
     // Define expected result
     RoomEntity[] expectedResult =
-        new RoomEntity[] {TestDataInjector.ROOM_1, TestDataInjector.ROOM_2, TestDataInjector.ROOM_3,
-            TestDataInjector.ROOM_4, TestDataInjector.ROOM_6};
+        new RoomEntity[] {testDataV1.ROOM_1, testDataV1.ROOM_2, testDataV1.ROOM_3,
+            testDataV1.ROOM_4, testDataV1.ROOM_6};
     // Execute service function
     List<RoomEntity> allRoomsByCriteria =
         roomService.getAllRoomsByCriteria(null, 2, null, null, null);
@@ -205,8 +209,8 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   @Test
   public void getAllRoomsByCriteria_maxOccupants() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_2,
-        TestDataInjector.ROOM_4, TestDataInjector.ROOM_5, TestDataInjector.ROOM_6};
+    RoomEntity[] expectedResult = new RoomEntity[] {testDataV1.ROOM_2,
+        testDataV1.ROOM_4, testDataV1.ROOM_5, testDataV1.ROOM_6};
     // Execute service function
     List<RoomEntity> allRoomsByCriteria =
         roomService.getAllRoomsByCriteria(null, null, 2, null, null);
@@ -230,8 +234,8 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   @Test
   public void getAllRoomsByCriteria_minAndMaxOccupants() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_2,
-        TestDataInjector.ROOM_4, TestDataInjector.ROOM_6};
+    RoomEntity[] expectedResult = new RoomEntity[] {testDataV1.ROOM_2,
+        testDataV1.ROOM_4, testDataV1.ROOM_6};
     // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService.getAllRoomsByCriteria(null, 2, 2, null, null);
 
@@ -255,7 +259,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   public void getAllRoomsByCriteria_minAndMaxAndName() throws Exception {
     // Define expected result
     RoomEntity[] expectedResult =
-        new RoomEntity[] {TestDataInjector.ROOM_2, TestDataInjector.ROOM_6};
+        new RoomEntity[] {testDataV1.ROOM_2, testDataV1.ROOM_6};
     // Execute service function
     List<RoomEntity> allRoomsByCriteria =
         roomService.getAllRoomsByCriteria("Room", 2, 2, null, null);
@@ -279,8 +283,8 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   @Test
   public void getAllRoomsByCriteria_singlePrice() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_2,
-        TestDataInjector.ROOM_5, TestDataInjector.ROOM_6};
+    RoomEntity[] expectedResult = new RoomEntity[] {testDataV1.ROOM_2,
+        testDataV1.ROOM_5, testDataV1.ROOM_6};
     // Execute service function
     List<RoomEntity> allRoomsByCriteria =
         roomService.getAllRoomsByCriteria(null, null, null, PriceType.SINGLE, 100.0);
@@ -304,7 +308,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   @Test
   public void getAllRoomsByCriteria_triplePrice() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_3};
+    RoomEntity[] expectedResult = new RoomEntity[] {testDataV1.ROOM_3};
     // Execute service function
     List<RoomEntity> allRoomsByCriteria =
         roomService.getAllRoomsByCriteria(null, null, null, PriceType.TRIPLE, 300.28);
@@ -329,7 +333,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   public void getAllRoomsByCriteria_allCriterias() throws Exception {
     // Define expected result
     RoomEntity[] expectedResult =
-        new RoomEntity[] {TestDataInjector.ROOM_2, TestDataInjector.ROOM_6};
+        new RoomEntity[] {testDataV1.ROOM_2, testDataV1.ROOM_6};
     // Execute service function
     List<RoomEntity> allRoomsByCriteria =
         roomService.getAllRoomsByCriteria("Room", 2, 4, PriceType.SINGLE, 98.33);
@@ -354,7 +358,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   public void getAllRoomsByCriteria_allCriteriasCaseInsensitive() throws Exception {
     // Define expected result
     RoomEntity[] expectedResult =
-        new RoomEntity[] {TestDataInjector.ROOM_2, TestDataInjector.ROOM_6};
+        new RoomEntity[] {testDataV1.ROOM_2, testDataV1.ROOM_6};
     // Execute service function
     List<RoomEntity> allRoomsByCriteria =
         roomService.getAllRoomsByCriteria("room", 2, 4, PriceType.SINGLE, 98.33);

@@ -16,7 +16,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  * @author lkerck
  */
 @SpringBootApplication
-@EnableJpaRepositories(repositoryFactoryBeanClass=EnversRevisionRepositoryFactoryBean.class)
+@EnableJpaRepositories(repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)
 public class HotelManagementApplication {
 
   public static void main(String[] args) {

@@ -63,11 +63,14 @@ public class ReceiptService {
   /**
    * Cancels a existing non-canceled receipt.
    * 
-   * @param receiptId
+   * @param receiptId id of the receipt which shall be canceled
    */
   public void cancelReceipt(Long receiptId) {
     try {
-      runWithExceptionHandling(() -> { receiptRepository.deleteById(receiptId); return null; });
+      runWithExceptionHandling(() -> { 
+        receiptRepository.deleteById(receiptId); 
+        return null; 
+      });
     } catch (EmptyResultDataAccessException e) {
       throw new NotFoundException(receiptId, ReceiptEntity.class);
     }
@@ -76,8 +79,8 @@ public class ReceiptService {
   /**
    * Returns a single {@linkplain ReceiptEntity} for given {@linkplain receiptId}.
    * 
-   * @param receiptId
-   * @return
+   * @param receiptId id of the receipt which shall be retrieved 
+   * @return receipt for given id
    */
   public ReceiptEntity getReceipt(Long receiptId) {
     return runWithExceptionHandling(() -> receiptRepository.findById(receiptId)

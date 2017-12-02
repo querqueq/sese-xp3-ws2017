@@ -130,12 +130,13 @@ public class StaffController {
    * @return String representing the path to the template that is to be shown.
    */
   @RequestMapping({"/staff/search", "/staff", "/staff/index"})
-  public String getSearch(Model model
-      , @RequestParam(value = "keywords", required = false) String keywords
-      , @RequestParam(value = "domain", required = false) SearchOption searchOption) {
+  public String getSearch(Model model,
+      @RequestParam(value = "keywords", required = false) String keywords,
+      @RequestParam(value = "domain", required = false) SearchOption searchOption) {
     log.info("staff index - Page called");
     StaffSearchCriteria staffSearchCriteria = new StaffSearchCriteria();
-    staffSearchCriteria.setSearchOption(Optional.ofNullable(searchOption).orElse(SearchOption.CUSTOMERS));
+    staffSearchCriteria
+        .setSearchOption(Optional.ofNullable(searchOption).orElse(SearchOption.CUSTOMERS));
     staffSearchCriteria.setSearchText(keywords);
     model.addAttribute(SEARCH_CRITERIA, staffSearchCriteria);
     Optional.ofNullable(staffSearchCriteria).map(StaffSearchCriteria::getSearchOption)
@@ -151,7 +152,7 @@ public class StaffController {
               break;
           }
         });
-    return STAFF_SEARCH_VIEW; 
+    return STAFF_SEARCH_VIEW;
   }
 
   /**
@@ -187,58 +188,54 @@ public class StaffController {
 
   /**
    * Views all details of a specific receipt.
-   * @param model
-   * @param receiptId
-   * @param searchKeywords
-   * @param cancel
-   * @return
+   * 
+   * @param model with search criteria and receipts
+   * @param receiptId id of the receipt which is to be laid eyes upon
+   * @param searchKeywords ye previously inputedly termy
+   * @param cancel whether the receipt shall be prompted for cancelation or not
+   * @return view path
    */
   @GetMapping("/staff/receipts/{receiptId}")
-  public String getReceipt(Model model
-      , @PathVariable("receiptId") Long receiptId
-      , @RequestParam("keywords") String searchKeywords
-      , @RequestParam(value = "cancel", defaultValue = "false") Boolean cancel
-    ) {
+  public String getReceipt(Model model, @PathVariable("receiptId") Long receiptId,
+      @RequestParam("keywords") String searchKeywords,
+      @RequestParam(value = "cancel", defaultValue = "false") Boolean cancel) {
     model.addAttribute("cancel", cancel);
     model.addAttribute("keywords", searchKeywords);
     model.addAttribute("receipt", receiptService.getReceipt(receiptId));
     return "staff/receipt";
   }
-  
+
   /**
    * Cancel a specific receipt.
-   * @param model
-   * @param searchKeywords
-   * @param receiptId
-   * @return
+   * 
+   * @param model with search criteria and receipts
+   * @param searchKeywords ye previously inputedly termy
+   * @param receiptId id of the receipt which is to be laid eyes upon
+   * @return view path
    */
   @PostMapping("/staff/receipts/{receiptId}")
-  public String cancelReceipt(Model model
-      , @RequestParam(value = "keywords", required = false) String searchKeywords
-      , @PathVariable("receiptId") Long receiptId
-      ) {
+  public String cancelReceipt(Model model,
+      @RequestParam(value = "keywords", required = false) String searchKeywords,
+      @PathVariable("receiptId") Long receiptId) {
     StaffSearchCriteria criteria = new StaffSearchCriteria();
     criteria.setSearchText(searchKeywords);
     criteria.setSearchOption(SearchOption.RECEIPTS);
     try {
       receiptService.cancelReceipt(receiptId);
       model.addAttribute("success", "Rechnung storniert!");
-      //TODO add success alert to view
+      // TODO add success alert to view
     } catch (RuntimeException e) {
       model.addAttribute("danger", "Rechnung konnte nicht storniert werden!");
-      //TODO view danger alert in view
+      // TODO view danger alert in view
     }
     return redirectToSearch(SearchOption.RECEIPTS, searchKeywords);
   }
-  
+
   private String redirectToSearch(StaffSearchCriteria criteria) {
     return redirectToSearch(criteria.getSearchOption(), criteria.getSearchText());
   }
-  
+
   private String redirectToSearch(SearchOption searchOption, String searchText) {
-    return String.format("redirect:/staff/search?keywords=%s&domain=%s"
-        , searchText
-        , searchOption
-        );
+    return String.format("redirect:/staff/search?keywords=%s&domain=%s", searchText, searchOption);
   }
 }

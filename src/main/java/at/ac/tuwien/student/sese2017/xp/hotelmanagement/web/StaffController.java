@@ -99,33 +99,6 @@ public class StaffController {
   }
 
   /**
-   * Gets the view for the customer search.
-   * 
-   * @param model model for view
-   * @return path to template
-   */
-  @GetMapping("/staff/customer/search")
-  public String getSearchCustomer(Model model) {
-    log.info("getSearchCustomer - Page called");
-    model.addAttribute(SEARCH_CRITERIA, new StaffSearchCriteria());
-    return "staff/customerSearch";
-  }
-
-  /**
-   * Does a full text search with the given search criteria and puts the result in the model.
-   * 
-   * @param model model for view
-   * @param criteria the search criteria model
-   * @return path to template
-   */
-  @PostMapping("/staff/customer/search")
-  public String searchCustomer(Model model, @ModelAttribute StaffSearchCriteria criteria) {
-    log.info("search customer - Page called");
-    model.addAttribute("customerList", customerService.search(criteria.getSearchText()));
-    return "staff/customerSearch";
-  }
-
-  /**
    * Handles calls to the suburl "/staff/index" on the web representation.
    *
    * @return String representing the path to the template that is to be shown.
@@ -225,10 +198,8 @@ public class StaffController {
     try {
       receiptService.cancelReceipt(receiptId);
       redir.addFlashAttribute("success", "Rechnung storniert.");
-      // TODO add success alert to view
     } catch (RuntimeException e) {
       redir.addFlashAttribute("danger", "Rechnung konnte nicht storniert werden.");
-      // TODO view danger alert in view
     }
     return redirectToSearch(SearchOption.RECEIPTS, searchKeywords);
   }

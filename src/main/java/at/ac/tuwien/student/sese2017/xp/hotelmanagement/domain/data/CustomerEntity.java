@@ -58,7 +58,7 @@ public class CustomerEntity extends UserEntity {
   private Sex sex;
 
   @IndexedEmbedded
-  @ManyToOne(cascade = {CascadeType.PERSIST})
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinColumn
   private AddressEntity billingAddress;
 

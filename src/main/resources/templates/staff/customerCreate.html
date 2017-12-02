@@ -31,6 +31,7 @@
 	<div class="container">
 		<form class="form-horizontal" th:action="@{/staff/customer/create}"
 			th:object="${customer}" method="post">
+			<input hidden="true" th:value="${id}" th:field="*{id}">
 			<fieldset class="form-group">
 				<legend>Allgemein</legend>
 				<div class="form-group row">

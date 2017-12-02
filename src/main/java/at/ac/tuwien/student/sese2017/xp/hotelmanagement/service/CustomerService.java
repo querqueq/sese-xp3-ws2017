@@ -7,6 +7,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.Custom
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
@@ -45,13 +46,18 @@ public class CustomerService {
     this.passwordManager = passwordManager;
   }
 
+  public CustomerEntity getCustomer(Long id) {
+    Optional<CustomerEntity> byId = customerRepository.findById(id);
+    return byId.orElse(null);
+  }
+
   /**
-   * Validates and saves the given entity into the underlying data store.
+   * Validates and saves the given entity in the underlying data store.
    * 
-   * @param entity The customer entity to create
-   * @return The id of the created entity
+   * @param entity The customer entity to save
+   * @return The id of the saved entity
    */
-  public Long create(@Valid CustomerEntity entity) {
+  public Long save(@Valid CustomerEntity entity) {
     // TODO deny double entries (match for name and billing address)
     // TODO generate random password and send to the customers email
     entity.setUsername(entity.getEmail());

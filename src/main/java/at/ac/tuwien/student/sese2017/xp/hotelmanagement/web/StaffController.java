@@ -89,7 +89,8 @@ public class StaffController {
   /**
    * A blank form with a note about the customer creation. If there are no errors. Otherwise a
    * partially filled form with error messages.
-   * 
+   * This method is also called after editing a customer.
+   *
    * @param model model for view
    * @param entity customer entity filled out by form
    * @return path to template
@@ -97,18 +98,49 @@ public class StaffController {
   @PostMapping("/staff/customer/create")
   public String postCustomer(Model model, @ModelAttribute CustomerEntity entity) {
     log.info("post customer - Page called");
+    boolean updated = false;
     try {
-      Long customerId = customerService.create(entity);
-      log.info("created customer {}", customerId);
-      model.addAttribute("note",
-          String.format("Kunde %s erfasst! (%d)", entity.getName(), customerId));
-      model.addAttribute(CUSTOMER_ATTRIBUTE_NAME, new CustomerEntity());
+      Long customerId = customerService.save(entity);
+
+      if (entity.getId() != null) {
+        log.info("Existing entity (id {}) changed", entity.getId());
+        updated = true;
+      } else {
+        log.info("created customer {}", customerId);
+        model.addAttribute("note",
+            String.format("Kunde %s erfasst! (%d)", entity.getName(), customerId));
+        model.addAttribute(CUSTOMER_ATTRIBUTE_NAME, new CustomerEntity());
+      }
     } catch (ValidationException e) {
-      model.addAttribute("note", "Fehler");
+      model.addAttribute("note", "Fehler - " + e.getMessage());
       model.addAttribute(CUSTOMER_ATTRIBUTE_NAME, entity);
+      log.warn("Customer save validation failed", e);
+    }
+    if (updated) {
+      return "redirect:/staff/search";
     }
     return "staff/customerCreate";
+  }
 
+  /**
+   * Fills the customerCreate.html form with the information of the entity with the passed id.
+   *
+   * <p>If the given id is not found in the database, an empty form is shown.</p>
+   *
+   * @param model model for view
+   * @param customerId id of the customer to edit
+   * @return path to template
+   */
+  @GetMapping("/staff/customer/edit/{customerId}")
+  public String postCustomer(Model model, @PathVariable("customerId") Long customerId) {
+    log.info("edit customer - Page called");
+    CustomerEntity customer = customerService.getCustomer(customerId);
+    if (customer == null) {
+      customer = new CustomerEntity();
+      customer.setBillingAddress(new AddressEntity());
+    }
+    model.addAttribute(CUSTOMER_ATTRIBUTE_NAME, customer);
+    return "staff/customerCreate";
   }
 
   /**
@@ -144,7 +176,7 @@ public class StaffController {
 
   /**
    * A view with an evaluated search.
-   * 
+   *
    * @param model with search criteria and receipts
    * @param criteria specified search criteria
    * @return view path
@@ -158,7 +190,7 @@ public class StaffController {
 
   /**
    * A view with all receipts of a specific customer.
-   * 
+   *
    * @param model with search criteria and receipts
    * @param customerId specific customer
    * @return view path
@@ -176,7 +208,7 @@ public class StaffController {
 
   /**
    * Views all details of a specific receipt.
-   * 
+   *
    * @param model with search criteria and receipts
    * @param receiptId id of the receipt which is to be laid eyes upon
    * @param searchKeywords ye previously inputedly termy
@@ -196,7 +228,7 @@ public class StaffController {
 
   /**
    * Cancel a specific receipt.
-   * 
+   *
    * @param model with search criteria and receipts
    * @param searchKeywords ye previously inputedly termy
    * @param receiptId id of the receipt which is to be laid eyes upon
@@ -223,7 +255,7 @@ public class StaffController {
 
   /**
    * Return form for creating new staffer.
-   * 
+   *
    * @param model empty model
    * @return view path
    */
@@ -237,7 +269,7 @@ public class StaffController {
 
   /**
    * Creates a new staffer.
-   * 
+   *
    * @param model empty model
    * @param dto new staff form dto
    * @return view path
@@ -268,8 +300,8 @@ public class StaffController {
   }
 
   /**
-   * Returns for your creating a vacation request. 
-   * 
+   * Returns for your creating a vacation request.
+   *
    * @param model empty model
    * @param authentication for getting current user
    * @return view path
@@ -284,7 +316,7 @@ public class StaffController {
 
   /**
    * Creates a new vacation request.
-   * 
+   *
    * @param model empty model
    * @param vacation vacation to be accepted
    * @param authentication for getting current user
@@ -324,7 +356,7 @@ public class StaffController {
 
   /**
    * Get all pending, running and future vacation requests.
-   * 
+   *
    * @param model empty model
    * @return view path
    */
@@ -334,10 +366,10 @@ public class StaffController {
     model.addAttribute(VACATIONS_ATTRIBUTE_NAME, staffService.getCurrentVactionRequests());
     return "staff/vacationMgmt";
   }
-  
+
   /**
    * Accept a vacation.
-   * 
+   *
    * @param model empty model
    * @param vacationId vacation to be accepted
    * @param redir for success/failure messages after redirect
@@ -352,13 +384,13 @@ public class StaffController {
       redir.addFlashAttribute(SUCCESS_ATTRIBUTE_NAME, "Urlaubsantrag bewilligt!");
     } catch (IllegalStateException | IllegalArgumentException e) {
       redir.addFlashAttribute(DANGER_ATTRIBUTE_NAME, e.getMessage());
-    }    
+    }
     return redirectToVacationOverview();
   }
 
   /**
    * Reject a vacation with a non-optional reason.
-   *  
+   *
    * @param model empty model
    * @param vacationId vacation to be accepted
    * @param reason non optional reason for vacation denial
@@ -376,7 +408,7 @@ public class StaffController {
       redir.addFlashAttribute(SUCCESS_ATTRIBUTE_NAME, "Urlaubsantrag abgelehnt!");
     } catch (IllegalStateException | IllegalArgumentException e) {
       redir.addFlashAttribute(DANGER_ATTRIBUTE_NAME, e.getMessage());
-    }    
+    }
     return redirectToVacationOverview();
   }
 

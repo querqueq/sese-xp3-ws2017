@@ -17,11 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * This controller handles basic requests to the staff only space of the web page. For example the
@@ -137,6 +139,7 @@ public class StaffController {
 
   /**
    * A view with an evaluated search.
+   * 
    * @param model with search criteria and receipts
    * @param criteria specified search criteria
    * @return view path
@@ -158,13 +161,14 @@ public class StaffController {
               break;
           }
         });
-    criteria.setSearchText(null);
+//    criteria.setSearchText(null);
     model.addAttribute(SEARCH_CRITERIA, criteria);
     return STAFF_SEARCH_VIEW;
   }
-  
+
   /**
    * A view with all receipts of a specific customer.
+   * 
    * @param model with search criteria and receipts
    * @param customerId specific customer
    * @return view path
@@ -177,5 +181,51 @@ public class StaffController {
     model.addAttribute(SEARCH_CRITERIA, criteria);
     model.addAttribute(RECEIPTS, receiptService.getReceiptsForCustomer(customerId));
     return STAFF_SEARCH_VIEW;
+  }
+
+  /**
+   * Views all details of a specific receipt.
+   * @param model
+   * @param receiptId
+   * @param searchKeywords
+   * @param cancel
+   * @return
+   */
+  @GetMapping("/staff/receipts/{receiptId}")
+  public String getReceipt(Model model
+      , @PathVariable("receiptId") Long receiptId
+      , @RequestParam("keywords") String searchKeywords
+      , @RequestParam("cancel") boolean cancel
+    ) {
+    model.addAttribute("cancel", cancel);
+    model.addAttribute("keywords", searchKeywords);
+    model.addAttribute("receipt", receiptService.getReceipt(receiptId));
+    return "staff/receipt";
+  }
+  
+  /**
+   * Cancel a specific receipt.
+   * @param model
+   * @param searchKeywords
+   * @param receiptId
+   * @return
+   */
+  @PostMapping("/staff/receipts/{receiptId}")
+  public String cancelReceipt(Model model
+      , @RequestParam("keywords") String searchKeywords
+      , @PathVariable("receiptId") Long receiptId
+      ) {
+    StaffSearchCriteria criteria = new StaffSearchCriteria();
+    criteria.setSearchText(searchKeywords);
+    criteria.setSearchOption(SearchOption.RECEIPTS);
+    try {
+      receiptService.cancelReceipt(receiptId);
+      model.addAttribute("success", "Rechnung storniert!");
+      //TODO add success alert to view
+    } catch (RuntimeException e) {
+      model.addAttribute("danger", "Rechnung konnte nicht storniert werden!");
+      //TODO view danger alert in view
+    }
+    return postSearch(model, criteria);
   }
 }

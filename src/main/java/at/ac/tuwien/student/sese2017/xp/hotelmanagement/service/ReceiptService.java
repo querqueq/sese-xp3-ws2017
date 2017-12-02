@@ -49,4 +49,22 @@ public class ReceiptService {
     return customerRepository.findById(customerId).map(c -> c.getReceipts())
         .orElse(Collections.emptyList());
   }
+  
+  /**
+   * Cancels a existing non-canceled receipt.
+   * @param receiptId
+   */
+  public void cancelReceipt(Long receiptId) {
+    //TODO use envers repository
+  }
+  
+  /**
+   * Returns a single {@linkplain ReceiptEntity} for given {@linkplain receiptId}.
+   * @param receiptId  
+   * @return 
+   */
+  public ReceiptEntity getReceipt(Long receiptId) {
+    //TODO
+    return null;
+  }
 }

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * This controller handles basic requests to the staff only space of the web page. For example the
@@ -216,16 +217,17 @@ public class StaffController {
   @PostMapping("/staff/receipts/{receiptId}")
   public String cancelReceipt(Model model,
       @RequestParam(value = "keywords", required = false) String searchKeywords,
-      @PathVariable("receiptId") Long receiptId) {
+      @PathVariable("receiptId") Long receiptId,
+      RedirectAttributes redir) {
     StaffSearchCriteria criteria = new StaffSearchCriteria();
     criteria.setSearchText(searchKeywords);
     criteria.setSearchOption(SearchOption.RECEIPTS);
     try {
       receiptService.cancelReceipt(receiptId);
-      model.addAttribute("success", "Rechnung storniert!");
+      redir.addFlashAttribute("success", "Rechnung storniert.");
       // TODO add success alert to view
     } catch (RuntimeException e) {
-      model.addAttribute("danger", "Rechnung konnte nicht storniert werden!");
+      redir.addFlashAttribute("danger", "Rechnung konnte nicht storniert werden.");
       // TODO view danger alert in view
     }
     return redirectToSearch(SearchOption.RECEIPTS, searchKeywords);

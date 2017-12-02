@@ -52,6 +52,11 @@ public class CustomerService {
     return customerRepository.save(entity).getId();
   }
 
+  /**
+   * Full text search for customers.
+   * @param searchText multiple keywords seperated by whitespaces
+   * @return List of matching customers
+   */
   public List<CustomerEntity> search(String searchText) {
     return customerRepository.search(searchText);
   }

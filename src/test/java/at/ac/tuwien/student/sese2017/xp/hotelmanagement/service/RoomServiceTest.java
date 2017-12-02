@@ -1,359 +1,382 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.RoomRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
 import java.util.List;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-//@TestExecutionListeners({TransactionalTestExecutionListener.class})
-@Slf4j
 @Transactional
 public class RoomServiceTest extends HotelManagementApplicationTests {
 
   @Autowired
   RoomService roomService;
 
-  @Autowired
-  private EntityManager entityManager;
 
   @Autowired
   private RoomRepository roomRepository;
 
+  @Autowired
+  private ReceiptRepository receiptRepository;
+
   /**
-   * Find all rooms
+   * Find all rooms.
    */
   @Test
   public void getAllRooms_fullDB() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{
-        TestDataInjector.ROOM_1, TestDataInjector.ROOM_2, TestDataInjector.ROOM_3,
-        TestDataInjector.ROOM_4, TestDataInjector.ROOM_5, TestDataInjector.ROOM_6
-    };
+    RoomEntity[] expectedResult =
+        new RoomEntity[] {TestDataInjector.ROOM_1, TestDataInjector.ROOM_2, TestDataInjector.ROOM_3,
+            TestDataInjector.ROOM_4, TestDataInjector.ROOM_5, TestDataInjector.ROOM_6};
     // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService.getAllRooms();
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
-   * Find all rooms on empty db
+   * Find all rooms on empty db.
    */
   @Test
   public void getAllRooms_emptyDB() throws Exception {
+    // Clear all receipts to enable room removal
+    receiptRepository.deleteAll();
     // Clear rooms from database
     roomRepository.deleteAll();
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{};
+    RoomEntity[] expectedResult = new RoomEntity[] {};
     // Execute service function
     List<RoomEntity> allRoomsByCriteria = roomService.getAllRooms();
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
    * Find only rooms with BedRoom in the name.
    *
    * <p>
-   *   Should return only room 2, 3 and 6
+   * Should return only room 2, 3 and 6
    * </p>
    */
   @Test
   public void getAllRoomsByCriteria_partialNameOnly() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{
-        TestDataInjector.ROOM_2, TestDataInjector.ROOM_3, TestDataInjector.ROOM_6
-    };
+    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_2,
+        TestDataInjector.ROOM_3, TestDataInjector.ROOM_6};
     // Execute service function
-    List<RoomEntity> allRoomsByCriteria = roomService
-        .getAllRoomsByCriteria("BedRoom", null, null, null, null);
+    List<RoomEntity> allRoomsByCriteria =
+        roomService.getAllRoomsByCriteria("BedRoom", null, null, null, null);
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
-   * Find only rooms with 2BedRoom in the name. (Full match)
+   * Find only rooms with 2BedRoom in the name. (Full match).
    *
    * <p>
-   *   Should return only room 2
+   * Should return only room 2
    * </p>
    */
   @Test
   public void getAllRoomsByCriteria_fullNameOnly() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{TestDataInjector.ROOM_2};
+    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_2};
 
     // Execute service function
-    List<RoomEntity> allRoomsByCriteria = roomService
-        .getAllRoomsByCriteria("2BedRoom", null, null, null, null);
+    List<RoomEntity> allRoomsByCriteria =
+        roomService.getAllRoomsByCriteria("2BedRoom", null, null, null, null);
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
-   * Find only rooms with 2bedroom in the name. (case insensitive Full match)
+   * Find only rooms with 2bedroom in the name. (case insensitive Full match).
    *
    * <p>
-   *   Should return only room 2
+   * Should return only room 2
    * </p>
    */
   @Test
   public void getAllRoomsByCriteria_fullNameCaseInsensitive() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{TestDataInjector.ROOM_2};
+    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_2};
 
     // Execute service function
-    List<RoomEntity> allRoomsByCriteria = roomService
-        .getAllRoomsByCriteria("2bedroom", null, null, null, null);
+    List<RoomEntity> allRoomsByCriteria =
+        roomService.getAllRoomsByCriteria("2bedroom", null, null, null, null);
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
-   * Find all rooms by providing no criteria
+   * Find all rooms by providing no criteria.
    */
   @Test
   public void getAllRoomsByCriteria_noCriteria() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{
-        TestDataInjector.ROOM_1, TestDataInjector.ROOM_2, TestDataInjector.ROOM_3,
-        TestDataInjector.ROOM_4, TestDataInjector.ROOM_5, TestDataInjector.ROOM_6
-    };
+    RoomEntity[] expectedResult =
+        new RoomEntity[] {TestDataInjector.ROOM_1, TestDataInjector.ROOM_2, TestDataInjector.ROOM_3,
+            TestDataInjector.ROOM_4, TestDataInjector.ROOM_5, TestDataInjector.ROOM_6};
     // Execute service function
-    List<RoomEntity> allRoomsByCriteria = roomService
-        .getAllRoomsByCriteria(null, null, null, null, null);
+    List<RoomEntity> allRoomsByCriteria =
+        roomService.getAllRoomsByCriteria(null, null, null, null, null);
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
-   * Find all rooms with occupants grater or equal 2
+   * Find all rooms with occupants grater or equal 2.
    *
    * <p>
-   *   Should return all rooms except room 5
+   * Should return all rooms except room 5
    * </p>
    */
   @Test
   public void getAllRoomsByCriteria_minOccupants() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{
-        TestDataInjector.ROOM_1, TestDataInjector.ROOM_2, TestDataInjector.ROOM_3,
-        TestDataInjector.ROOM_4, TestDataInjector.ROOM_6
-    };
+    RoomEntity[] expectedResult =
+        new RoomEntity[] {TestDataInjector.ROOM_1, TestDataInjector.ROOM_2, TestDataInjector.ROOM_3,
+            TestDataInjector.ROOM_4, TestDataInjector.ROOM_6};
     // Execute service function
-    List<RoomEntity> allRoomsByCriteria = roomService
-        .getAllRoomsByCriteria(null, 2, null, null, null);
+    List<RoomEntity> allRoomsByCriteria =
+        roomService.getAllRoomsByCriteria(null, 2, null, null, null);
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
-   * Find all rooms with occupants smaller or equal 2
+   * Find all rooms with occupants smaller or equal 2.
    *
    * <p>
-   *   Should return rooms 2,4,5 and 6
+   * Should return rooms 2,4,5 and 6
    * </p>
    */
   @Test
   public void getAllRoomsByCriteria_maxOccupants() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{
-        TestDataInjector.ROOM_2, TestDataInjector.ROOM_4, TestDataInjector.ROOM_5,
-        TestDataInjector.ROOM_6
-    };
+    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_2,
+        TestDataInjector.ROOM_4, TestDataInjector.ROOM_5, TestDataInjector.ROOM_6};
     // Execute service function
-    List<RoomEntity> allRoomsByCriteria = roomService
-        .getAllRoomsByCriteria(null, null, 2, null, null);
+    List<RoomEntity> allRoomsByCriteria =
+        roomService.getAllRoomsByCriteria(null, null, 2, null, null);
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
-   * Find all rooms with occupants equal 2
+   * Find all rooms with occupants equal 2.
    *
    * <p>
-   *   Should return rooms 2,4 and 6
+   * Should return rooms 2,4 and 6
    * </p>
    */
   @Test
   public void getAllRoomsByCriteria_minAndMaxOccupants() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{
-        TestDataInjector.ROOM_2, TestDataInjector.ROOM_4, TestDataInjector.ROOM_6
-    };
+    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_2,
+        TestDataInjector.ROOM_4, TestDataInjector.ROOM_6};
     // Execute service function
-    List<RoomEntity> allRoomsByCriteria = roomService
-        .getAllRoomsByCriteria(null, 2, 2, null, null);
+    List<RoomEntity> allRoomsByCriteria = roomService.getAllRoomsByCriteria(null, 2, 2, null, null);
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
-   * Find all rooms with occupants equal 2 and name containing "Room"
+   * Find all rooms with occupants equal 2 and name containing "Room".
    *
    * <p>
-   *   Should return rooms 2 and 6
+   * Should return rooms 2 and 6
    * </p>
    */
   @Test
   public void getAllRoomsByCriteria_minAndMaxAndName() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{
-        TestDataInjector.ROOM_2, TestDataInjector.ROOM_6
-    };
+    RoomEntity[] expectedResult =
+        new RoomEntity[] {TestDataInjector.ROOM_2, TestDataInjector.ROOM_6};
     // Execute service function
-    List<RoomEntity> allRoomsByCriteria = roomService
-        .getAllRoomsByCriteria("Room", 2, 2, null, null);
+    List<RoomEntity> allRoomsByCriteria =
+        roomService.getAllRoomsByCriteria("Room", 2, 2, null, null);
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
-  
+
   /**
-   * Find all rooms with SinglePrice below 100
+   * Find all rooms with SinglePrice below 100.
    *
    * <p>
-   *   Should return rooms 2,5 and 6
+   * Should return rooms 2,5 and 6
    * </p>
    */
   @Test
   public void getAllRoomsByCriteria_singlePrice() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{
-        TestDataInjector.ROOM_2, TestDataInjector.ROOM_5, TestDataInjector.ROOM_6
-    };
+    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_2,
+        TestDataInjector.ROOM_5, TestDataInjector.ROOM_6};
     // Execute service function
-    List<RoomEntity> allRoomsByCriteria = roomService
-        .getAllRoomsByCriteria(null, null, null, PriceType.SINGLE, 100.0);
+    List<RoomEntity> allRoomsByCriteria =
+        roomService.getAllRoomsByCriteria(null, null, null, PriceType.SINGLE, 100.0);
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
-   * Find all rooms with Triple below 300.28
+   * Find all rooms with Triple below 300.28.
    *
    * <p>
-   *   Should only return room 3
+   * Should only return room 3
    * </p>
    */
   @Test
   public void getAllRoomsByCriteria_triplePrice() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{
-        TestDataInjector.ROOM_3
-    };
+    RoomEntity[] expectedResult = new RoomEntity[] {TestDataInjector.ROOM_3};
     // Execute service function
-    List<RoomEntity> allRoomsByCriteria = roomService
-        .getAllRoomsByCriteria(null, null, null, PriceType.TRIPLE, 300.28);
+    List<RoomEntity> allRoomsByCriteria =
+        roomService.getAllRoomsByCriteria(null, null, null, PriceType.TRIPLE, 300.28);
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
-   * Find all rooms with name containing Room
-   * with min and max 2 and 4
-   * and Single price below 98.33
+   * Find all rooms with name containing Room with min and max 2 and 4 and Single price below 98.33.
    *
    * <p>
-   *   Should only return room 3
+   * Should only return room 3
    * </p>
    */
   @Test
   public void getAllRoomsByCriteria_allCriterias() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{
-        TestDataInjector.ROOM_2, TestDataInjector.ROOM_6
-    };
+    RoomEntity[] expectedResult =
+        new RoomEntity[] {TestDataInjector.ROOM_2, TestDataInjector.ROOM_6};
     // Execute service function
-    List<RoomEntity> allRoomsByCriteria = roomService
-        .getAllRoomsByCriteria("Room", 2, 4, PriceType.SINGLE, 98.33);
+    List<RoomEntity> allRoomsByCriteria =
+        roomService.getAllRoomsByCriteria("Room", 2, 4, PriceType.SINGLE, 98.33);
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
 
   /**
-   * Find all rooms with name containing room
-   * with min and max 2 and 4
-   * and Single price below 98.33
+   * Find all rooms with name containing room with min and max 2 and 4 and Single price below 98.33.
    *
    * <p>
-   *   Should only return room 3
+   * Should only return room 3
    * </p>
    */
   @Test
   public void getAllRoomsByCriteria_allCriteriasCaseInsensitive() throws Exception {
     // Define expected result
-    RoomEntity[] expectedResult = new RoomEntity[]{
-        TestDataInjector.ROOM_2, TestDataInjector.ROOM_6
-    };
+    RoomEntity[] expectedResult =
+        new RoomEntity[] {TestDataInjector.ROOM_2, TestDataInjector.ROOM_6};
     // Execute service function
-    List<RoomEntity> allRoomsByCriteria = roomService
-        .getAllRoomsByCriteria("room", 2, 4, PriceType.SINGLE, 98.33);
+    List<RoomEntity> allRoomsByCriteria =
+        roomService.getAllRoomsByCriteria("room", 2, 4, PriceType.SINGLE, 98.33);
 
     // Check result
     assertNotNull("Null returned by service", allRoomsByCriteria);
     assertEquals("Result size not correct", expectedResult.length, allRoomsByCriteria.size());
-    assertThat("Not the right elements returned", allRoomsByCriteria, containsInAnyOrder(expectedResult));
+    for (int i = 0; i < expectedResult.length; i++) {
+      assertThat("Not the right element returned", allRoomsByCriteria.get(i).getRoomId(),
+          is(expectedResult[i].getRoomId()));
+    }
   }
 
   /*
-    ======= ERROR CASES ======
+   * ======= ERROR CASES ======
    */
 
   /**
    * Check integer validation with min = 4 and max = 2.
    *
    * <p>
-   *   Should throw InvalidArgumentException
+   * Should throw InvalidArgumentException
    * </p>
    */
   @Test(expected = IllegalArgumentException.class)
@@ -362,10 +385,10 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   }
 
   /**
-   * Check integer validation with min negative
+   * Check integer validation with min negative.
    *
    * <p>
-   *   Should throw InvalidArgumentException
+   * Should throw InvalidArgumentException
    * </p>
    */
   @Test(expected = IllegalArgumentException.class)
@@ -374,10 +397,10 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   }
 
   /**
-   * Check integer validation with max negative
+   * Check integer validation with max negative.
    *
    * <p>
-   *   Should throw InvalidArgumentException
+   * Should throw InvalidArgumentException
    * </p>
    */
   @Test(expected = IllegalArgumentException.class)
@@ -386,10 +409,10 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   }
 
   /**
-   * Check only PriceType given without maxPrice
+   * Check only PriceType given without maxPrice.
    *
    * <p>
-   *   Should throw InvalidArgumentException
+   * Should throw InvalidArgumentException
    * </p>
    */
   @Test(expected = IllegalArgumentException.class)
@@ -398,10 +421,10 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
   }
 
   /**
-   * Check only maxPrice given without PriceType
+   * Check only maxPrice given without PriceType.
    *
    * <p>
-   *   Should throw InvalidArgumentException
+   * Should throw InvalidArgumentException
    * </p>
    */
   @Test(expected = IllegalArgumentException.class)
@@ -413,7 +436,7 @@ public class RoomServiceTest extends HotelManagementApplicationTests {
    * Check integer validation with maxPrice invalid.
    *
    * <p>
-   *   Should throw InvalidArgumentException
+   * Should throw InvalidArgumentException
    * </p>
    */
   @Test(expected = IllegalArgumentException.class)

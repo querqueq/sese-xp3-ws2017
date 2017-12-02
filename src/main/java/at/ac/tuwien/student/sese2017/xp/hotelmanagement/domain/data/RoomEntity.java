@@ -30,8 +30,6 @@ import org.hibernate.search.annotations.Indexed;
 @Data
 @ToString(exclude = "receipts")
 @Indexed
-@Audited
-//(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 public class RoomEntity {
 

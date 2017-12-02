@@ -43,8 +43,6 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @Data
 @ToString(exclude = "receipts")
 @Indexed
-@Audited
-//(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 public class CustomerEntity {
 

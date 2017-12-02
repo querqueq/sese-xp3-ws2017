@@ -19,6 +19,8 @@ spring:
             directory_provider: filesystem
             indexBase: search_indicies
           analyzer: at.ac.tuwien.student.sese2017.xp.hotelmanagement.search.analyzer.EntityAnalyzer
+        hbm2ddl:
+          auto: create-drop
 
 # Hotel management app configuration
 appconfig:

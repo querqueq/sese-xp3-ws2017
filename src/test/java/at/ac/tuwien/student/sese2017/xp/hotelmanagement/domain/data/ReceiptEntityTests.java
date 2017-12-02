@@ -9,16 +9,17 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Transactional
 public class ReceiptEntityTests extends EntityTestBase {
   @Autowired
   private ReceiptRepository receiptRepository;
+  
 
   @Test
   public void testBasicStorageOfRecipes() {
@@ -162,7 +163,7 @@ public class ReceiptEntityTests extends EntityTestBase {
     int revisionCount = receiptRepository.findRevisions(receiptId).getContent().size();
     assertEquals(0, revisionCount);
     receiptRepository.deleteById(receiptId);
-    assertFalse(receiptRepository.findById(receiptId).isPresent());
-    assertEquals(1, receiptRepository.findRevisions(receiptId).getContent().size());
+    assertTrue(!receiptRepository.findById(receiptId).isPresent());
+    assertTrue(receiptRepository.findRevisions(receiptId).iterator().hasNext());
   }
 }

@@ -15,9 +15,8 @@ import org.hibernate.search.annotations.Indexed;
  */
 @Data
 @Indexed
-@Audited
-//(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
+@Audited
 public class AddressEntity {
 
   @Id

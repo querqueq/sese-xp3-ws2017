@@ -3,6 +3,7 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotFoundException;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class ReceiptService {
    * @param receiptId
    */
   public void cancelReceipt(Long receiptId) {
-    //TODO use envers repository
+    receiptRepository.deleteById(receiptId);
   }
   
   /**
@@ -64,7 +65,7 @@ public class ReceiptService {
    * @return 
    */
   public ReceiptEntity getReceipt(Long receiptId) {
-    //TODO
-    return null;
+    return receiptRepository.findById(receiptId)
+        .orElseThrow(() -> new NotFoundException(receiptId, ReceiptEntity.class));
   }
 }

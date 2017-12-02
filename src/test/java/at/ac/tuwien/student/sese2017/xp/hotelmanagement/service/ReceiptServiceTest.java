@@ -116,12 +116,5 @@ public class ReceiptServiceTest extends HotelManagementApplicationTests {
     receiptService.getReceipt(null);
   }
 
-  /*
-   * @Test public void testSoftDelete() { Long receiptId =
-   * TestDataInjector.RECEIPT_1.getReceiptId(); int revisionCount =
-   * receiptRepository.findRevisions(receiptId).getContent().size();
-   * receiptRepository.deleteById(receiptId);
-   * assertTrue(!receiptRepository.findById(receiptId).isPresent()); assertEquals(revisionCount + 1,
-   * receiptRepository.findRevisions(receiptId).getContent().size()); }
-   */
+
 }

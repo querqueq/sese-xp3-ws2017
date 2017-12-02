@@ -56,8 +56,8 @@ public class ReceiptService {
    * @return List of all receipts of customer with {@linkplain customerId}
    */
   public List<ReceiptEntity> getReceiptsForCustomer(Long customerId) {
-    return customerRepository.findById(customerId).map(c -> c.getReceipts())
-        .orElse(Collections.emptyList());
+    return runWithExceptionHandling(() -> customerRepository.findById(customerId)
+        .map(c -> c.getReceipts()).orElse(Collections.emptyList()));
   }
 
   /**
@@ -67,9 +67,9 @@ public class ReceiptService {
    */
   public void cancelReceipt(Long receiptId) {
     try {
-      runWithExceptionHandling(() -> { 
-        receiptRepository.deleteById(receiptId); 
-        return null; 
+      runWithExceptionHandling(() -> {
+        receiptRepository.deleteById(receiptId);
+        return null;
       });
     } catch (EmptyResultDataAccessException e) {
       throw new NotFoundException(receiptId, ReceiptEntity.class);
@@ -79,7 +79,7 @@ public class ReceiptService {
   /**
    * Returns a single {@linkplain ReceiptEntity} for given {@linkplain receiptId}.
    * 
-   * @param receiptId id of the receipt which shall be retrieved 
+   * @param receiptId id of the receipt which shall be retrieved
    * @return receipt for given id
    */
   public ReceiptEntity getReceipt(Long receiptId) {

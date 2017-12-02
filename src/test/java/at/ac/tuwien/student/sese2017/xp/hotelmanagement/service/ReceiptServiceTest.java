@@ -7,23 +7,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotFoundException;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotFoundException;
 
 @Transactional
 public class ReceiptServiceTest extends HotelManagementApplicationTests {
@@ -116,5 +108,20 @@ public class ReceiptServiceTest extends HotelManagementApplicationTests {
     receiptService.getReceipt(null);
   }
 
+  /**
+   * Tests if all receipts for a customer are returned.
+   */
+  @Test
+  public void testGetReceiptsForCustomer() {
+    assertEquals(1,
+        receiptService.getReceiptsForCustomer(TestDataInjector.CUSTOMER_1.getId()).size());
+  }
 
+  /**
+   * Tests if null customerId throws an IllegalArgumentException.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetReceiptsNull() {
+    receiptService.getReceiptsForCustomer(null);
+  }
 }

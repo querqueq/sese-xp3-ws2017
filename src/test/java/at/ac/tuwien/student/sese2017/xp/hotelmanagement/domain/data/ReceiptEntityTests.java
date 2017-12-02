@@ -127,43 +127,4 @@ public class ReceiptEntityTests extends EntityTestBase {
 
 
   }
-  
-  @Test
-  public void testSoftDelete() {
-    ReceiptEntity receipt = new ReceiptEntity()
-    .addCustomer(new CustomerEntity()
-        .setBillingAddress(new AddressEntity()
-            .setName("Abbey Fields")
-            .setStreetAddress1("Karlsplatz 1")
-            .setZipCode("1040")
-            .setCity("Wien")
-            .setState("Austria"))
-        .setBirthday(LocalDate.of(1982, 7, 7))
-        .setDiscount(BigDecimal.ZERO)
-        .setEmail("hr.mueller@example.org")
-        .setName("Abbey Fields")
-        .setSex(Sex.MALE)
-        .setPhoneNumber("01234567"))
-    .setHotelAddress(new AddressEntity()
-        .setName("Hotel zum schoenen Urblaub")
-        .setStreetAddress1("Am Buchtaler Jockl 1")
-        .setZipCode("3024")
-        .setCity("Lungau nahe dem Pongau")
-        .setState("Austria"))
-    .setDurationOfStay(10)
-    .addRoom(new RoomEntity().setName("presidentialSuite")
-        .setMaxOccupants(4))
-    .setPrice(Double.POSITIVE_INFINITY)
-    .setDiscount(0.05)
-    .setReceiptDate(LocalDateTime.now())
-    ;
-    
-    receiptRepository.save(receipt);
-    Long receiptId = receipt.getReceiptId();
-    int revisionCount = receiptRepository.findRevisions(receiptId).getContent().size();
-    assertEquals(0, revisionCount);
-    receiptRepository.deleteById(receiptId);
-    assertTrue(!receiptRepository.findById(receiptId).isPresent());
-    assertTrue(receiptRepository.findRevisions(receiptId).iterator().hasNext());
-  }
 }

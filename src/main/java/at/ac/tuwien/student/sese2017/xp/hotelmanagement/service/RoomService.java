@@ -2,13 +2,10 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
-
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.RoomRepository;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Service;
  * @author akraschitzer
  * @author lkerck
  */
-@Slf4j
 @Service
 public class RoomService {
 

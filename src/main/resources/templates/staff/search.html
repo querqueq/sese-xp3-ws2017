@@ -123,7 +123,8 @@
                 <article class="card">
                     <h3 class="card-header">
                         <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                        <b th:text="${#temporals.format(receipt.receiptDate,'dd.MM.yyyy hh:mm')}">28.07.2017 14:11</b>
+                        <b>Rechnung #<span th:text="${receipt.receiptId}">78</span></b>
+                        <span style="margin-left:1rem" th:text="${#temporals.format(receipt.receiptDate,'dd.MM.yyyy hh:mm')}">28.07.2017 14:11</span>
                     </h3>
                     <div class="row card-block">
                         <div class="col-lg-3 col-md-6 col-sm-12">
@@ -157,7 +158,8 @@
                             </p>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-12" style="padding-bottom: 5px">
-                            <a href="#" class="btn btn-primary btn-block float-right">Stornieren</a>
+                            <a href="#" class="btn btn-primary btn-block float-right"
+                            th:href="@{/staff/receipts/{id}?cancel&keywords={keywords}(id=${receipt.receiptId},keywords=${searchCriteria.searchText})}">Stornieren</a>
                             <a href="#" class="btn btn-primary btn-block float-right">Details</a>
                         </div>
                     </div>

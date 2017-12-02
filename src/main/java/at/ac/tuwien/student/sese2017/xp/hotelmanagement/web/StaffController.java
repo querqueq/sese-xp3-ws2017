@@ -14,6 +14,7 @@ import java.util.Optional;
 import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -129,12 +130,28 @@ public class StaffController {
    * @return String representing the path to the template that is to be shown.
    */
   @RequestMapping({"/staff/search", "/staff", "/staff/index"})
-  public String search(Model model) {
+  public String getSearch(Model model
+      , @RequestParam(value = "keywords", required = false) String keywords
+      , @RequestParam(value = "domain", required = false) SearchOption searchOption) {
     log.info("staff index - Page called");
     StaffSearchCriteria staffSearchCriteria = new StaffSearchCriteria();
-    staffSearchCriteria.setSearchOption(SearchOption.CUSTOMERS);
+    staffSearchCriteria.setSearchOption(Optional.ofNullable(searchOption).orElse(SearchOption.CUSTOMERS));
+    staffSearchCriteria.setSearchText(keywords);
     model.addAttribute(SEARCH_CRITERIA, staffSearchCriteria);
-    return STAFF_SEARCH_VIEW;
+    Optional.ofNullable(staffSearchCriteria).map(StaffSearchCriteria::getSearchOption)
+        .ifPresent(option -> {
+          switch (option) {
+            case CUSTOMERS:
+              model.addAttribute("customers", customerService.search(keywords));
+              break;
+            case RECEIPTS:
+              model.addAttribute(RECEIPTS, receiptService.search(keywords));
+              break;
+            default:
+              break;
+          }
+        });
+    return STAFF_SEARCH_VIEW; 
   }
 
   /**
@@ -145,25 +162,10 @@ public class StaffController {
    * @return view path
    */
   @PostMapping("/staff/search")
-  public String postSearch(Model model,
+  public String doSearch(Model model,
       @ModelAttribute(SEARCH_CRITERIA) StaffSearchCriteria criteria) {
     log.info("search customer - Page called");
-    Optional.ofNullable(criteria).map(StaffSearchCriteria::getSearchOption)
-        .ifPresent(searchOption -> {
-          switch (searchOption) {
-            case CUSTOMERS:
-              model.addAttribute("customers", customerService.search(criteria.getSearchText()));
-              break;
-            case RECEIPTS:
-              model.addAttribute(RECEIPTS, receiptService.search(criteria.getSearchText()));
-              break;
-            default:
-              break;
-          }
-        });
-//    criteria.setSearchText(null);
-    model.addAttribute(SEARCH_CRITERIA, criteria);
-    return STAFF_SEARCH_VIEW;
+    return redirectToSearch(criteria);
   }
 
   /**
@@ -195,7 +197,7 @@ public class StaffController {
   public String getReceipt(Model model
       , @PathVariable("receiptId") Long receiptId
       , @RequestParam("keywords") String searchKeywords
-      , @RequestParam("cancel") boolean cancel
+      , @RequestParam(value = "cancel", defaultValue = "false") Boolean cancel
     ) {
     model.addAttribute("cancel", cancel);
     model.addAttribute("keywords", searchKeywords);
@@ -212,7 +214,7 @@ public class StaffController {
    */
   @PostMapping("/staff/receipts/{receiptId}")
   public String cancelReceipt(Model model
-      , @RequestParam("keywords") String searchKeywords
+      , @RequestParam(value = "keywords", required = false) String searchKeywords
       , @PathVariable("receiptId") Long receiptId
       ) {
     StaffSearchCriteria criteria = new StaffSearchCriteria();
@@ -226,6 +228,17 @@ public class StaffController {
       model.addAttribute("danger", "Rechnung konnte nicht storniert werden!");
       //TODO view danger alert in view
     }
-    return postSearch(model, criteria);
+    return redirectToSearch(SearchOption.RECEIPTS, searchKeywords);
+  }
+  
+  private String redirectToSearch(StaffSearchCriteria criteria) {
+    return redirectToSearch(criteria.getSearchOption(), criteria.getSearchText());
+  }
+  
+  private String redirectToSearch(SearchOption searchOption, String searchText) {
+    return String.format("redirect:/staff/search?keywords=%s&domain=%s"
+        , searchText
+        , searchOption
+        );
   }
 }

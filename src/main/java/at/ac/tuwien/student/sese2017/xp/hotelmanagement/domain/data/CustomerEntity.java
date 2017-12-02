@@ -24,6 +24,8 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -41,6 +43,8 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @Data
 @ToString(exclude = "receipts")
 @Indexed
+@Audited
+//(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 public class CustomerEntity {
 

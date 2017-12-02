@@ -1,18 +1,21 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
+import javax.transaction.Transactional;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
+@Transactional
 public class ReceiptEntityTests extends EntityTestBase {
   @Autowired
   private ReceiptRepository receiptRepository;
@@ -122,5 +125,44 @@ public class ReceiptEntityTests extends EntityTestBase {
 
 
 
+  }
+  
+  @Test
+  public void testSoftDelete() {
+    ReceiptEntity receipt = new ReceiptEntity()
+    .addCustomer(new CustomerEntity()
+        .setBillingAddress(new AddressEntity()
+            .setName("Abbey Fields")
+            .setStreetAddress1("Karlsplatz 1")
+            .setZipCode("1040")
+            .setCity("Wien")
+            .setState("Austria"))
+        .setBirthday(LocalDate.of(1982, 7, 7))
+        .setDiscount(BigDecimal.ZERO)
+        .setEmail("hr.mueller@example.org")
+        .setName("Abbey Fields")
+        .setSex(Sex.MALE)
+        .setPhoneNumber("01234567"))
+    .setHotelAddress(new AddressEntity()
+        .setName("Hotel zum schoenen Urblaub")
+        .setStreetAddress1("Am Buchtaler Jockl 1")
+        .setZipCode("3024")
+        .setCity("Lungau nahe dem Pongau")
+        .setState("Austria"))
+    .setDurationOfStay(10)
+    .addRoom(new RoomEntity().setName("presidentialSuite")
+        .setMaxOccupants(4))
+    .setPrice(Double.POSITIVE_INFINITY)
+    .setDiscount(0.05)
+    .setReceiptDate(LocalDateTime.now())
+    ;
+    
+    receiptRepository.save(receipt);
+    Long receiptId = receipt.getReceiptId();
+    int revisionCount = receiptRepository.findRevisions(receiptId).getContent().size();
+    assertEquals(0, revisionCount);
+    receiptRepository.deleteById(receiptId);
+    assertFalse(receiptRepository.findById(receiptId).isPresent());
+    assertEquals(1, receiptRepository.findRevisions(receiptId).getContent().size());
   }
 }

@@ -4,7 +4,7 @@
 
 	<groupId>at.ac.tuwien.student.sese2017.xp</groupId>
 	<artifactId>hotelmanagement</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<developers>
@@ -29,7 +29,7 @@
 	<scm>
 		<url>git@github.com:sese-xp3-ws2017/sese-xp3-ws2017.git</url>
 		<connection>scm:git:git@github.com:sese-xp3-ws2017/sese-xp3-ws2017.git</connection>
-		<tag>hotelmanagement-0.1.0</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<name>hotelmanagement</name>

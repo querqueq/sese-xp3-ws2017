@@ -5,7 +5,6 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.Custom
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotFoundException;
 
-
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;

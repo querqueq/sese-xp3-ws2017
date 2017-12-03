@@ -167,7 +167,7 @@
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-12" style="padding-bottom: 5px">
                             <a href="#" class="btn btn-primary btn-block float-right"
-                            th:href="@{/staff/receipts/{id}?cancel&keywords={keywords}(id=${receipt.receiptId},keywords=${searchCriteria.searchText})}">Stornieren</a>
+                            th:href="@{/staff/receipts/{id}?cancel=1&keywords={keywords}(id=${receipt.receiptId},keywords=${searchCriteria.searchText})}">Stornieren</a>
                             <a href="#" class="btn btn-primary btn-block float-right">Details</a>
                         </div>
                     </div>

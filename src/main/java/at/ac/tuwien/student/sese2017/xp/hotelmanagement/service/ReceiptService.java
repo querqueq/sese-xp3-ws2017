@@ -4,6 +4,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntit
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
  *
  * @author Michael
  */
+@Slf4j
 @Service
 public class ReceiptService {
 
@@ -69,6 +71,7 @@ public class ReceiptService {
     try {
       runWithExceptionHandling(() -> {
         receiptRepository.deleteById(receiptId);
+        log.info("Receipt {} has been canceled", receiptId);
         return null;
       });
     } catch (EmptyResultDataAccessException e) {

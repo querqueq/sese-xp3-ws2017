@@ -152,6 +152,7 @@ public class StaffController {
    */
   @GetMapping("/staff/customers/{customerId}/receipts")
   public String getReceipts(Model model, @PathVariable("customerId") Long customerId) {
+    log.info("customer's receipts - Page called");
     StaffSearchCriteria criteria = new StaffSearchCriteria();
     criteria.setSearchText(null);
     criteria.setSearchOption(SearchOption.RECEIPTS);
@@ -173,6 +174,7 @@ public class StaffController {
   public String getReceipt(Model model, @PathVariable("receiptId") Long receiptId,
       @RequestParam("keywords") String searchKeywords,
       @RequestParam(value = "cancel", defaultValue = "false") Boolean cancel) {
+    log.info("receipt details (cancel: {}) - Page called", cancel);
     model.addAttribute("cancel", cancel);
     model.addAttribute("keywords", searchKeywords);
     model.addAttribute("receipt", receiptService.getReceipt(receiptId));
@@ -192,13 +194,15 @@ public class StaffController {
       @RequestParam(value = "keywords", required = false) String searchKeywords,
       @PathVariable("receiptId") Long receiptId,
       RedirectAttributes redir) {
+    log.info("cancel receipt - Page called");
     StaffSearchCriteria criteria = new StaffSearchCriteria();
     criteria.setSearchText(searchKeywords);
     criteria.setSearchOption(SearchOption.RECEIPTS);
     try {
       receiptService.cancelReceipt(receiptId);
-      redir.addFlashAttribute("success", "Rechnung storniert.");
+      redir.addFlashAttribute("success", "Rechnung " + receiptId + " storniert.");
     } catch (RuntimeException e) {
+      log.error("Error while canceling receipt {}", receiptId, e);
       redir.addFlashAttribute("danger", "Rechnung konnte nicht storniert werden.");
     }
     return redirectToSearch(SearchOption.RECEIPTS, searchKeywords);

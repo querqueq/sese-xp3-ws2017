@@ -58,7 +58,7 @@
                     </span>
                 </p>
             </div>
-            <div class="offset-md-4 col-md-4">
+            <div class="offset-md-4 col-md-4" th:if="${cancel}">
                 <form action="staff/receipts/1" method="post" th:action="@{/staff/receipts/{id}(id=${receipt.receiptId})}" th:object="${receipt}">
                     <input type="hidden" name="keywords" value="" th:value="${keywords}">
                     <div class="card text-center" style="padding: 10px">

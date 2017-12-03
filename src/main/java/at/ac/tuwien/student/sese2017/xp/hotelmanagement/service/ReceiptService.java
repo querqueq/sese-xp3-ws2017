@@ -4,12 +4,12 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntit
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.CustomerRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotFoundException;
-import lombok.extern.slf4j.Slf4j;
+
+
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;

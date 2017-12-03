@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import lombok.Data;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,6 +27,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
  */
 @Data
 @Indexed
+@Audited
 @Entity
 public class ReceiptEntity {
   @Id
@@ -40,6 +44,7 @@ public class ReceiptEntity {
       joinColumns = {@JoinColumn(name = "receiptEntity_id", referencedColumnName = "receiptId")},
       inverseJoinColumns = {@JoinColumn(name = "customerEntity_id", referencedColumnName = "id")})
   @IndexedEmbedded
+  @NotAudited
   private List<CustomerEntity> customers = new ArrayList<>();
 
   @ManyToMany(cascade = {CascadeType.PERSIST})
@@ -47,10 +52,19 @@ public class ReceiptEntity {
       joinColumns = {@JoinColumn(name = "receiptEntity_id", referencedColumnName = "receiptId")},
       inverseJoinColumns = {@JoinColumn(name = "roomEntity_id", referencedColumnName = "roomId")})
   @IndexedEmbedded
+  @NotAudited
   private List<RoomEntity> rooms = new ArrayList<>();
 
+  @Column
+  @Audited
   private Double discount;
+
+  @Column
+  @Audited
   private Double price;
+  
+  @Column
+  @Audited
   private Integer durationOfStay;
 
   @DateTimeFormat(iso = ISO.DATE_TIME)

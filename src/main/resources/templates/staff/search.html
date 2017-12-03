@@ -62,11 +62,19 @@
         <div class="search-results">
             <div class="row alerts">
                 <div class="col-md-12">
+                    <div class="alert alert-danger" role="alert" th:if="${danger != null}">
+                        <strong>Fehler!</strong> 
+                        <span th:text="${danger}">
+                            Bitte versuchen Sie es später nochmal.
+                        </span>
+                    </div>
                     <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(customers) && #lists.isEmpty(receipts)}">
                         <strong>Keine Treffer!</strong> Passen Sie Ihre Suche an oder konsultieren Sie die <a href="#">Hilfe</a>.
                     </div>
-                    <div class="alert alert-danger" role="alert" th:if="${false}">
-                        <strong>Fehler!</strong> Bitte versuchen Sie es später nochmal.
+                    <div class="alert alert-success" role="alert" th:if="${success != null}">
+                        <span th:text="${success}">
+                            Erfolg
+                        </span>
                     </div>
                 </div>
             </div>
@@ -123,7 +131,8 @@
                 <article class="card">
                     <h3 class="card-header">
                         <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                        <b th:text="${#temporals.format(receipt.receiptDate,'dd.MM.yyyy hh:mm')}">28.07.2017 14:11</b>
+                        <b>Rechnung #<span th:text="${receipt.receiptId}">78</span></b>
+                        <span style="margin-left:1rem" th:text="${#temporals.format(receipt.receiptDate,'dd.MM.yyyy hh:mm')}">28.07.2017 14:11</span>
                     </h3>
                     <div class="row card-block">
                         <div class="col-lg-3 col-md-6 col-sm-12">
@@ -157,7 +166,8 @@
                             </p>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-12" style="padding-bottom: 5px">
-                            <a href="#" class="btn btn-primary btn-block float-right">Stornieren</a>
+                            <a href="#" class="btn btn-primary btn-block float-right"
+                            th:href="@{/staff/receipts/{id}?cancel=1&keywords={keywords}(id=${receipt.receiptId},keywords=${searchCriteria.searchText})}">Stornieren</a>
                             <a href="#" class="btn btn-primary btn-block float-right">Details</a>
                         </div>
                     </div>

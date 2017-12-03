@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import lombok.Data;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
@@ -14,6 +16,7 @@ import org.hibernate.search.annotations.Indexed;
 @Data
 @Indexed
 @Entity
+@Audited
 public class AddressEntity {
 
   @Id

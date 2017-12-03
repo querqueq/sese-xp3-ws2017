@@ -14,14 +14,18 @@ import java.util.Optional;
 import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * This controller handles basic requests to the staff only space of the web page. For example the
@@ -95,87 +99,120 @@ public class StaffController {
   }
 
   /**
-   * Gets the view for the customer search.
-   * 
-   * @param model model for view
-   * @return path to template
-   */
-  @GetMapping("/staff/customer/search")
-  public String getSearchCustomer(Model model) {
-    log.info("getSearchCustomer - Page called");
-    model.addAttribute(SEARCH_CRITERIA, new StaffSearchCriteria());
-    return "staff/customerSearch";
-  }
-
-  /**
-   * Does a full text search with the given search criteria and puts the result in the model.
-   * 
-   * @param model model for view
-   * @param criteria the search criteria model
-   * @return path to template
-   */
-  @PostMapping("/staff/customer/search")
-  public String searchCustomer(Model model, @ModelAttribute StaffSearchCriteria criteria) {
-    log.info("search customer - Page called");
-    model.addAttribute("customerList", customerService.search(criteria.getSearchText()));
-    return "staff/customerSearch";
-  }
-
-  /**
    * Handles calls to the suburl "/staff/index" on the web representation.
    *
    * @return String representing the path to the template that is to be shown.
    */
   @RequestMapping({"/staff/search", "/staff", "/staff/index"})
-  public String search(Model model) {
+  public String getSearch(Model model,
+      @RequestParam(value = "keywords", required = false) String keywords,
+      @RequestParam(value = "domain", required = false) SearchOption searchOption) {
     log.info("staff index - Page called");
     StaffSearchCriteria staffSearchCriteria = new StaffSearchCriteria();
-    staffSearchCriteria.setSearchOption(SearchOption.CUSTOMERS);
+    staffSearchCriteria
+        .setSearchOption(Optional.ofNullable(searchOption).orElse(SearchOption.CUSTOMERS));
+    staffSearchCriteria.setSearchText(keywords);
     model.addAttribute(SEARCH_CRITERIA, staffSearchCriteria);
-    return STAFF_SEARCH_VIEW;
-  }
-
-  /**
-   * A view with an evaluated search.
-   * @param model with search criteria and receipts
-   * @param criteria specified search criteria
-   * @return view path
-   */
-  @PostMapping("/staff/search")
-  public String postSearch(Model model,
-      @ModelAttribute(SEARCH_CRITERIA) StaffSearchCriteria criteria) {
-    log.info("search customer - Page called");
-    Optional.ofNullable(criteria).map(StaffSearchCriteria::getSearchOption)
-        .ifPresent(searchOption -> {
-          switch (searchOption) {
+    Optional.ofNullable(staffSearchCriteria).map(StaffSearchCriteria::getSearchOption)
+        .ifPresent(option -> {
+          switch (option) {
             case CUSTOMERS:
-              model.addAttribute("customers", customerService.search(criteria.getSearchText()));
+              model.addAttribute("customers", customerService.search(keywords));
               break;
             case RECEIPTS:
-              model.addAttribute(RECEIPTS, receiptService.search(criteria.getSearchText()));
+              model.addAttribute(RECEIPTS, receiptService.search(keywords));
               break;
             default:
               break;
           }
         });
-    criteria.setSearchText(null);
-    model.addAttribute(SEARCH_CRITERIA, criteria);
     return STAFF_SEARCH_VIEW;
   }
-  
+
+  /**
+   * A view with an evaluated search.
+   * 
+   * @param model with search criteria and receipts
+   * @param criteria specified search criteria
+   * @return view path
+   */
+  @PostMapping("/staff/search")
+  public String doSearch(Model model,
+      @ModelAttribute(SEARCH_CRITERIA) StaffSearchCriteria criteria) {
+    log.info("search customer - Page called");
+    return redirectToSearch(criteria);
+  }
+
   /**
    * A view with all receipts of a specific customer.
+   * 
    * @param model with search criteria and receipts
    * @param customerId specific customer
    * @return view path
    */
   @GetMapping("/staff/customers/{customerId}/receipts")
   public String getReceipts(Model model, @PathVariable("customerId") Long customerId) {
+    log.info("customer's receipts - Page called");
     StaffSearchCriteria criteria = new StaffSearchCriteria();
     criteria.setSearchText(null);
     criteria.setSearchOption(SearchOption.RECEIPTS);
     model.addAttribute(SEARCH_CRITERIA, criteria);
     model.addAttribute(RECEIPTS, receiptService.getReceiptsForCustomer(customerId));
     return STAFF_SEARCH_VIEW;
+  }
+
+  /**
+   * Views all details of a specific receipt.
+   * 
+   * @param model with search criteria and receipts
+   * @param receiptId id of the receipt which is to be laid eyes upon
+   * @param searchKeywords ye previously inputedly termy
+   * @param cancel whether the receipt shall be prompted for cancelation or not
+   * @return view path
+   */
+  @GetMapping("/staff/receipts/{receiptId}")
+  public String getReceipt(Model model, @PathVariable("receiptId") Long receiptId,
+      @RequestParam("keywords") String searchKeywords,
+      @RequestParam(value = "cancel", defaultValue = "false") Boolean cancel) {
+    log.info("receipt details (cancel: {}) - Page called", cancel);
+    model.addAttribute("cancel", cancel);
+    model.addAttribute("keywords", searchKeywords);
+    model.addAttribute("receipt", receiptService.getReceipt(receiptId));
+    return "staff/receipt";
+  }
+
+  /**
+   * Cancel a specific receipt.
+   * 
+   * @param model with search criteria and receipts
+   * @param searchKeywords ye previously inputedly termy
+   * @param receiptId id of the receipt which is to be laid eyes upon
+   * @return view path
+   */
+  @PostMapping("/staff/receipts/{receiptId}")
+  public String cancelReceipt(Model model,
+      @RequestParam(value = "keywords", required = false) String searchKeywords,
+      @PathVariable("receiptId") Long receiptId,
+      RedirectAttributes redir) {
+    log.info("cancel receipt - Page called");
+    StaffSearchCriteria criteria = new StaffSearchCriteria();
+    criteria.setSearchText(searchKeywords);
+    criteria.setSearchOption(SearchOption.RECEIPTS);
+    try {
+      receiptService.cancelReceipt(receiptId);
+      redir.addFlashAttribute("success", "Rechnung " + receiptId + " storniert.");
+    } catch (RuntimeException e) {
+      log.error("Error while canceling receipt {}", receiptId, e);
+      redir.addFlashAttribute("danger", "Rechnung konnte nicht storniert werden.");
+    }
+    return redirectToSearch(SearchOption.RECEIPTS, searchKeywords);
+  }
+
+  private String redirectToSearch(StaffSearchCriteria criteria) {
+    return redirectToSearch(criteria.getSearchOption(), criteria.getSearchText());
+  }
+
+  private String redirectToSearch(SearchOption searchOption, String searchText) {
+    return String.format("redirect:/staff/search?keywords=%s&domain=%s", searchText, searchOption);
   }
 }

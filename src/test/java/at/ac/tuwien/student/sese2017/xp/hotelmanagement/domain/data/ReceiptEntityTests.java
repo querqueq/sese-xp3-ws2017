@@ -1,21 +1,25 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 
 public class ReceiptEntityTests extends EntityTestBase {
   @Autowired
   private ReceiptRepository receiptRepository;
+  
 
   @Test
   public void testBasicStorageOfRecipes() {

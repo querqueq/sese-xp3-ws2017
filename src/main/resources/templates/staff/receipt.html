@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="../../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}">
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/offcanvas.css" rel="stylesheet" th:href="@{/css/offcanvas.css}">
+    <title>Rechnung</title>
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div th:insert="fragments/header :: menu"></div>
+    <div class="container">
+        <div class="row">
+            <div class="offset-md-4 col-md-4" style="text-align: justify;">
+                <h3>Rechnung #<span th:text="${receipt.receiptId}">78</span></h3>
+                <p>
+                    <b>Rechnungsdatum</b>
+                </p>
+                <p>
+                    <span th:text="${#temporals.format(receipt.receiptDate,'dd.MM.yyyy hh:mm')}">28.07.2017 14:11</span>
+                </p>
+                <p>
+                    <b>Rabatt</b>
+                </p>
+                <p>
+                    <span th:text="${receipt.discount}">12</span> %
+                </p>
+                <p>
+                    <b>Endsumme</b>
+                </p>
+                <p>
+                    € <span th:text="${#numbers.formatDecimal(receipt.price, 1, 2)}">422.30</span>
+                </p>
+                <p>
+                    <b>Rechnungs-Adressen</b>
+                </p>
+                <p>
+                    <span th:each="customer : ${receipt.customers}">
+                        <span th:text="${customer.billingAddress.name}">Abbey Fields</span>,
+                        <span th:text="${customer.billingAddress.streetAddress1}">Karlsplatz</span>,
+                        <span th:text="${customer.billingAddress.zipCode}">1040</span>
+                        <span th:text="${customer.billingAddress.city}">Wien</span>,
+                        <span th:text="${customer.billingAddress.state}">Austria</span>
+                        <br>
+                    </span>
+                </p>
+                <p>
+                    <b>Zimmer</b>
+                </p>
+                <p>
+                    <span th:each="room : ${receipt.rooms}">
+                        <span th:text="${room.name}">Zimmer 104</span>
+                        <br>
+                    </span>
+                </p>
+            </div>
+            <div class="offset-md-4 col-md-4" th:if="${cancel}">
+                <form action="staff/receipts/1" method="post" th:action="@{/staff/receipts/{id}(id=${receipt.receiptId})}" th:object="${receipt}">
+                    <input type="hidden" name="keywords" value="" th:value="${keywords}">
+                    <div class="card text-center" style="padding: 10px">
+                        <div class="card-block">
+                            <p class="card-text">Möchte Sie diese Rechnung wirklich stornieren?</p>
+                            <button class="btn btn-success" type="submit">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                            </button>
+                            <a href="#" class="btn btn-danger" 
+                            th:href="@{/staff/search?keywords={keywords}&domain=RECEIPTS(keywords=${keywords})}">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../../static/js/jquery-3.2.1.slim.min.js" th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+    <script src="../../static/js/popper.min.js" th:src="@{/js/popper.min.js}"></script>
+    <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="../../static/js/offcanvas.js" th:src="@{/js/offcanvas.js}"></script>
+</body>
+
+</html>

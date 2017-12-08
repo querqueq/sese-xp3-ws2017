@@ -44,6 +44,8 @@ public class CustomerService {
    */
   public Long create(@Valid CustomerEntity entity) {
     // TODO deny double entries (match for name and billing address)
+    // TODO create UserEntity with email as username and 1 Role CUSTOMER
+    //      password is randomly generated and sent to the customers email
     checkPhoneNumber(entity.getFaxNumber());
     checkPhoneNumber(entity.getPhoneNumber());
     if (entity.getBirthday().isAfter(LocalDate.now())) {

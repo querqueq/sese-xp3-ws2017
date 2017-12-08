@@ -1,7 +1,6 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import static org.junit.Assert.assertNotNull;
-
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
@@ -12,14 +11,9 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
-
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

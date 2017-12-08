@@ -2,23 +2,18 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria.SearchOption;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.ReceiptService;
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -110,22 +105,22 @@ public class StaffController {
     log.info("staff index - Page called");
     StaffSearchCriteria staffSearchCriteria = new StaffSearchCriteria();
     staffSearchCriteria
-        .setSearchOption(Optional.ofNullable(searchOption).orElse(SearchOption.CUSTOMERS));
+    .setSearchOption(Optional.ofNullable(searchOption).orElse(SearchOption.CUSTOMERS));
     staffSearchCriteria.setSearchText(keywords);
     model.addAttribute(SEARCH_CRITERIA, staffSearchCriteria);
     Optional.ofNullable(staffSearchCriteria).map(StaffSearchCriteria::getSearchOption)
-        .ifPresent(option -> {
-          switch (option) {
-            case CUSTOMERS:
-              model.addAttribute("customers", customerService.search(keywords));
-              break;
-            case RECEIPTS:
-              model.addAttribute(RECEIPTS, receiptService.search(keywords));
-              break;
-            default:
-              break;
-          }
-        });
+    .ifPresent(option -> {
+      switch (option) {
+        case CUSTOMERS:
+          model.addAttribute("customers", customerService.search(keywords));
+          break;
+        case RECEIPTS:
+          model.addAttribute(RECEIPTS, receiptService.search(keywords));
+          break;
+        default:
+          break;
+      }
+    });
     return STAFF_SEARCH_VIEW;
   }
 
@@ -206,6 +201,47 @@ public class StaffController {
       redir.addFlashAttribute("danger", "Rechnung konnte nicht storniert werden.");
     }
     return redirectToSearch(SearchOption.RECEIPTS, searchKeywords);
+  }
+
+  @GetMapping("/staff/staffers/create")
+  public String getCreateStaff(Model model) {
+
+    return null;
+  }
+
+  @PostMapping("/staff/staffers/create")
+  public String doCreateStaff(Model model,
+      @ModelAttribute StaffEntity staff,
+      @ModelAttribute("initialVacationDays") Integer initialVacationDays) {
+
+    return null;
+  }
+
+  @GetMapping("/staff/staffers/{stafferId}/vacations/create")
+  public String getVacationInput(Model model, @PathVariable("stafferId") Long stafferId) {
+    return null;
+  }
+
+  @PostMapping("/staff/staffers/{stafferId}/vacations/create")
+  public String doVacationInput(Model model, @PathVariable("stafferId") Long stafferId) {
+    return null;
+  }
+
+  @GetMapping("/staff/vacations")
+  public String getVacations(Model model) {
+    return null;
+  }
+
+  @PostMapping("/staff/vacations/{vacationId}/accept")
+  public String acceptVacation(Model model, @PathVariable("vacationId") Long vacationId) {
+    return null;
+  }
+
+  @PostMapping("/staff/vacations/{vacationId}/reject")
+  public String rejectVacation(Model model,
+      @PathVariable("vacationId") Long vacationId,
+      @ModelAttribute("reason") String reason) {
+    return null;
   }
 
   private String redirectToSearch(StaffSearchCriteria criteria) {

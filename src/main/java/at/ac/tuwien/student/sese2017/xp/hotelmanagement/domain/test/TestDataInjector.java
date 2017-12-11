@@ -3,13 +3,16 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.config.AppProperties;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.JobTitle;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -124,6 +127,7 @@ public class TestDataInjector {
         em.persist(RECEIPT_4);
         em.persist(RECEIPT_5);
         em.persist(RECEIPT_6);
+        em.persist(STAFF_1);
         em.flush();
         log.info("Finished injecting test data");
       }
@@ -376,4 +380,13 @@ public class TestDataInjector {
       .setDiscount(0.0)
       .setReceiptDate(LocalDateTime.of(2017, 10, 4, 8, 20))
       ;
+  
+  @SuppressWarnings("serial")
+  public static final StaffEntity STAFF_1 = new StaffEntity()
+      .setBirthday(LocalDate.of(1998, 5, 16))
+      .setEmail("staff@staff.com")
+      .setJobTitle(JobTitle.RECEPTIONIST)
+      .setName("Stefanie stafferson")
+      .setSex(Sex.FEMALE)
+      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 20);}});
 }

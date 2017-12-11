@@ -2,9 +2,8 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.StaffEmployment;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughJohannesException;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
 import javax.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +19,7 @@ public class StaffService {
     return null;
   }
 
-  public Long requestVacation(@Valid VacationEntity vacation) throws NotEnoughJohannesException {
+  public Long requestVacation(@Valid VacationEntity vacation) throws NotEnoughVacationDaysException {
     // TODO check if vacation uses up more than the available vacation days
     // => throw exception
     // TODO validate if to date is after from date

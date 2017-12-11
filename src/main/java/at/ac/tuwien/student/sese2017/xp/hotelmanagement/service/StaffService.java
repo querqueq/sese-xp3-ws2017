@@ -4,13 +4,12 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.AuthenticationFacad
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Role;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.StaffEmployment;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.StaffRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.UserRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.VacationRepository;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughJohannesException;
 import java.util.Optional;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -45,7 +44,7 @@ public class StaffService {
     return null;
   }
 
-  public Long requestVacation(@Valid VacationEntity vacation) throws NotEnoughJohannesException {
+  public Long requestVacation(@Valid VacationEntity vacation) throws NotEnoughVacationDaysException {
     // TODO check if vacation uses up more than the available vacation days
     // => throw exception
     // TODO validate if to date is after from date

@@ -18,17 +18,18 @@ import org.springframework.lang.Nullable;
 @Entity
 public class VacationEntity {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue
   private Long id;
 
-  @NotNull
+  @Column(nullable = false)
   @DateTimeFormat(iso = ISO.DATE)
-  private LocalDate from;
+  private LocalDate fromDate;
 
-  @NotNull
+  @Column(nullable = false)
   @DateTimeFormat(iso = ISO.DATE)
-  private LocalDate to;
+  private LocalDate toDate;
 
+  @Column(nullable = false)
   private Integer vacationDays;
   
   @ManyToOne
@@ -38,11 +39,10 @@ public class VacationEntity {
   @Nullable
   private StaffEntity manager;
   
-  @Column
+  @Column(nullable = true)
   @Enumerated
   private VacationStatus resolution = VacationStatus.PENDING;
   
-  @Column
-  @Nullable
+  @Column(nullable = true)
   private String reason;
 }

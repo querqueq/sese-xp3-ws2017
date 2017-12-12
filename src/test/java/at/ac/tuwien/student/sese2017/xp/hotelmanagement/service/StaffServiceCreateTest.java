@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -132,6 +133,8 @@ public class StaffServiceCreateTest {
     assertThat(newStaff.getPassword(), not(isEmptyOrNullString()));
     assertThat(newStaff.getPassword(), not(is(staffEmployment.getClearTextPassword())));
     assertThat(newStaff.getRoles(), is(newStaffsRoles));
+    assertTrue(newStaff.getVacations().size() > 0);
+    assertThat(newStaff.getUsername(), is(newStaff.getEmail()));
   }
   
   @Test

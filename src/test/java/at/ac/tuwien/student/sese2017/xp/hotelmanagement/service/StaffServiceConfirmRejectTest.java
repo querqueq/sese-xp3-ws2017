@@ -250,7 +250,7 @@ public class StaffServiceConfirmRejectTest {
   public void testRejectResolvedVacation() {
     using(manager, requester, acceptedVacation);
     setRequestingUser(manager);
-    exception.expect(IllegalArgumentException.class);
+    exception.expect(IllegalStateException.class);
     staffService.rejectVacation(acceptedVacation.getId(), "some reason");
   }
   
@@ -258,7 +258,7 @@ public class StaffServiceConfirmRejectTest {
   public void testConfirmResolvedVacation() {
     using(manager, requester, acceptedVacation);
     setRequestingUser(manager);
-    exception.expect(IllegalArgumentException.class);
+    exception.expect(IllegalStateException.class);
     staffService.confirmVacation(acceptedVacation.getId());    
   }
 }

@@ -59,6 +59,7 @@ public class StaffServiceTest extends HotelManagementApplicationTests {
   @Test(expected = IllegalArgumentException.class)
   public void testNegativeVacationDays() throws NotEnoughVacationDaysException {
     VacationEntity vacationEntity = getVacationEntity()
+<<<<<<< HEAD
         .setFromDate(LocalDate.of(2017, 10, 2))
         .setToDate(LocalDate.of(2017, 10, 2))
         .setVacationDays(-1);

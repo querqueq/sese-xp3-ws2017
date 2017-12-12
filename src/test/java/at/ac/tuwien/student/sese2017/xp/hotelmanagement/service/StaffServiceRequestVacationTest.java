@@ -96,7 +96,7 @@ public class StaffServiceRequestVacationTest extends HotelManagementApplicationT
    * staffer has available.
    * @throws NotEnoughVacationDaysException Should be thrown because of too many vacation days
    */
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = NotEnoughVacationDaysException.class)
   public void testExceedVacationDaysLimit() throws NotEnoughVacationDaysException {
     VacationEntity vacationEntity = getVacationEntity()
         .setFromDate(LocalDate.of(2017, 10, 2))

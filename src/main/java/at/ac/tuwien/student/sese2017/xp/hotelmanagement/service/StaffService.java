@@ -28,9 +28,11 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.StaffR
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.UserRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.VacationRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
+import lombok.extern.slf4j.Slf4j;
 
 @Validated
 @Service
+@Slf4j
 public class StaffService {
 
   private final VacationRepository vacationRepository;
@@ -73,7 +75,7 @@ public class StaffService {
     if(vacation.getVacationDays() < 1) {
       throw new IllegalArgumentException("Cannot request a vacation with " + vacation.getVacationDays() + " days");
     }
-    
+        
     //Calculate available vacation days up until and including this year
     //Future reductions in vacation days could lead to illegal vacations 
     Integer targetYear = vacation.getToDate().getYear();
@@ -90,6 +92,14 @@ public class StaffService {
       throw new IllegalArgumentException("Vacation cannot end before it starts");
     }
     
+    int maxDays = vacation.getFromDate().until(vacation.getToDate().plusDays(1)).getDays();
+    if(vacation.getVacationDays() > maxDays) {
+      throw new IllegalArgumentException("Requested too many days for vacation period of max. " + maxDays + " days");
+    }
+
+    log.info("Staffer {} request {} days of vacation from {} till {}"
+        , requester.getId(), vacation.getVacationDays(), vacation.getFromDate(), vacation.getToDate());
+    
     //Calculate total days of accepted and pending vacation requests 
     Integer totalUsedVacationDays = requester.getVacations()
         .stream().filter(v -> v.getResolution().equals(VacationStatus.ACCEPTED) 
@@ -98,11 +108,16 @@ public class StaffService {
     
     //Calculate total number of vacation days possible up until and including the target year
     Integer totalPossibleVacationDays = yearlyVacationDays.descendingMap().entrySet().stream()
-    .reduce(new AbstractMap.SimpleEntry<Integer,Integer>(targetYear, 0)
-        , (prevYear, currentYear) -> 
-          new AbstractMap.SimpleEntry<Integer,Integer>(currentYear.getKey()
-              , prevYear.getValue() + currentYear.getValue() * (prevYear.getKey() - currentYear.getKey()))
-    ).getValue();
+        .filter(year -> year.getKey() < targetYear)
+        .reduce(new AbstractMap.SimpleEntry<Integer,Integer>(targetYear, 0)
+            , (prevYear, currentYear) -> new AbstractMap.SimpleEntry<Integer,Integer>(currentYear.getKey()
+                  , prevYear.getValue() + currentYear.getValue() * (prevYear.getKey() - currentYear.getKey())
+                  )
+        ).getValue();
+    Integer sameYearDays = yearlyVacationDays.get(targetYear);
+    if(sameYearDays != null) {
+      totalPossibleVacationDays += sameYearDays;
+    }
     
     Integer leftVacationDays = totalPossibleVacationDays - totalUsedVacationDays;
     

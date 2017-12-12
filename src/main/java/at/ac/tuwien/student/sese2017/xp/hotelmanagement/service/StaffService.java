@@ -9,6 +9,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.StaffEmployme
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.StaffRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.UserRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.VacationRepository;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.ForbiddenException;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughJohannesException;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -89,7 +90,7 @@ public class StaffService {
   private StaffEntity tryGetCurrentUserAsManager() {
     Authentication authentication = authFacade.getAuthentication();
     StaffEntity manager;
-    if (!(authentication instanceof AnonymousAuthenticationToken)) {
+    if (!(authentication instanceof AnonymousAuthenticationToken) && authentication != null) {
       manager = Optional.ofNullable(
           userRepository.findByUsername(authentication.getName()))
           .map(us -> {
@@ -106,7 +107,7 @@ public class StaffService {
     }
 
     if(!manager.getRoles().contains(Role.MANAGER)) {
-      throw new IllegalStateException("Current user is not a manager!");
+      throw new ForbiddenException(Role.MANAGER, manager.getId(), "staff changes");
     }
     return manager;
   }

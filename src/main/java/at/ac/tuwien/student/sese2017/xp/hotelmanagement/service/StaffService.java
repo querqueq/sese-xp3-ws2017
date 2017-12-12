@@ -1,21 +1,22 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.AuthenticationFacade;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Role;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.StaffEmployment;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.StaffRepository;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.UserRepository;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.VacationRepository;
 import java.util.Optional;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.AuthenticationFacade;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Role;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.StaffEmployment;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.StaffRepository;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.UserRepository;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.VacationRepository;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
 
 @Validated
 @Service

@@ -34,8 +34,8 @@ public class StaffServiceTest extends HotelManagementApplicationTests {
   @Test(expected = IllegalArgumentException.class)
   public void testVacationRequestWithToDateBeforeFromDate() throws NotEnoughVacationDaysException {
     VacationEntity vacationEntity = getVacationEntity()
-        .setFrom(LocalDate.of(2017, 10, 6))
-        .setTo(LocalDate.of(2017, 10, 2));
+        .setFromDate(LocalDate.of(2017, 10, 6))
+        .setToDate(LocalDate.of(2017, 10, 2));
     staffService.requestVacation(vacationEntity);
   }
 
@@ -46,8 +46,8 @@ public class StaffServiceTest extends HotelManagementApplicationTests {
   @Test(expected = IllegalArgumentException.class)
   public void testZeroVacationDays() throws NotEnoughVacationDaysException {
     VacationEntity vacationEntity = getVacationEntity()
-        .setFrom(LocalDate.of(2017, 10, 2))
-        .setTo(LocalDate.of(2017, 10, 2))
+        .setFromDate(LocalDate.of(2017, 10, 2))
+        .setToDate(LocalDate.of(2017, 10, 2))
         .setVacationDays(0);
     staffService.requestVacation(vacationEntity);
   }
@@ -59,8 +59,8 @@ public class StaffServiceTest extends HotelManagementApplicationTests {
   @Test(expected = IllegalArgumentException.class)
   public void testNegativeVacationDays() throws NotEnoughVacationDaysException {
     VacationEntity vacationEntity = getVacationEntity()
-        .setFrom(LocalDate.of(2017, 10, 2))
-        .setTo(LocalDate.of(2017, 10, 2))
+        .setFromDate(LocalDate.of(2017, 10, 2))
+        .setToDate(LocalDate.of(2017, 10, 2))
         .setVacationDays(-1);
     staffService.requestVacation(vacationEntity);
   }
@@ -72,8 +72,8 @@ public class StaffServiceTest extends HotelManagementApplicationTests {
   @Test(expected = IllegalArgumentException.class)
   public void testRequestVacationWithUnknownDays() throws NotEnoughVacationDaysException {
     VacationEntity vacationEntity = getVacationEntity()
-        .setFrom(LocalDate.of(2016, 2, 4))
-        .setTo(LocalDate.of(2016, 2, 7));
+        .setFromDate(LocalDate.of(2016, 2, 4))
+        .setToDate(LocalDate.of(2016, 2, 7));
     staffService.requestVacation(vacationEntity);
   }
 
@@ -99,8 +99,8 @@ public class StaffServiceTest extends HotelManagementApplicationTests {
   @Test(expected = IllegalArgumentException.class)
   public void testExceedVacationDaysLimit() throws NotEnoughVacationDaysException {
     VacationEntity vacationEntity = getVacationEntity()
-        .setFrom(LocalDate.of(2017, 10, 2))
-        .setTo(LocalDate.of(2017, 10, 29))
+        .setFromDate(LocalDate.of(2017, 10, 2))
+        .setToDate(LocalDate.of(2017, 10, 29))
         .setVacationDays(21);
     staffService.requestVacation(vacationEntity);
   }
@@ -110,8 +110,8 @@ public class StaffServiceTest extends HotelManagementApplicationTests {
     vacationDays.put(2017, 20);
     return new VacationEntity()
         .setVacationDays(5)
-        .setFrom(LocalDate.of(2017, 10, 2))
-        .setTo(LocalDate.of(2017, 10, 6))
+        .setFromDate(LocalDate.of(2017, 10, 2))
+        .setToDate(LocalDate.of(2017, 10, 6))
         .setStaffer(TestDataInjector.STAFF_1);
   }
 }

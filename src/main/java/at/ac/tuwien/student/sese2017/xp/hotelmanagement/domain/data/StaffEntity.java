@@ -1,12 +1,16 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -52,12 +56,12 @@ public class StaffEntity extends UserEntity {
    * so a map with entries [2017=20, 2020=22] would mean that
    * from 2017 to 2019 the employee would have 20 vacation days
    * per year and starting from 2020 they would have 22 days
-   * 
    */
   @Column
   @ElementCollection
-  private Map<Integer, Integer> yearlyVacationDays;
+  private Map<Integer, Integer> yearlyVacationDays = new HashMap<>();
   
-  @OneToMany(mappedBy="staffer")
-  private List<VacationEntity> vacations;
+  @OneToMany(mappedBy="staffer", targetEntity = VacationEntity.class
+      , fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<VacationEntity> vacations = new ArrayList<>();
 }

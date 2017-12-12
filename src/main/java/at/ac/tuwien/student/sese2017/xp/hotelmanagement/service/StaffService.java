@@ -1,6 +1,17 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
+import java.util.AbstractMap;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.NavigableMap;
 import java.util.Optional;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -45,13 +56,64 @@ public class StaffService {
     return null;
   }
 
+  //FIXME set Transaction level otherwise conflicts could be created
   public Long requestVacation(@Valid VacationEntity vacation) throws NotEnoughVacationDaysException {
-    // TODO check if vacation uses up more than the available vacation days
-    // => throw exception
-    // TODO validate if to date is after from date
-    // => throw validation exception
-    // TODO pending vacation entries are handled as used up vacation days
-    return null;
+    StaffEntity requester = vacation.getStaffer();
+    
+    if(vacation.getResolution() == null) {
+      vacation.setResolution(VacationStatus.PENDING);
+    } else if(!vacation.getResolution().equals(VacationStatus.PENDING)) {
+      throw new IllegalArgumentException("Vacation request already resolved");
+    }
+    
+    if(requester == null) {
+      throw new IllegalArgumentException("Vacation not requested by anyone");
+    }
+    
+    if(vacation.getVacationDays() < 1) {
+      throw new IllegalArgumentException("Cannot request a vacation with " + vacation.getVacationDays() + " days");
+    }
+    
+    //Calculate available vacation days up until and including this year
+    //Future reductions in vacation days could lead to illegal vacations 
+    Integer targetYear = vacation.getToDate().getYear();
+    //Sort yearlyVacationDays by year
+    NavigableMap<Integer, Integer> yearlyVacationDays = new TreeMap<>(requester.getYearlyVacationDays());
+    
+    if(yearlyVacationDays.isEmpty()) {
+      throw new IllegalStateException("Staffer " + requester.getId() + " does not have any vacation days set");
+    } else if(yearlyVacationDays.firstKey() > targetYear) {
+      throw new IllegalStateException("No vacation days set before " + yearlyVacationDays.firstKey());
+    }
+    
+    if(vacation.getToDate().isBefore(vacation.getFromDate())) {
+      throw new IllegalArgumentException("Vacation cannot end before it starts");
+    }
+    
+    //Calculate total days of accepted and pending vacation requests 
+    Integer totalUsedVacationDays = requester.getVacations()
+        .stream().filter(v -> v.getResolution().equals(VacationStatus.ACCEPTED) 
+            || v.getResolution().equals(VacationStatus.PENDING))
+        .reduce(0, (totalDays, v) -> totalDays + v.getVacationDays(), (l, r) -> l + r);
+    
+    //Calculate total number of vacation days possible up until and including the target year
+    Integer totalPossibleVacationDays = yearlyVacationDays.descendingMap().entrySet().stream()
+    .reduce(new AbstractMap.SimpleEntry<Integer,Integer>(targetYear, 0)
+        , (prevYear, currentYear) -> 
+          new AbstractMap.SimpleEntry<Integer,Integer>(currentYear.getKey()
+              , prevYear.getValue() + currentYear.getValue() * (prevYear.getKey() - currentYear.getKey()))
+    ).getValue();
+    
+    Integer leftVacationDays = totalPossibleVacationDays - totalUsedVacationDays;
+    
+    //Check if vacation uses up more than the available vacation days
+    if(leftVacationDays - vacation.getVacationDays() < 0) {
+      throw new NotEnoughVacationDaysException(requester.getId(), leftVacationDays, targetYear);
+    }
+    
+    vacationRepository.save(vacation);
+    
+    return vacation.getId();
   }
 
   public void confirmVacation(Long vacationId) {

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +33,7 @@ public class VacationEntity {
   @Column(nullable = false)
   private Integer vacationDays;
   
-  @ManyToOne
+  @ManyToOne(optional = false, fetch = FetchType.EAGER)
   private StaffEntity staffer;
   
   @ManyToOne

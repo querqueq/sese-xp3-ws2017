@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Transactional
-public class StaffServiceTest extends HotelManagementApplicationTests {
+public class StaffServiceRequestVacationTest extends HotelManagementApplicationTests {
 
   @Autowired
   private StaffService staffService;
@@ -59,7 +59,6 @@ public class StaffServiceTest extends HotelManagementApplicationTests {
   @Test(expected = IllegalArgumentException.class)
   public void testNegativeVacationDays() throws NotEnoughVacationDaysException {
     VacationEntity vacationEntity = getVacationEntity()
-<<<<<<< HEAD
         .setFromDate(LocalDate.of(2017, 10, 2))
         .setToDate(LocalDate.of(2017, 10, 2))
         .setVacationDays(-1);
@@ -70,7 +69,7 @@ public class StaffServiceTest extends HotelManagementApplicationTests {
    * Tests if a vacation request for a staffer where the yearly vacation days is unknown.
    * @throws NotEnoughVacationDaysException Should not be thrown since there are enough vacation days.
    */
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = IllegalStateException.class)
   public void testRequestVacationWithUnknownDays() throws NotEnoughVacationDaysException {
     VacationEntity vacationEntity = getVacationEntity()
         .setFromDate(LocalDate.of(2016, 2, 4))

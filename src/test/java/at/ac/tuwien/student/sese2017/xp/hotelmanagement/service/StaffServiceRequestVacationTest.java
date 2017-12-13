@@ -26,6 +26,25 @@ public class StaffServiceRequestVacationTest extends HotelManagementApplicationT
   public void testRequestValidVacation() throws NotEnoughVacationDaysException {
     assertNotNull(staffService.requestVacation(getVacationEntity()));
   }
+  
+  //TODO change test setup to use mocks instead of bs TestDataInjector because entites are not saved.
+//  @Test
+//  public void testRequestMultipleVacations() throws NotEnoughVacationDaysException {
+//    assertNotNull(staffService.requestVacation(getVacationEntity()));
+//    assertNotNull(staffService.requestVacation(getVacationEntity()
+//    .setVacationDays(15)
+//    .setFromDate(LocalDate.of(2017, 10, 7))
+//    .setToDate(LocalDate.of(2017, 12, 31))));
+//  }
+  
+//  @Test(expected=NotEnoughVacationDaysException.class)
+//  public void testRequestMultipleVacationsNotEnoughFreeDays() throws NotEnoughVacationDaysException {
+//    assertNotNull(staffService.requestVacation(getVacationEntity()));
+//    staffService.requestVacation(getVacationEntity()
+//    .setVacationDays(16)
+//    .setFromDate(LocalDate.of(2017, 10, 7))
+//    .setToDate(LocalDate.of(2017, 12, 31)));
+//  }
 
   /**
    * Tests if the to date can be before the from date.

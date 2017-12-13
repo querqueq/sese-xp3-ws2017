@@ -1,8 +1,10 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.AuthenticationFacade;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.PasswordManager;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Role;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.UserEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.StaffEmployment;
@@ -12,11 +14,15 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.Vacati
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.ForbiddenException;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
 import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Optional;
 import java.util.TreeMap;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,27 +34,55 @@ import org.springframework.validation.annotation.Validated;
 @Slf4j
 public class StaffService {
 
+  private static final int DEFAULT_YEARLY_VACATION_DAYS = 20;
   private final VacationRepository vacationRepository;
   private final UserRepository userRepository;
   private final StaffRepository staffRepository;
   private final AuthenticationFacade authFacade;
+  private PasswordManager passwordManager;
 
   @Autowired
   public StaffService(VacationRepository vacationRepository,
       UserRepository userRepository,
       StaffRepository staffRepository,
-      AuthenticationFacade authFacade) {
+      AuthenticationFacade authFacade,
+      PasswordManager passwordManager) {
     this.vacationRepository = vacationRepository;
     this.userRepository = userRepository;
     this.staffRepository = staffRepository;
     this.authFacade = authFacade;
+    this.passwordManager = passwordManager;
   }
 
   public StaffEmployment create(@Valid StaffEntity entity) {
-    // TODO create UserEntity for staff
-    // TODO create StaffEntity
-    // TODO create StaffEmployment with clear text password
-    return null;
+    if(entity == null) {
+      throw new IllegalArgumentException("StaffEntity cannot be null!");
+    }
+    List<UserEntity> manager = userRepository
+        .findByUsername(authFacade.getAuthentication().getName());
+    if(manager.size() != 1) {
+      throw new IllegalStateException("Did not find exactly 1 manager with username " + 
+          authFacade.getAuthentication().getName() + "!");
+    }
+    UserEntity managerEntity = manager.get(0);
+    if(!managerEntity.getRoles().contains(Role.MANAGER)) {
+      throw new ForbiddenException(Role.MANAGER, managerEntity.getId(), "creating staffer");
+    }
+    StaffEmployment employment = new StaffEmployment();
+    String clearTextPassword = passwordManager.generatePassword();
+    employment.setClearTextPassword(clearTextPassword);
+    entity.setUsername(entity.getEmail());
+    entity.setPassword(passwordManager.encodePassword(clearTextPassword));
+    entity.setRoles(entity.getJobTitle().getRoles());
+    if(entity.getYearlyVacationDays() == null || entity.getYearlyVacationDays().isEmpty()) {
+      //FIXME make default yearly vacation days configurable if customer wants them to be
+      Map<Integer, Integer> yearlyVacationDays = new HashMap<>();
+      yearlyVacationDays.put(LocalDate.now().getYear(), DEFAULT_YEARLY_VACATION_DAYS);
+      entity.setYearlyVacationDays(yearlyVacationDays);
+    }
+    Long id = staffRepository.save(entity).getId();
+    employment.setId(id);
+    return employment;
   }
 
   //FIXME set Transaction level otherwise conflicts could be created

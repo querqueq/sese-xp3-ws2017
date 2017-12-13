@@ -27,6 +27,7 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.PasswordManager;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.SettableAuthenticationFacade;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.JobTitle;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Role;
@@ -56,7 +57,8 @@ public class StaffServiceCreateTest {
     authenticationFacade.setAuthentication(null);
     userRepository = mock(UserRepository.class);
     staffRepository = mock(StaffRepository.class);
-    staffService = new StaffService(null, userRepository, staffRepository, authenticationFacade);
+    staffService = new StaffService(null, userRepository, staffRepository, authenticationFacade,
+        new PasswordManager());
     newStaff = (StaffEntity) new StaffEntity()
         .setBirthday(LocalDate.of(1990, 5, 16))
         .setEmail("new.guy@hotel.com")
@@ -113,7 +115,7 @@ public class StaffServiceCreateTest {
   }
   
   @Test
-  public void testCreateCustomer() {
+  public void testCreateStaffer() {
     using(manager);
     setRequestingUser(manager);
     List<Role> newStaffsRoles = newStaff.getJobTitle().getRoles();
@@ -133,12 +135,12 @@ public class StaffServiceCreateTest {
     assertThat(newStaff.getPassword(), not(isEmptyOrNullString()));
     assertThat(newStaff.getPassword(), not(is(staffEmployment.getClearTextPassword())));
     assertThat(newStaff.getRoles(), is(newStaffsRoles));
-    assertTrue(newStaff.getVacations().size() > 0);
+    assertTrue(newStaff.getYearlyVacationDays().size() > 0);
     assertThat(newStaff.getUsername(), is(newStaff.getEmail()));
   }
   
   @Test
-  public void testCreateCustomerAsNonManager() {
+  public void testCreateStafferAsNonManager() {
     using(nonManager);
     setRequestingUser(nonManager);
     exception.expect(ForbiddenException.class);
@@ -146,10 +148,10 @@ public class StaffServiceCreateTest {
   }
   
   @Test
-  public void testCreateNullCustomer() {
+  public void testCreateNullStaffer() {
     using(manager);
     setRequestingUser(manager);
     exception.expect(IllegalArgumentException.class);
-    staffService.create(newStaff);
+    staffService.create(null);
   }
 }

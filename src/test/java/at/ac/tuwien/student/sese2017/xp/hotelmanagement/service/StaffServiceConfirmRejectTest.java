@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.AuthenticationFacade;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.PasswordManager;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.SettableAuthenticationFacade;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.JobTitle;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
@@ -60,7 +61,8 @@ public class StaffServiceConfirmRejectTest {
     vacationRepository = mock(VacationRepository.class);
     userRepository = mock(UserRepository.class);
     staffRepository = mock(StaffRepository.class);
-    staffService = new StaffService(vacationRepository, userRepository, staffRepository, authenticationFacade);
+    staffService = new StaffService(vacationRepository, userRepository, staffRepository, authenticationFacade,
+        new PasswordManager());
     requester = (StaffEntity) new StaffEntity()
         .setBirthday(LocalDate.of(1990, 5, 16))
         .setEmail("n.flynn@hotel.com")

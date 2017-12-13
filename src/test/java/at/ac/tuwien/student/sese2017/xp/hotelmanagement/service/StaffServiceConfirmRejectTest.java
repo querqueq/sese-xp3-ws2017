@@ -16,6 +16,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.StaffR
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.UserRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.VacationRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.ForbiddenException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
@@ -184,9 +185,7 @@ public class StaffServiceConfirmRejectTest {
   public void testConfirmAsNonManager() {
     using(requester, pendingVacation);
     setRequestingUser(requester);
-    // FIXME @michael an IllegalStateException
-    //       maybe something more specific that can be mapped to 403 consistently
-    exception.expect(IllegalStateException.class); 
+    exception.expect(ForbiddenException.class); 
     staffService.confirmVacation(pendingVacation.getId());
   }
   
@@ -194,7 +193,7 @@ public class StaffServiceConfirmRejectTest {
   public void testRejectAsNonManager() {
     using(requester, pendingVacation);
     setRequestingUser(requester);
-    exception.expect(IllegalStateException.class); 
+    exception.expect(ForbiddenException.class); 
     staffService.rejectVacation(pendingVacation.getId(), "I don't like you!");
   }
   

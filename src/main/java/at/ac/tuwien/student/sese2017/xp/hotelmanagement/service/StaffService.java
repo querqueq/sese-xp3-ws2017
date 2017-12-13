@@ -1,23 +1,5 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
-import java.util.AbstractMap;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.NavigableMap;
-import java.util.Optional;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.AuthenticationFacade;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Role;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
@@ -27,8 +9,19 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.StaffEmployme
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.StaffRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.UserRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.VacationRepository;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.ForbiddenException;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
+import java.util.AbstractMap;
+import java.util.NavigableMap;
+import java.util.Optional;
+import java.util.TreeMap;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 @Validated
 @Service
@@ -166,7 +159,7 @@ public class StaffService {
   private StaffEntity tryGetCurrentUserAsManager() {
     Authentication authentication = authFacade.getAuthentication();
     StaffEntity manager;
-    if (!(authentication instanceof AnonymousAuthenticationToken)) {
+    if (!(authentication instanceof AnonymousAuthenticationToken) && authentication != null) {
       manager = Optional.ofNullable(
           userRepository.findByUsername(authentication.getName()))
           .map(us -> {
@@ -183,7 +176,7 @@ public class StaffService {
     }
 
     if(!manager.getRoles().contains(Role.MANAGER)) {
-      throw new IllegalStateException("Current user is not a manager!");
+      throw new ForbiddenException(Role.MANAGER, manager.getId(), "staff changes");
     }
     return manager;
   }

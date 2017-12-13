@@ -89,7 +89,7 @@ public class CustomerEntity extends UserEntity {
   @Digits(fraction = 0, integer = 50)
   private String phoneNumber;
 
-  @Column
+  @Column(unique = true)
   @Email
   @NotNull
   private String email;

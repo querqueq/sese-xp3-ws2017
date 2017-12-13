@@ -39,7 +39,7 @@ public class StaffEntity extends UserEntity {
   @NotNull
   private Sex sex;
   
-  @Column
+  @Column(unique = true)
   @Email
   @NotNull
   private String email;

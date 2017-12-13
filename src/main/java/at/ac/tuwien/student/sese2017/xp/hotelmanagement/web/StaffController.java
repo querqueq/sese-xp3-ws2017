@@ -3,11 +3,17 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.StaffEmployment;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffCreateForm;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria.SearchOption;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.ReceiptService;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.StaffService;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
@@ -38,8 +44,10 @@ public class StaffController {
   private static final String RECEIPTS = "receipts";
   private static final String SEARCH_CRITERIA = "searchCriteria";
   private static final String CUSTOMER_ATTRIBUTE_NAME = "customer";
+  private static final String STAFFER_ATTRIBUTE_NAME = "staffer";
   private CustomerService customerService;
   private ReceiptService receiptService;
+  private StaffService staffService;
 
   /**
    * Controller for staff use cases.
@@ -47,9 +55,11 @@ public class StaffController {
    * @param customerService The CustomerService to search and create CustomerEntity objects.
    */
   @Autowired
-  public StaffController(CustomerService customerService, ReceiptService receiptService) {
+  public StaffController(CustomerService customerService, ReceiptService receiptService
+      , StaffService staffService) {
     this.customerService = customerService;
     this.receiptService = receiptService;
+    this.staffService = staffService;
   }
 
   /**
@@ -205,16 +215,34 @@ public class StaffController {
 
   @GetMapping("/staff/staffers/create")
   public String getCreateStaff(Model model) {
-
-    return null;
+    log.info("create staff - Page called");
+    StaffCreateForm dto = new StaffCreateForm();
+    model.addAttribute(STAFFER_ATTRIBUTE_NAME, dto);
+    return "staff/staffCreate";
   }
 
   @PostMapping("/staff/staffers/create")
-  public String doCreateStaff(Model model,
-      @ModelAttribute StaffEntity staff,
-      @ModelAttribute("initialVacationDays") Integer initialVacationDays) {
-
-    return null;
+  public String doCreateStaff(Model model, @ModelAttribute StaffCreateForm dto) {
+    log.info("post staff - Page called");
+    StaffEntity entity = dto.getEntity();
+    try {
+      Map<Integer, Integer> initVacDays = new HashMap<>();
+      Integer currentYear = LocalDate.now().getYear();
+      initVacDays.put(currentYear, dto.getInitialVacationDays());
+      initVacDays.put(currentYear + 1, dto.getYearlyVacationDays());
+      dto.getEntity().setYearlyVacationDays(initVacDays);
+      StaffEmployment employment = staffService.create(dto.getEntity());
+      log.info("created staffer {}", employment.getId());
+      model.addAttribute("note",
+          String.format("Mitarbeiter %s (%d) erfasst! Das Passwort ist '%s' (Passwort wird nicht nochmal angezeigt!)"
+              , entity.getName(), employment.getId(), employment.getClearTextPassword()));
+      return getCreateStaff(model);
+    } catch (ValidationException e) {
+      model.addAttribute("note", "Fehler");
+      model.addAttribute(STAFFER_ATTRIBUTE_NAME, dto);
+      return "staff/staffCreate";
+    }
+    
   }
 
   @GetMapping("/staff/staffers/{stafferId}/vacations/create")
@@ -252,3 +280,4 @@ public class StaffController {
     return String.format("redirect:/staff/search?keywords=%s&domain=%s", searchText, searchOption);
   }
 }
+

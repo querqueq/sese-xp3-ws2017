@@ -5,6 +5,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Role;
 
 /**
  * This class specifies security aspects of the application.
@@ -28,7 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .antMatchers("/css/**", "/index", "/register", "/error").permitAll()
           // hasRole checks for a role on the loggedIn user
           .antMatchers("/customer/**").hasRole("CUSTOMER")
-          .antMatchers("/staff/**").hasRole("STAFF")
+          .antMatchers("/staff/staffers/create").hasRole(Role.MANAGER.name())
+          .antMatchers("/staff/**").hasRole("STAFF")          
           .and()
           // This defines the login page where the user can authenticate themselves
           .formLogin()
@@ -49,7 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
               // the role which is checked on certain sub urls
               .withUser("customer").password("password").roles("CUSTOMER")
               .and()
-              .withUser("staff").password("password").roles("STAFF");
+              .withUser("staff").password("password").roles(Role.STAFF.name())
+              .and()
+              .withUser("manager").password("password").roles(Role.MANAGER.name(), Role.STAFF.name()
+              );
 
           /* TODO check database if customer is present:
            * The DataBase could be done with Method 2 of following StackOverflow Post

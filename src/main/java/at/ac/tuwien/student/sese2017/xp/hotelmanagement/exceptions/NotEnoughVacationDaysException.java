@@ -13,7 +13,7 @@ public class NotEnoughVacationDaysException extends Exception {
   private Integer forYear;
   
   public NotEnoughVacationDaysException(Long staffId, Integer leftVacationDays, Integer forYear) {
-    super(format("Only "));
+    super(format("Only %d vacation days left for staffer %d!", leftVacationDays, staffId));
     this.staffId = staffId;
     this.leftVacationDays = leftVacationDays;
     this.forYear = forYear;

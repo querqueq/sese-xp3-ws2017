@@ -16,12 +16,14 @@ public class SettableAuthenticationFacade implements AuthenticationFacade {
   
   @Override
   public Authentication getAuthentication() {
-    return authentication != null ? authentication : SecurityContextHolder.getContext().getAuthentication();
+    return authentication != null ? authentication :
+      SecurityContextHolder.getContext().getAuthentication();
   }
 
   /**
    * Sets the Authentication to be used when getAuthentication is called.
-   * If a null value is given the default SecurityContextHolder will be used to fetch the Authentication
+   * If a null value is given the default SecurityContextHolder will be used to fetch the
+   * Authentication
    * @param authentication The Authentication to use.
    */
   public void setAuthentication(Authentication authentication) {

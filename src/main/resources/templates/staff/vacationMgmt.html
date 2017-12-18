@@ -73,24 +73,30 @@
                             th:if="${vac.resolution == T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus).PENDING}">
                                 <div class="btn-group" role="group">
                                     <button type="submit" name="action" value="accept" class="btn btn-success">Annehmen</button>
-                                    <button type="button" data-toggle="modal" class="btn btn-danger" data-target="#rejectModal">Ablehnen</button>
+                                    <button type="button" data-toggle="modal" class="btn btn-danger" data-target="#rejectModal"
+                                    th:data-target="'#rejectModal' + ${vac.id}">Ablehnen</button>
                                 </div>
-                                <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog">
+                                <div class="modal fade" id="rejectModal" th:id="'rejectModal' + ${vac.id}" tabindex="-1" role="dialog">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Urlaubsantrag von Neil Flynn ablehnen</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">Urlaubsantrag von <span th:text="${vac.staffer.name}">Neil Flynn</span> ablehnen</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
                                                 <p>
-                                                    <b>23.12.2017</b> bis <b>07.01.2017</b> für <b>10</b> Tage
+                                                    <b th:text="${#temporals.format(vac.fromDate,'dd.MM.yyyy')}">23.12.2017</b>
+                                                    bis 
+                                                    <b th:text="${#temporals.format(vac.toDate,'dd.MM.yyyy')}">07.01.2017</b> 
+                                                    für
+                                                    <b th:text="${vac.vacationDays}">10</b> 
+                                                    Tage
                                                 </p>
                                                 <div class="form-group">
                                                     <label for="reason">Grund für Ablehnung:</label>
-                                                    <textarea class="form-control" id="reason" rows="3"></textarea>
+                                                    <textarea class="form-control" id="reason" rows="3" name="reason"></textarea>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">

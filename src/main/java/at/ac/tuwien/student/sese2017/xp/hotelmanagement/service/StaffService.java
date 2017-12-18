@@ -139,6 +139,17 @@ public class StaffService {
     if(vacation.getVacationDays() > maxDays) {
       throw new IllegalArgumentException("Zu viele Urlaubstage beantragt, es stehen " + maxDays + " Tage zur Verfügung!");
     }
+    
+    Boolean isOverlapping = requester.getVacations().stream()
+    //Only check overlaps for pending and accepted vacations
+    .filter(vac -> !VacationStatus.REJECTED.equals(vac.getResolution()))
+    .map(vac -> !vac.getFromDate().isAfter(vacation.getToDate())
+        && !vac.getToDate().isBefore(vacation.getFromDate()))    
+    .reduce(false, (l,r) -> l || r);
+    if(isOverlapping) {
+      throw new IllegalArgumentException("Urlaubsüberlappung");
+    }
+    
 
     log.info("Staffer {} request {} days of vacation from {} till {}"
         , requester.getId(), vacation.getVacationDays(), vacation.getFromDate(), vacation.getToDate());

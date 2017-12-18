@@ -340,4 +340,3 @@ public class StaffController {
     return "redirect:/staff/vacations";
   }
 }
-

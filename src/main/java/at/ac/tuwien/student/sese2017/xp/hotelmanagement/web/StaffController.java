@@ -272,7 +272,7 @@ public class StaffController {
       try {
         Long vacationId = staffService.requestVacation(vacation);
         StringBuilder successMessage = new StringBuilder()
-            .append(String.format("Urlaub (%d) im Umfang von %d",
+            .append(String.format("Urlaub (%d) im Umfang von %d ",
             vacationId,
             vacation.getVacationDays()));
         if(vacation.getVacationDays() == 1) {

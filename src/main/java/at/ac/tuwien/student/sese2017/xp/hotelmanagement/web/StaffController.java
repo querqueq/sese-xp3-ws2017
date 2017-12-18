@@ -127,17 +127,17 @@ public class StaffController {
     staffSearchCriteria.setSearchText(keywords);
     model.addAttribute(SEARCH_CRITERIA, staffSearchCriteria);
     Optional.ofNullable(staffSearchCriteria).map(StaffSearchCriteria::getSearchOption)
-    .ifPresent(option -> {
-      switch (option) {
-        case CUSTOMERS:
-          model.addAttribute("customers", customerService.search(keywords));
-          break;
-        case RECEIPTS:
-          model.addAttribute(RECEIPTS, receiptService.search(keywords));
-          break;
-        default:
-          break;
-      }
+        .ifPresent(option -> {
+          switch (option) {
+            case CUSTOMERS:
+              model.addAttribute("customers", customerService.search(keywords));
+              break;
+            case RECEIPTS:
+              model.addAttribute(RECEIPTS, receiptService.search(keywords));
+              break;
+            default:
+              break;
+          }
     });
     return STAFF_SEARCH_VIEW;
   }

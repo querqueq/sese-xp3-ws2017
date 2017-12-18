@@ -172,7 +172,8 @@ public class StaffService {
         .getYearlyVacationDays());
 
     if (yearlyVacationDays.isEmpty()) {
-      throw new IllegalStateException("Staffer " + requester.getId() + " does not have any vacation days set");
+      throw new IllegalStateException("Staffer " + requester.getId()
+      + " does not have any vacation days set");
     } else if (yearlyVacationDays.firstKey() > targetYear) {
       throw new IllegalStateException("Keine verfügbaren Urlaubstage für "
           + yearlyVacationDays.firstKey());
@@ -310,7 +311,7 @@ public class StaffService {
       throw new IllegalStateException("Anonyme User können keine Urlaube bestätigen/ablehnen!");
     }
 
-    if( !manager.getRoles().contains(Role.MANAGER)) {
+    if (!manager.getRoles().contains(Role.MANAGER)) {
       throw new ForbiddenException(Role.MANAGER, manager.getId(), "staff changes");
     }
     return manager;

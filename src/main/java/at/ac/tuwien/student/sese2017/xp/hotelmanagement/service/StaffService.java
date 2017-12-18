@@ -190,6 +190,10 @@ public class StaffService {
     vacation.setReason(reason);
     vacationRepository.save(vacation);
   }
+  
+  public Optional<StaffEntity> findById(Long id) {
+    return staffRepository.findById(id);
+  }
 
   private StaffEntity tryGetCurrentUserAsManager() {
     Authentication authentication = authFacade.getAuthentication();

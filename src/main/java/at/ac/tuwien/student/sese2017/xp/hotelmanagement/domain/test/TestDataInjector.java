@@ -471,4 +471,20 @@ public class TestDataInjector {
       .setStaffer(STAFF_2)
       .setVacationDays(7)
       ;
+  
+  public static final VacationEntity VACATION_ACCEPTED_1 = new VacationEntity()
+      .setFromDate(LocalDate.of(2018, 2, 10))
+      .setToDate(LocalDate.of(2018, 2, 20))
+      .setResolution(VacationStatus.ACCEPTED)
+      .setStaffer(STAFF_1)
+      .setVacationDays(7)
+      ;
+  
+  public static final VacationEntity VACATION_REJECTED_1 = new VacationEntity()
+      .setFromDate(LocalDate.of(2018, 3, 10))
+      .setToDate(LocalDate.of(2018, 3, 18))
+      .setResolution(VacationStatus.REJECTED)
+      .setStaffer(STAFF_2)
+      .setVacationDays(7)
+      ;
 }

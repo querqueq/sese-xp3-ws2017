@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.MapUtil;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.PasswordManager;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.SettableAuthenticationFacade;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.UserWithId;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.JobTitle;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
@@ -32,7 +33,6 @@ import org.junit.rules.ExpectedException;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 
 public class StaffServiceConfirmRejectTest {
 
@@ -100,7 +100,10 @@ public class StaffServiceConfirmRejectTest {
         .map(Enum::name)
         .map(SimpleGrantedAuthority::new)
         .collect(Collectors.toList());
-    User user = new User(userEntity.getUsername(), "password", authorities);    
+    UserWithId user = new UserWithId(userEntity.getId(),
+        userEntity.getUsername(),
+        "password",
+        authorities);    
     authenticationFacade.setAuthentication(new TestingAuthenticationToken(user, null, authorities));
   }
   

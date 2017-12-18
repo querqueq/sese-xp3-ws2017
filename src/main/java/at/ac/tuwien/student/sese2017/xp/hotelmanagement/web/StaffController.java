@@ -63,8 +63,8 @@ public class StaffController {
    */
   @Autowired
   public StaffController(CustomerService customerService,
-      ReceiptService receiptService
-      , StaffService staffService) {
+      ReceiptService receiptService,
+      StaffService staffService) {
     this.customerService = customerService;
     this.receiptService = receiptService;
     this.staffService = staffService;
@@ -242,8 +242,9 @@ public class StaffController {
       StaffEmployment employment = staffService.create(dto.getEntity());
       log.info("created staffer {}", employment.getId());
       model.addAttribute("note",
-          String.format("Mitarbeiter %s (%d) erfasst! Das Passwort ist '%s' (Passwort wird nicht nochmal angezeigt!)"
-              , entity.getName(), employment.getId(), employment.getClearTextPassword()));
+          String.format("Mitarbeiter %s (%d) erfasst! Das Passwort ist '%s' "
+              + "(Passwort wird nicht nochmal angezeigt!)",
+              entity.getName(), employment.getId(), employment.getClearTextPassword()));
       return getCreateStaff(model);
     } catch (ValidationException e) {
       model.addAttribute("note", "Fehler");
@@ -273,8 +274,8 @@ public class StaffController {
         Long vacationId = staffService.requestVacation(vacation);
         StringBuilder successMessage = new StringBuilder()
             .append(String.format("Urlaub (%d) im Umfang von %d ",
-            vacationId,
-            vacation.getVacationDays()));
+                vacationId,
+                vacation.getVacationDays()));
         if (vacation.getVacationDays() == 1) {
           successMessage.append("Tag");
         } else {
@@ -299,8 +300,8 @@ public class StaffController {
     model.addAttribute(VACATIONS_ATTRIBUTE_NAME, staffService.getCurrentVactionRequests());
     return "staff/vacationMgmt";
   }
-  
-  @PostMapping(value="/staff/vacations/{vacationId}/resolve", params = "action=accept")
+
+  @PostMapping(value = "/staff/vacations/{vacationId}/resolve", params = "action=accept")
   public String acceptVacation(Model model, @PathVariable("vacationId") Long vacationId,
       RedirectAttributes redir) {
     log.info("accept vacation {} - Page called", vacationId);
@@ -313,7 +314,7 @@ public class StaffController {
     return redirectToVacationOverview();
   }
 
-  @PostMapping(value="/staff/vacations/{vacationId}/resolve", params = "action=reject")
+  @PostMapping(value = "/staff/vacations/{vacationId}/resolve", params = "action=reject")
   public String rejectVacation(Model model,
       @PathVariable("vacationId") Long vacationId,
       @ModelAttribute("reason") String reason,
@@ -335,7 +336,7 @@ public class StaffController {
   private String redirectToSearch(SearchOption searchOption, String searchText) {
     return String.format("redirect:/staff/search?keywords=%s&domain=%s", searchText, searchOption);
   }
-  
+
   private String redirectToVacationOverview() {
     return "redirect:/staff/vacations";
   }

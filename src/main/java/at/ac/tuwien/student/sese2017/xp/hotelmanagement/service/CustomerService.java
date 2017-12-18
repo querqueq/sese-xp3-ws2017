@@ -25,7 +25,7 @@ import org.springframework.validation.annotation.Validated;
 public class CustomerService {
   //FIXME Replace this password with a randomly generated password
   // as soon as email sending to customers is required
-  private static final String DEFAULT_DEV_PASSWORD = "password";
+  private static final String DEFAULT_DEV_PASS = "password";
   // Pattern to validate phone and fax numbers
   // Currently phone numbers are considered validate if the have a maximum
   // of 50 digits(we had to pick something without limiting really long
@@ -55,7 +55,7 @@ public class CustomerService {
     // TODO deny double entries (match for name and billing address)
     // TODO generate random password and send to the customers email
     entity.setUsername(entity.getEmail());
-    entity.setPassword(passwordManager.encodePassword(DEFAULT_DEV_PASSWORD));
+    entity.setPassword(passwordManager.encodePassword(DEFAULT_DEV_PASS));
     entity.setRoles(Arrays.asList(Role.CUSTOMER));
     checkPhoneNumber(entity.getFaxNumber());
     checkPhoneNumber(entity.getPhoneNumber());

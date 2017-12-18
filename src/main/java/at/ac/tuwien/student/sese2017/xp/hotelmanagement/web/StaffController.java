@@ -13,11 +13,9 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVaca
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.ReceiptService;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.StaffService;
-import static java.lang.String.format;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.validation.ValidationException;
@@ -46,6 +44,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class StaffController {
 
+  private static final String SUCCESS_ATTRIBUTE_NAME = "success";
+  private static final String DANGER_ATTRIBUTE_NAME = "danger";
   private static final String STAFF_SEARCH_VIEW = "staff/search";
   private static final String RECEIPTS = "receipts";
   private static final String SEARCH_CRITERIA = "searchCriteria";
@@ -213,10 +213,10 @@ public class StaffController {
     criteria.setSearchOption(SearchOption.RECEIPTS);
     try {
       receiptService.cancelReceipt(receiptId);
-      redir.addFlashAttribute("success", "Rechnung " + receiptId + " storniert.");
+      redir.addFlashAttribute(SUCCESS_ATTRIBUTE_NAME, "Rechnung " + receiptId + " storniert.");
     } catch (RuntimeException e) {
       log.error("Error while canceling receipt {}", receiptId, e);
-      redir.addFlashAttribute("danger", "Rechnung konnte nicht storniert werden.");
+      redir.addFlashAttribute(DANGER_ATTRIBUTE_NAME, "Rechnung konnte nicht storniert werden.");
     }
     return redirectToSearch(SearchOption.RECEIPTS, searchKeywords);
   }
@@ -267,7 +267,7 @@ public class StaffController {
       Authentication authentication) {
     Long stafferId = ((UserWithId)authentication.getPrincipal()).getId();
     Optional<StaffEntity> staff = staffService.findById(stafferId);
-    if(staff.isPresent()) {
+    if (staff.isPresent()) {
       vacation.setStaffer(staff.get());
       try {
         Long vacationId = staffService.requestVacation(vacation);
@@ -275,7 +275,7 @@ public class StaffController {
             .append(String.format("Urlaub (%d) im Umfang von %d ",
             vacationId,
             vacation.getVacationDays()));
-        if(vacation.getVacationDays() == 1) {
+        if (vacation.getVacationDays() == 1) {
           successMessage.append("Tag");
         } else {
           successMessage.append("Tage");
@@ -300,20 +300,20 @@ public class StaffController {
     return "staff/vacationMgmt";
   }
   
-  @PostMapping(value="/staff/vacations/{vacationId}/resolve", params="action=accept")
+  @PostMapping(value="/staff/vacations/{vacationId}/resolve", params = "action=accept")
   public String acceptVacation(Model model, @PathVariable("vacationId") Long vacationId,
       RedirectAttributes redir) {
     log.info("accept vacation {} - Page called", vacationId);
     try {
       staffService.confirmVacation(vacationId);
-      redir.addFlashAttribute("success", "Urlaubsantrag bewilligt!");
-    } catch(IllegalStateException | IllegalArgumentException e) {
-      redir.addFlashAttribute("danger", e.getMessage());
+      redir.addFlashAttribute(SUCCESS_ATTRIBUTE_NAME, "Urlaubsantrag bewilligt!");
+    } catch (IllegalStateException | IllegalArgumentException e) {
+      redir.addFlashAttribute(DANGER_ATTRIBUTE_NAME, e.getMessage());
     }    
     return redirectToVacationOverview();
   }
 
-  @PostMapping(value="/staff/vacations/{vacationId}/resolve", params="action=reject")
+  @PostMapping(value="/staff/vacations/{vacationId}/resolve", params = "action=reject")
   public String rejectVacation(Model model,
       @PathVariable("vacationId") Long vacationId,
       @ModelAttribute("reason") String reason,
@@ -321,9 +321,9 @@ public class StaffController {
     log.info("reject vacation {} - Page called", vacationId);
     try {
       staffService.rejectVacation(vacationId, reason);
-      redir.addFlashAttribute("success", "Urlaubsantrag abgelehnt!");
-    } catch(IllegalStateException | IllegalArgumentException e) {
-      redir.addFlashAttribute("danger", e.getMessage());
+      redir.addFlashAttribute(SUCCESS_ATTRIBUTE_NAME, "Urlaubsantrag abgelehnt!");
+    } catch (IllegalStateException | IllegalArgumentException e) {
+      redir.addFlashAttribute(DANGER_ATTRIBUTE_NAME, e.getMessage());
     }    
     return redirectToVacationOverview();
   }

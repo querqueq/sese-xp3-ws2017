@@ -13,6 +13,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.UserRe
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.VacationRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.ForbiddenException;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
+import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
@@ -119,7 +120,7 @@ public class StaffService {
       throw new IllegalArgumentException("Vacation cannot end before it starts");
     }
     
-    int maxDays = vacation.getFromDate().until(vacation.getToDate().plusDays(1)).getDays();
+    int maxDays = (int)ChronoUnit.DAYS.between(vacation.getFromDate(), vacation.getToDate()) + 1;
     if(vacation.getVacationDays() > maxDays) {
       throw new IllegalArgumentException("Requested too many days for vacation period of max. " + maxDays + " days");
     }

@@ -10,10 +10,21 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.MapUtil;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.PasswordManager;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.SettableAuthenticationFacade;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.JobTitle;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Role;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.UserEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.StaffEmployment;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.StaffRepository;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.UserRepository;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.ForbiddenException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,17 +38,6 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.PasswordManager;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.SettableAuthenticationFacade;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.JobTitle;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Role;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.UserEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.StaffEmployment;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.StaffRepository;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.UserRepository;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.ForbiddenException;
 
 public class StaffServiceCreateTest {
 
@@ -65,14 +65,14 @@ public class StaffServiceCreateTest {
         .setJobTitle(JobTitle.MAINTENANCE)
         .setName("Noobie")
         .setSex(Sex.MALE)
-        .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 15);}});
+        .setYearlyVacationDays(MapUtil.getMap(Arrays.asList(2017), Arrays.asList(15)));
     nonManager = (StaffEntity) new StaffEntity()
         .setBirthday(LocalDate.of(1990, 5, 16))
         .setEmail("n.flynn@hotel.com")
         .setJobTitle(JobTitle.CLEANER)
         .setName("Neil Flynn")
         .setSex(Sex.MALE)
-        .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2010, 22);}})
+        .setYearlyVacationDays(MapUtil.getMap(Arrays.asList(2010), Arrays.asList(22)))
         .setRoles(JobTitle.CLEANER.getRoles())
         .setUsername("janitor")
         .setId(1L);
@@ -82,7 +82,7 @@ public class StaffServiceCreateTest {
         .setJobTitle(JobTitle.MANAGER)
         .setName("Michael Scott")
         .setSex(Sex.MALE)
-        .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2015, 30);}})
+        .setYearlyVacationDays(MapUtil.getMap(Arrays.asList(2015), Arrays.asList(30)))
         .setRoles(JobTitle.MANAGER.getRoles())
         .setUsername("manager")
         .setId(2L);

@@ -1,7 +1,7 @@
 # Set server port via command line parameter --port
 # otherwise defaults to a random port
 server:
-  port: ${port:8080}
+  port: ${port:0}
 
 spring:
   thymeleaf:

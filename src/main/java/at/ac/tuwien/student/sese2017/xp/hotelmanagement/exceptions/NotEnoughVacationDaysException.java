@@ -1,6 +1,7 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions;
 
 import static java.lang.String.format;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

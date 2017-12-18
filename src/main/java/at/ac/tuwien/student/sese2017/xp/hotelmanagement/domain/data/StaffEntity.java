@@ -24,7 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 public class StaffEntity extends UserEntity {  
-  
+
   @Column
   @Field
   @NotNull
@@ -34,24 +34,24 @@ public class StaffEntity extends UserEntity {
   @NotNull
   @DateTimeFormat(iso = ISO.DATE)
   private LocalDate birthday;
-  
+
   @Column
   @NotNull
   private Sex sex;
-  
+
   @Column(unique = true)
   @Email
   @NotNull
   private String email;
-  
+
   @Column
   @Enumerated
   private JobTitle jobTitle;
 
   /**
-   * Maps how many vacation days per year an employee has
+   * Maps how many vacation days per year an employee has.
    * The map key describes the year since the employee gets
-   * the value number of vacation days
+   * the value number of vacation days.
    * There are only entries if the vacation days change
    * so a map with entries [2017=20, 2020=22] would mean that
    * from 2017 to 2019 the employee would have 20 vacation days
@@ -60,8 +60,8 @@ public class StaffEntity extends UserEntity {
   @Column
   @ElementCollection
   private Map<Integer, Integer> yearlyVacationDays = new HashMap<>();
-  
-  @OneToMany(mappedBy="staffer", targetEntity = VacationEntity.class
-      , fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+  @OneToMany(mappedBy = "staffer", targetEntity = VacationEntity.class,
+      fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<VacationEntity> vacations = new ArrayList<>();
 }

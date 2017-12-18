@@ -148,6 +148,9 @@ public class TestDataInjector {
         em.persist(STAFF_2);
         em.persist(MANAGER_1);
         em.persist(VACATION_PENDING_1);
+        em.persist(VACATION_PENDING_2);
+        em.persist(VACATION_ACCEPTED_1);
+        em.persist(VACATION_REJECTED_1);
         em.flush();
         log.info("Finished injecting test data");
       }
@@ -431,7 +434,7 @@ public class TestDataInjector {
   .setBirthday(LocalDate.of(1998, 5, 16))
   .setEmail("receptionist@hotel.com")
   .setJobTitle(JobTitle.RECEPTIONIST)
-  .setName("Stefanie stafferson")
+  .setName("Stefanie Stafferson")
   .setSex(Sex.FEMALE)
   .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 20);}})
   .setRoles(JobTitle.RECEPTIONIST.getRoles())
@@ -445,7 +448,7 @@ public class TestDataInjector {
   .setJobTitle(JobTitle.MANAGER)
   .setName("Michael Scott")
   .setSex(Sex.MALE)
-  .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2015, 30);}})
+  .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 5);}})
   .setRoles(JobTitle.MANAGER.getRoles())
   .setUsername("manager")
   .setPassword(new BCryptPasswordEncoder().encode("password"))
@@ -477,6 +480,7 @@ public class TestDataInjector {
       .setToDate(LocalDate.of(2018, 2, 20))
       .setResolution(VacationStatus.ACCEPTED)
       .setStaffer(STAFF_1)
+      .setManager(MANAGER_1)
       .setVacationDays(7)
       ;
   
@@ -485,6 +489,16 @@ public class TestDataInjector {
       .setToDate(LocalDate.of(2018, 3, 18))
       .setResolution(VacationStatus.REJECTED)
       .setStaffer(STAFF_2)
+      .setManager(MANAGER_1)
+      .setReason("Akt Gottes")
       .setVacationDays(7)
+      ;
+  
+  public static final VacationEntity VACATION_PENDING_2 = new VacationEntity()
+      .setFromDate(LocalDate.of(2018, 1, 12))
+      .setToDate(LocalDate.of(2018, 1, 19))
+      .setResolution(VacationStatus.PENDING)
+      .setStaffer(STAFF_2)
+      .setVacationDays(5)
       ;
 }

@@ -293,6 +293,12 @@ public class StaffController {
     return "/staff/requestVacation";
   }
 
+  /**
+   * Get all pending, running and future vacation requests.
+   * 
+   * @param model with search criteria and receipts
+   * @return view path
+   */
   @GetMapping("/staff/vacations")
   public String getVacations(Model model) {
     log.info("get vacations - Page called");
@@ -300,6 +306,14 @@ public class StaffController {
     return "staff/vacationMgmt";
   }
   
+  /**
+   * Accept a vacation.
+   * 
+   * @param model with search criteria and receipts
+   * @param vacationId vacation to be accepted
+   * @param redir for success/failure messages after redirect
+   * @return view path
+   */
   @PostMapping(value="/staff/vacations/{vacationId}/resolve", params = "action=accept")
   public String acceptVacation(Model model, @PathVariable("vacationId") Long vacationId,
       RedirectAttributes redir) {
@@ -313,6 +327,15 @@ public class StaffController {
     return redirectToVacationOverview();
   }
 
+  /**
+   * Reject a vacation with a non-optional reason.
+   *  
+   * @param model with search criteria and receipts
+   * @param vacationId vacation to be accepted
+   * @param reason non optional reason for vacation denial
+   * @param redir for success/failure messages after redirect
+   * @return view path
+   */
   @PostMapping(value="/staff/vacations/{vacationId}/resolve", params = "action=reject")
   public String rejectVacation(Model model,
       @PathVariable("vacationId") Long vacationId,

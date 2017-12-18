@@ -24,7 +24,13 @@
                         <a class="nav-link dropdown-toggle" href="#" id="dropdownRoom" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Zimmer</a>
                         <div class="dropdown-menu" aria-labelledby="dropdownRoom">
                             <a class="dropdown-item" href="#">Zimmer anlegen</a>
-                            <a class="dropdown-item" href="#" th:href="@{/staff/roomDirectory}">Zimmererverwaltung</a>
+                            <a class="dropdown-item" href="#" th:href="@{/staff/roomDirectory}">Zimmerverwaltung</a>
+                        </div>
+                    </li>
+					<li class="nav-item dropdown" sec:authorize="hasRole('MANAGER')">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdownRoom" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mitarbeiter</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownRoom">
+                            <a class="dropdown-item" href="/staff/staffers/create" th:href="@{/staff/staffers/create}">Mitarbeiter anlegen</a>
                         </div>
                     </li>
                 </ul>

@@ -5,10 +5,10 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import org.springframework.lang.Nullable;
 import lombok.Data;
 
 @Data
@@ -26,6 +26,6 @@ public class UserEntity {
   private String password;
   
   @Enumerated
-  @ElementCollection
+  @ElementCollection(fetch = FetchType.EAGER)
   private List<Role> roles;
 }

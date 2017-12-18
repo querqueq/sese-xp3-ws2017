@@ -142,7 +142,7 @@ public class StaffService {
    * @return id of vacation
    * @throws IllegalArgumentException if a sanity check for vacation fails
    * @throws IllegalStateException if a prerequisite for vacation request is missing
-   * @throws NotEnoughVacationDaysException if there are not enough vacation days left for given vacation
+   * @throws NotEnoughVacationDaysException if not enough vacation days are left for given vacation
    * @throws ForbiddenException if this method is called by a non-manager
    */
   public Long requestVacation(@Valid VacationEntity vacation)
@@ -151,7 +151,7 @@ public class StaffService {
 
     if (vacation.getResolution() == null) {
       vacation.setResolution(VacationStatus.PENDING);
-    } else if(!vacation.getResolution().equals(VacationStatus.PENDING)) {
+    } else if (!vacation.getResolution().equals(VacationStatus.PENDING)) {
       throw new IllegalArgumentException("Vacation request already resolved");
     }
 
@@ -160,14 +160,16 @@ public class StaffService {
     }
 
     if (vacation.getVacationDays() < 1) {
-      throw new IllegalArgumentException("Urlaubsanstrag mit " + vacation.getVacationDays() + " Tagen unzulässig!");
+      throw new IllegalArgumentException("Urlaubsanstrag mit " + vacation.getVacationDays()
+      + " Tagen unzulässig!");
     }
 
     //Calculate available vacation days up until and including this year
     //Future reductions in vacation days could lead to illegal vacations 
     Integer targetYear = vacation.getToDate().getYear();
     //Sort yearlyVacationDays by year
-    NavigableMap<Integer, Integer> yearlyVacationDays = new TreeMap<>(requester.getYearlyVacationDays());
+    NavigableMap<Integer, Integer> yearlyVacationDays = new TreeMap<>(requester
+        .getYearlyVacationDays());
 
     if (yearlyVacationDays.isEmpty()) {
       throw new IllegalStateException("Staffer " + requester.getId() + " does not have any vacation days set");
@@ -211,10 +213,11 @@ public class StaffService {
     Integer totalPossibleVacationDays = yearlyVacationDays.descendingMap().entrySet().stream()
         .filter(year -> year.getKey() < targetYear)
         .reduce(new AbstractMap.SimpleEntry<Integer,Integer>(targetYear, 0),
-            (prevYear, currentYear) -> new AbstractMap.SimpleEntry<Integer,Integer>(currentYear.getKey(),
-                prevYear.getValue() + currentYear.getValue() * (prevYear.getKey()
-                    - currentYear.getKey())
-                )
+            (prevYear, currentYear) ->
+        new AbstractMap.SimpleEntry<Integer,Integer>(currentYear.getKey(),
+            prevYear.getValue() + currentYear.getValue() * (prevYear.getKey()
+                - currentYear.getKey())
+            )
             ).getValue();
     Integer sameYearDays = yearlyVacationDays.get(targetYear);
     if (sameYearDays != null) {
@@ -237,18 +240,18 @@ public class StaffService {
    * Confirm a pending vacation.
    * Only managers can do this.
    * 
+   * @param vacationId id of vacation to be confirmed
    * @throws IllegalArgumentException if vacation does not exist
    * @throws IllegalStateException if vacation is not pending
    * @throws ForbiddenException if this method is called by a non-manager
-   * @param vacationId id of vacation to be confirmed
    */
   public void confirmVacation(Long vacationId) {
     Optional<VacationEntity> vacationOpt = vacationRepository.findById(vacationId);
-    if(!vacationOpt.isPresent()) {
+    if (!vacationOpt.isPresent()) {
       throw new IllegalArgumentException("Urlaub mit ID " + vacationId + " existiert nicht!");
     }
     VacationEntity vacation = vacationOpt.get();
-    if(!vacation.getResolution().equals(VacationStatus.PENDING)) {
+    if (!vacation.getResolution().equals(VacationStatus.PENDING)) {
       throw new IllegalStateException("Cannot confirm a vacation that is already in state "
           + vacation.getResolution() + "!");
     }
@@ -261,11 +264,11 @@ public class StaffService {
    * Reject a pending vacation.
    * Only managers can do this.
    * 
+   * @param vacationId id of vacation to be confirmed
+   * @param reason reason for rejecting vacation request
    * @throws IllegalArgumentException if vacation does not exist or the reason is empty
    * @throws IllegalStateException if vacation is not pending
    * @throws ForbiddenException if this method is called by a non-manager
-   * @param vacationId id of vacation to be confirmed
-   * @param reason reason for rejecting vacation request
    */
   public void rejectVacation(Long vacationId, String reason) {
     if (reason == null || reason.equals("")) {
@@ -307,7 +310,7 @@ public class StaffService {
       throw new IllegalStateException("Anonyme User können keine Urlaube bestätigen/ablehnen!");
     }
 
-    if(!manager.getRoles().contains(Role.MANAGER)) {
+    if( !manager.getRoles().contains(Role.MANAGER)) {
       throw new ForbiddenException(Role.MANAGER, manager.getId(), "staff changes");
     }
     return manager;

@@ -86,22 +86,32 @@ public class StaffService {
     if (entity == null) {
       throw new IllegalArgumentException("StaffEntity cannot be null!");
     }
+
+    //Get current user
     List<UserEntity> manager = userRepository
         .findByUsername(authFacade.getAuthentication().getName());
     if (manager.size() != 1) {
       throw new IllegalStateException("Did not find exactly 1 manager with username "
           + authFacade.getAuthentication().getName() + "!");
     }
+
     UserEntity managerEntity = manager.get(0);
+    //Check if user is manager
     if (!managerEntity.getRoles().contains(Role.MANAGER)) {
       throw new ForbiddenException(Role.MANAGER, managerEntity.getId(), "creating staffer");
     }
     StaffEmployment employment = new StaffEmployment();
     String clearTextPassword = passwordManager.generatePassword();
+
+    //Return clear text password to caller so it can be displayed once
     employment.setClearTextPassword(clearTextPassword);
     entity.setUsername(entity.getEmail());
+
+    //salt and hash password
     entity.setPassword(passwordManager.encodePassword(clearTextPassword));
     entity.setRoles(entity.getJobTitle().getRoles());
+
+    //set default yearly vacation if not set by caller
     if (entity.getYearlyVacationDays() == null || entity.getYearlyVacationDays().isEmpty()) {
       //FIXME make default yearly vacation days configurable if customer wants them to be
       Map<Integer, Integer> yearlyVacationDays = new HashMap<>();

@@ -3,6 +3,7 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.StaffEmployment;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffCreateForm;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria;
@@ -10,9 +11,11 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSea
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.ReceiptService;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.StaffService;
+import static java.lang.String.format;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.validation.ValidationException;
@@ -45,6 +48,7 @@ public class StaffController {
   private static final String SEARCH_CRITERIA = "searchCriteria";
   private static final String CUSTOMER_ATTRIBUTE_NAME = "customer";
   private static final String STAFFER_ATTRIBUTE_NAME = "staffer";
+  private static final String VACATIONS_ATTRIBUTE_NAME = "vacations";
   private CustomerService customerService;
   private ReceiptService receiptService;
   private StaffService staffService;
@@ -257,19 +261,37 @@ public class StaffController {
 
   @GetMapping("/staff/vacations")
   public String getVacations(Model model) {
-    return null;
+    log.info("get vacations - Page called");
+    model.addAttribute(VACATIONS_ATTRIBUTE_NAME, staffService.getCurrentVactionRequests());
+    return "staff/vacationMgmt";
+  }
+  
+  @PostMapping(value="/staff/vacations/{vacationId}/resolve", params="action=accept")
+  public String acceptVacation(Model model, @PathVariable("vacationId") Long vacationId,
+      RedirectAttributes redir) {
+    log.info("accept vacation {} - Page called", vacationId);
+    try {
+      staffService.confirmVacation(vacationId);
+      redir.addFlashAttribute("success", "Urlaubsantrag bewilligt!");
+    } catch(IllegalStateException | IllegalArgumentException e) {
+      redir.addFlashAttribute("danger", e.getMessage());
+    }    
+    return redirectToVacationOverview();
   }
 
-  @PostMapping("/staff/vacations/{vacationId}/accept")
-  public String acceptVacation(Model model, @PathVariable("vacationId") Long vacationId) {
-    return null;
-  }
-
-  @PostMapping("/staff/vacations/{vacationId}/reject")
+  @PostMapping(value="/staff/vacations/{vacationId}/resolve", params="action=reject")
   public String rejectVacation(Model model,
       @PathVariable("vacationId") Long vacationId,
-      @ModelAttribute("reason") String reason) {
-    return null;
+      @ModelAttribute("reason") String reason,
+      RedirectAttributes redir) {
+    log.info("reject vacation {} - Page called", vacationId);
+    try {
+      staffService.rejectVacation(vacationId, reason);
+      redir.addFlashAttribute("success", "Urlaubsantrag abgelehnt!");
+    } catch(IllegalStateException | IllegalArgumentException e) {
+      redir.addFlashAttribute("danger", e.getMessage());
+    }    
+    return redirectToVacationOverview();
   }
 
   private String redirectToSearch(StaffSearchCriteria criteria) {
@@ -278,6 +300,10 @@ public class StaffController {
 
   private String redirectToSearch(SearchOption searchOption, String searchText) {
     return String.format("redirect:/staff/search?keywords=%s&domain=%s", searchText, searchOption);
+  }
+  
+  private String redirectToVacationOverview() {
+    return "redirect:/staff/vacations";
   }
 }
 

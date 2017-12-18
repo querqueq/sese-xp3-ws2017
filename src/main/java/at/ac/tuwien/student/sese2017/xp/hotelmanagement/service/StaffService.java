@@ -1,5 +1,21 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
+import java.time.LocalDate;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.Optional;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.AuthenticationFacade;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.PasswordManager;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Role;
@@ -13,21 +29,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.UserRe
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.VacationRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.ForbiddenException;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.Optional;
-import java.util.TreeMap;
-import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 @Validated
 @Service
@@ -83,6 +85,18 @@ public class StaffService {
     Long id = staffRepository.save(entity).getId();
     employment.setId(id);
     return employment;
+  }
+  
+  /**
+   * Gets all pending vacation requests and all running and future vacation requests.
+   * @return pending, running and future vacation requests
+   */
+  public List<VacationEntity> getCurrentVactionRequests() {
+    final LocalDate now = LocalDate.now();
+    return vacationRepository.findAll(Sort.by("fromDate")).stream()
+    .filter(vac -> vac.getResolution().equals(VacationStatus.PENDING)
+        || vac.getToDate().isAfter(now))
+    .collect(Collectors.toList());
   }
 
   //FIXME set Transaction level otherwise conflicts could be created

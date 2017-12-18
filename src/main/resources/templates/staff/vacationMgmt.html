@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="../../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}">
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/offcanvas.css" rel="stylesheet" th:href="@{/css/offcanvas.css}">
+    <title>Urlaubsverwaltung</title>
+    <meta charset="utf-8" />
+    <style type="text/css">
+    .card-block {
+        padding: 10px;
+    }
+
+    article {
+        margin-bottom: 10px;
+    }
+
+    .row {
+        margin-top: 10px;
+    }
+    </style>
+</head>
+
+<body>
+    <div th:insert="fragments/header :: menu"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger" role="alert" th:if="${danger != null}">
+                    <strong>Fehler!</strong>
+                    <span th:text="${danger}">
+                            Bitte versuchen Sie es später nochmal.
+                    </span>
+                </div>
+                <div class="alert alert-success" role="alert" th:if="${success != null}">
+                    <span th:text="${success}">
+                            Urlaubsantrage von Neil Flynn für 10 Tage von X bis Y bewilligt!
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <table class="table table-striped">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>ID</th>
+                        <th>Mitarbeiter</th>
+                        <th>Von</th>
+                        <th>Bis</th>
+                        <th>Tage</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="vac : ${vacations}">
+                        <th scope="row" th:text="${vac.id}">1</th>
+                        <td th:text="${vac.staffer.name}">Neil Flynn</td>
+                        <td th:text="${#temporals.format(vac.fromDate,'dd.MM.yyyy')}">23.12.2017</td>
+                        <td th:text="${#temporals.format(vac.toDate,'dd.MM.yyyy')}">07.01.2017</td>
+                        <td th:text="${vac.vacationDays}">10</td>
+                        <td>
+                            <span th:if="${vac.resolution == T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus).ACCEPTED}">
+                                <b>Bewilligt</b> von <span th:text="${vac.manager.name}">Manager Managerson</span>
+                            </span>
+                            <span th:if="${vac.resolution == T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus).REJECTED}">
+                                <b>Abgelehnt</b> von <span th:text="${vac.manager.name}">Manager Managerson</span>: 
+                                <span th:text="${vac.reason}">Zu geringe Kapazitäten</span>
+                            </span>
+                            <form action="" method="post" th:action="@{/staff/vacations/} + ${vac.id} + @{/resolve}" 
+                            th:if="${vac.resolution == T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus).PENDING}">
+                                <div class="btn-group" role="group">
+                                    <button type="submit" name="action" value="accept" class="btn btn-success">Annehmen</button>
+                                    <button type="button" data-toggle="modal" class="btn btn-danger" data-target="#rejectModal">Ablehnen</button>
+                                </div>
+                                <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Urlaubsantrag von Neil Flynn ablehnen</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>
+                                                    <b>23.12.2017</b> bis <b>07.01.2017</b> für <b>10</b> Tage
+                                                </p>
+                                                <div class="form-group">
+                                                    <label for="reason">Grund für Ablehnung:</label>
+                                                    <textarea class="form-control" id="reason" rows="3"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                                                <button type="submit" name="action" value="reject" class="btn btn-danger">Ablehnen</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="../../static/js/jquery-3.2.1.slim.min.js" th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+    <script src="../../static/js/popper.min.js" th:src="@{/js/popper.min.js}"></script>
+    <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="../../static/js/offcanvas.js" th:src="@{/js/offcanvas.js}"></script>
+</body>
+
+</html>

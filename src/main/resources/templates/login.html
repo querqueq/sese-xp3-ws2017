@@ -14,8 +14,9 @@
         <div th:insert="fragments/header :: menu"></div>
         <center>
             <h1>Login page</h1>
-            <p>Test user: staff / password</p>
-            <p>Test user2: customer / password</p>
+            <p>Test staff: staff / password</p>
+            <p>Test customer: customer / password</p>
+            <p>Test manager: manager / password</p>
             <p th:if="${loginError}" class="error">Wrong username or password</p>
             <form th:action="@{/login}" method="post">
                 <table>

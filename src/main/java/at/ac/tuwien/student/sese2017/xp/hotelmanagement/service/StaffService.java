@@ -33,11 +33,20 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.ForbiddenExce
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Service class for all staff related functions carried out by staff.
+ * Calling staffer is injected via security context.
+ * 
+ * @author johannes, michael
+ */
 @Validated
 @Service
 @Slf4j
 public class StaffService {
 
+  /**
+   * Initial value for yearly vaction days for new staffers.
+   */
   private static final int DEFAULT_YEARLY_VACATION_DAYS = 20;
   private final VacationRepository vacationRepository;
   private final UserRepository userRepository;
@@ -58,6 +67,13 @@ public class StaffService {
     this.passwordManager = passwordManager;
   }
 
+  /**
+   * Creates a new staffer.
+   * Only managers can do this.
+   * 
+   * @param entity
+   * @return
+   */
   public StaffEmployment create(@Valid StaffEntity entity) {
     if(entity == null) {
       throw new IllegalArgumentException("StaffEntity cannot be null!");
@@ -101,7 +117,16 @@ public class StaffService {
     .collect(Collectors.toList());
   }
 
-  //FIXME set Transaction level otherwise conflicts could be created
+  /**
+   * Requests a vacation for the staffer inside of given vacation. 
+   * 
+   * @throws IllegalArgumentException if a sanity check for vacation fails
+   * @throws IllegalStateException if a prerequisite for vacation request is missing
+   * @throws NotEnoughVacationDaysException if there are not enough vacation days left for given vacation
+   * @throws ForbiddenException if this method is called by a non-manager
+   * @param vacation vacation to be requested
+   * @return id of vacation
+   */
   public Long requestVacation(@Valid VacationEntity vacation) throws NotEnoughVacationDaysException {
     StaffEntity requester = vacation.getStaffer();
 
@@ -185,6 +210,15 @@ public class StaffService {
     return vacation.getId();
   }
 
+  /**
+   * Confirm a pending vacation.
+   * Only managers can do this.
+   * 
+   * @throws IllegalArgumentException if vacation does not exist
+   * @throws IllegalStateException if vacation is not pending
+   * @throws ForbiddenException if this method is called by a non-manager
+   * @param vacationId id of vacation to be confirmed
+   */
   public void confirmVacation(Long vacationId) {
     Optional<VacationEntity> vacationOpt = vacationRepository.findById(vacationId);
     if(!vacationOpt.isPresent()) {
@@ -199,6 +233,16 @@ public class StaffService {
     vacationRepository.save(vacation);
   }
 
+  /**
+   * Reject a pending vacation.
+   * Only managers can do this.
+   * 
+   * @throws IllegalArgumentException if vacation does not exist or the reason is empty
+   * @throws IllegalStateException if vacation is not pending
+   * @throws ForbiddenException if this method is called by a non-manager
+   * @param vacationId id of vacation to be confirmed
+   * @param reason reason for rejecting vacation request
+   */
   public void rejectVacation(Long vacationId, String reason) {
     if(reason == null || reason.equals("")) {
       throw new IllegalArgumentException("Der Grund darf nicht leer sein!");
@@ -217,6 +261,11 @@ public class StaffService {
     vacationRepository.save(vacation);
   }
 
+  /**
+   * Get a staffer by it's id.
+   * @param id staffers id
+   * @return staffer for id
+   */
   public Optional<StaffEntity> findById(Long id) {
     return staffRepository.findById(id);
   }

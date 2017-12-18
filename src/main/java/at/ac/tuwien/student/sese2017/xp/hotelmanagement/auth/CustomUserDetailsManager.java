@@ -33,7 +33,8 @@ public class CustomUserDetailsManager implements UserDetailsManager {
     }
     UserEntity user = users.get(0);
     
-    return new User(user.getUsername(),
+    return new UserWithId(user.getId(),
+        user.getUsername(),
         user.getPassword(),
         user.getRoles().stream()
         // spring requires this role prefix or else the roles in class SecurityConfig won't match

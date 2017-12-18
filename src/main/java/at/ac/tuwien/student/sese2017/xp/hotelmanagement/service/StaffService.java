@@ -1,6 +1,7 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
@@ -133,7 +134,7 @@ public class StaffService {
       throw new IllegalArgumentException("Vacation cannot end before it starts");
     }
     
-    int maxDays = vacation.getFromDate().until(vacation.getToDate().plusDays(1)).getDays();
+    int maxDays = (int)ChronoUnit.DAYS.between(vacation.getFromDate(), vacation.getToDate()) + 1;
     if(vacation.getVacationDays() > maxDays) {
       throw new IllegalArgumentException("Requested too many days for vacation period of max. " + maxDays + " days");
     }
@@ -202,6 +203,10 @@ public class StaffService {
     vacation.setResolution(VacationStatus.REJECTED);
     vacation.setReason(reason);
     vacationRepository.save(vacation);
+  }
+  
+  public Optional<StaffEntity> findById(Long id) {
+    return staffRepository.findById(id);
   }
 
   private StaffEntity tryGetCurrentUserAsManager() {

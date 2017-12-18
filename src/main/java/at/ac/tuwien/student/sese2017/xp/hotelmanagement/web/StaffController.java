@@ -1,5 +1,6 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.UserWithId;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
@@ -8,6 +9,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.StaffEmployme
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffCreateForm;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria.SearchOption;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.ReceiptService;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.StaffService;
@@ -21,6 +23,7 @@ import java.util.Optional;
 import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,7 +62,8 @@ public class StaffController {
    * @param customerService The CustomerService to search and create CustomerEntity objects.
    */
   @Autowired
-  public StaffController(CustomerService customerService, ReceiptService receiptService
+  public StaffController(CustomerService customerService,
+      ReceiptService receiptService
       , StaffService staffService) {
     this.customerService = customerService;
     this.receiptService = receiptService;
@@ -246,17 +250,47 @@ public class StaffController {
       model.addAttribute(STAFFER_ATTRIBUTE_NAME, dto);
       return "staff/staffCreate";
     }
-    
+
   }
 
-  @GetMapping("/staff/staffers/{stafferId}/vacations/create")
-  public String getVacationInput(Model model, @PathVariable("stafferId") Long stafferId) {
-    return null;
+  @GetMapping("/staff/staffers/vacations/create")
+  public String getVacationInput(Model model, Authentication authentication) {
+    Long stafferId = ((UserWithId)authentication.getPrincipal()).getId();
+    model.addAttribute("stafferId", stafferId);
+    model.addAttribute("vacation", new VacationEntity());
+    return "/staff/requestVacation";
   }
 
-  @PostMapping("/staff/staffers/{stafferId}/vacations/create")
-  public String doVacationInput(Model model, @PathVariable("stafferId") Long stafferId) {
-    return null;
+  @PostMapping("/staff/staffers/vacations/create")
+  public String doVacationInput(Model model,
+      @ModelAttribute("vacation") VacationEntity vacation,
+      Authentication authentication) {
+    Long stafferId = ((UserWithId)authentication.getPrincipal()).getId();
+    Optional<StaffEntity> staff = staffService.findById(stafferId);
+    if(staff.isPresent()) {
+      vacation.setStaffer(staff.get());
+      try {
+        Long vacationId = staffService.requestVacation(vacation);
+        StringBuilder successMessage = new StringBuilder()
+            .append(String.format("Urlaub (%d) im Umfang von %d",
+            vacationId,
+            vacation.getVacationDays()));
+        if(vacation.getVacationDays() == 1) {
+          successMessage.append("Tag");
+        } else {
+          successMessage.append("Tage");
+        }
+        successMessage.append(" erfasst!");
+        model.addAttribute("note", successMessage.toString());
+      } catch (NotEnoughVacationDaysException e) {
+        model.addAttribute("note", "Nicht genügend freie Urlaubstage!");
+      } catch (IllegalArgumentException e) {
+        model.addAttribute("note", e.getMessage());
+      }
+    } else {
+      model.addAttribute("note", "Mitarbeiter mit ID " + stafferId + " nicht gefunden!");
+    }
+    return "/staff/requestVacation";
   }
 
   @GetMapping("/staff/vacations")

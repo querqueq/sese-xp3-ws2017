@@ -31,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .antMatchers("/css/**", "/index", "/register", "/error").permitAll()
           // hasRole checks for a role on the loggedIn user
           .antMatchers("/customer/**").hasRole(Role.CUSTOMER.name())
+          .antMatchers("/staff/vacations/**").hasRole(Role.MANAGER.name())
           .antMatchers("/staff/staffers/create").hasRole(Role.MANAGER.name())
           .antMatchers("/staff/**").hasRole(Role.STAFF.name())          
           .and()

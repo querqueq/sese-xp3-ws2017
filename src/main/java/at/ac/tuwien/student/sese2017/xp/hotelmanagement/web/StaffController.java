@@ -286,7 +286,7 @@ public class StaffController {
    * Creates a new vacation request.
    * 
    * @param model empty model
-   * @param vacationId vacation to be accepted
+   * @param vacation vacation to be accepted
    * @param authentication for getting current user
    * @return view path
    */

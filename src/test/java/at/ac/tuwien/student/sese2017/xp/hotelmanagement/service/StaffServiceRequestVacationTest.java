@@ -11,6 +11,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.JobTitle;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.StaffRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.VacationRepository;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
@@ -241,6 +242,17 @@ public class StaffServiceRequestVacationTest {
         .setToDate(LocalDate.of(2017, 10, 29))
         .setVacationDays(21);
     staffService.requestVacation(vacationEntity);
+  }
+  
+  @Test(expected = IllegalArgumentException.class)
+  public void testRequestVacationAsNull() throws NotEnoughVacationDaysException {
+    staffService.requestVacation(getVacationEntity().setStaffer(null));
+  }
+  
+  @Test(expected = IllegalArgumentException.class)
+  public void testRequestNonPendingVacation() throws NotEnoughVacationDaysException {
+    staffService.requestVacation(getVacationEntity()
+        .setResolution(VacationStatus.ACCEPTED));
   }
 
   private VacationEntity getVacationEntity() {

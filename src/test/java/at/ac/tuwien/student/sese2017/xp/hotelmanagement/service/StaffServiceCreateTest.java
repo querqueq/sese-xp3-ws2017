@@ -161,4 +161,21 @@ public class StaffServiceCreateTest {
     exception.expect(IllegalStateException.class);
     staffService.create(newStaff);
   }
+  
+  @Test
+  public void testCreateStafferWithoutYearlyVacationDays() {
+    using(manager);
+    setRequestingUser(manager);
+    newStaff.setYearlyVacationDays(null);
+    Long newStaffId = uniqueId();
+    when(staffRepository.save(newStaff)).thenAnswer(new Answer<StaffEntity>() {
+      @Override
+      public StaffEntity answer(InvocationOnMock inv) throws Throwable {
+        StaffEntity staffer = (StaffEntity) inv.getArgument(0);
+        staffer.setId(newStaffId);
+        return staffer;
+      }      
+    });
+    staffService.create(newStaff);
+  }
 }

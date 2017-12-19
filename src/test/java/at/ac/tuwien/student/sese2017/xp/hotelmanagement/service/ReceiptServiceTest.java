@@ -9,12 +9,13 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import java.util.List;
 import javax.transaction.Transactional;
+
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataDirectory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReceiptRepository;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotFoundException;
 
 @Transactional
@@ -25,6 +26,9 @@ public class ReceiptServiceTest extends HotelManagementApplicationTests {
 
   @Autowired
   private ReceiptRepository receiptRepository;
+  
+  @Autowired
+  private TestDataDirectory tD;
 
   /**
    * Find all receipt on empty db
@@ -58,7 +62,7 @@ public class ReceiptServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void testCancelExistingReceipt() {
-    long receiptId = TestDataInjector.RECEIPT_1.getReceiptId();
+    long receiptId = tD.RECEIPT_1.getReceiptId();
     assertTrue(receiptRepository.findById(receiptId).isPresent());
     receiptService.cancelReceipt(receiptId);
     assertFalse(receiptRepository.findById(receiptId).isPresent());
@@ -77,7 +81,7 @@ public class ReceiptServiceTest extends HotelManagementApplicationTests {
    */
   @Test(expected = NotFoundException.class)
   public void testCancelAlreadyCanceledReceipt() {
-    long receiptId = TestDataInjector.RECEIPT_1.getReceiptId();
+    long receiptId = tD.RECEIPT_1.getReceiptId();
     assertTrue(receiptRepository.findById(receiptId).isPresent());
     receiptService.cancelReceipt(receiptId);
     receiptService.cancelReceipt(receiptId);
@@ -88,8 +92,8 @@ public class ReceiptServiceTest extends HotelManagementApplicationTests {
    */
   @Test
   public void testGetReceipt() {
-    assertThat(receiptService.getReceipt(TestDataInjector.RECEIPT_1.getReceiptId()).getReceiptId(),
-        is(TestDataInjector.RECEIPT_1.getReceiptId()));
+    assertThat(receiptService.getReceipt(tD.RECEIPT_1.getReceiptId()).getReceiptId(),
+        is(tD.RECEIPT_1.getReceiptId()));
   }
 
   /**
@@ -114,7 +118,7 @@ public class ReceiptServiceTest extends HotelManagementApplicationTests {
   @Test
   public void testGetReceiptsForCustomer() {
     assertEquals(1,
-        receiptService.getReceiptsForCustomer(TestDataInjector.CUSTOMER_1.getId()).size());
+        receiptService.getReceiptsForCustomer(tD.CUSTOMER_1.getId()).size());
   }
 
   /**

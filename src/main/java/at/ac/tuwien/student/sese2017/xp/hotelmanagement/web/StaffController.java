@@ -138,7 +138,7 @@ public class StaffController {
             default:
               break;
           }
-    });
+        });
     return STAFF_SEARCH_VIEW;
   }
 

@@ -1,24 +1,29 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.web;
 
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.auth.UserWithId;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.StaffEmployment;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffCreateForm;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSearchCriteria.SearchOption;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.ReceiptService;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.StaffService;
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.data.querydsl.SimpleEntityPathResolver;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,12 +44,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class StaffController {
 
+  private static final String SUCCESS_ATTRIBUTE_NAME = "success";
+  private static final String DANGER_ATTRIBUTE_NAME = "danger";
   private static final String STAFF_SEARCH_VIEW = "staff/search";
   private static final String RECEIPTS = "receipts";
   private static final String SEARCH_CRITERIA = "searchCriteria";
   private static final String CUSTOMER_ATTRIBUTE_NAME = "customer";
+  private static final String STAFFER_ATTRIBUTE_NAME = "staffer";
+  private static final String VACATIONS_ATTRIBUTE_NAME = "vacations";
   private CustomerService customerService;
   private ReceiptService receiptService;
+  private StaffService staffService;
 
   /**
    * Controller for staff use cases.
@@ -52,9 +62,12 @@ public class StaffController {
    * @param customerService The CustomerService to search and create CustomerEntity objects.
    */
   @Autowired
-  public StaffController(CustomerService customerService, ReceiptService receiptService) {
+  public StaffController(CustomerService customerService,
+      ReceiptService receiptService,
+      StaffService staffService) {
     this.customerService = customerService;
     this.receiptService = receiptService;
+    this.staffService = staffService;
   }
 
   /**
@@ -110,7 +123,7 @@ public class StaffController {
     log.info("staff index - Page called");
     StaffSearchCriteria staffSearchCriteria = new StaffSearchCriteria();
     staffSearchCriteria
-        .setSearchOption(Optional.ofNullable(searchOption).orElse(SearchOption.CUSTOMERS));
+    .setSearchOption(Optional.ofNullable(searchOption).orElse(SearchOption.CUSTOMERS));
     staffSearchCriteria.setSearchText(keywords);
     model.addAttribute(SEARCH_CRITERIA, staffSearchCriteria);
     Optional.ofNullable(staffSearchCriteria).map(StaffSearchCriteria::getSearchOption)
@@ -200,12 +213,171 @@ public class StaffController {
     criteria.setSearchOption(SearchOption.RECEIPTS);
     try {
       receiptService.cancelReceipt(receiptId);
-      redir.addFlashAttribute("success", "Rechnung " + receiptId + " storniert.");
+      redir.addFlashAttribute(SUCCESS_ATTRIBUTE_NAME, "Rechnung " + receiptId + " storniert.");
     } catch (RuntimeException e) {
       log.error("Error while canceling receipt {}", receiptId, e);
-      redir.addFlashAttribute("danger", "Rechnung konnte nicht storniert werden.");
+      redir.addFlashAttribute(DANGER_ATTRIBUTE_NAME, "Rechnung konnte nicht storniert werden.");
     }
     return redirectToSearch(SearchOption.RECEIPTS, searchKeywords);
+  }
+
+  /**
+   * Return form for creating new staffer.
+   * 
+   * @param model empty model
+   * @return view path
+   */
+  @GetMapping("/staff/staffers/create")
+  public String getCreateStaff(Model model) {
+    log.info("create staff - Page called");
+    StaffCreateForm dto = new StaffCreateForm();
+    model.addAttribute(STAFFER_ATTRIBUTE_NAME, dto);
+    return "staff/staffCreate";
+  }
+
+  /**
+   * Creates a new staffer.
+   * 
+   * @param model empty model
+   * @param dto new staff form dto
+   * @return view path
+   */
+  @PostMapping("/staff/staffers/create")
+  public String doCreateStaff(Model model, @ModelAttribute StaffCreateForm dto) {
+    log.info("post staff - Page called");
+    StaffEntity entity = dto.getEntity();
+    try {
+      Map<Integer, Integer> initVacDays = new HashMap<>();
+      Integer currentYear = LocalDate.now().getYear();
+      initVacDays.put(currentYear, dto.getInitialVacationDays());
+      initVacDays.put(currentYear + 1, dto.getYearlyVacationDays());
+      dto.getEntity().setYearlyVacationDays(initVacDays);
+      StaffEmployment employment = staffService.create(dto.getEntity());
+      log.info("created staffer {}", employment.getId());
+      model.addAttribute("note",
+          String.format("Mitarbeiter %s (%d) erfasst! Das Passwort ist '%s' "
+              + "(Passwort wird nicht nochmal angezeigt!)",
+              entity.getName(), employment.getId(), employment.getClearTextPassword()));
+      return getCreateStaff(model);
+    } catch (ValidationException e) {
+      model.addAttribute("note", "Fehler");
+      model.addAttribute(STAFFER_ATTRIBUTE_NAME, dto);
+      return "staff/staffCreate";
+    }
+
+  }
+
+  /**
+   * Returns for your creating a vacation request. 
+   * 
+   * @param model empty model
+   * @param authentication for getting current user
+   * @return view path
+   */
+  @GetMapping("/staff/staffers/vacations/create")
+  public String getVacationInput(Model model, Authentication authentication) {
+    Long stafferId = ((UserWithId)authentication.getPrincipal()).getId();
+    model.addAttribute("stafferId", stafferId);
+    model.addAttribute("vacation", new VacationEntity());
+    return "/staff/requestVacation";
+  }
+
+  /**
+   * Creates a new vacation request.
+   * 
+   * @param model empty model
+   * @param vacation vacation to be accepted
+   * @param authentication for getting current user
+   * @return view path
+   */
+  @PostMapping("/staff/staffers/vacations/create")
+  public String doVacationInput(Model model,
+      @ModelAttribute("vacation") VacationEntity vacation,
+      Authentication authentication) {
+    Long stafferId = ((UserWithId)authentication.getPrincipal()).getId();
+    Optional<StaffEntity> staff = staffService.findById(stafferId);
+    if (staff.isPresent()) {
+      vacation.setStaffer(staff.get());
+      try {
+        Long vacationId = staffService.requestVacation(vacation);
+        StringBuilder successMessage = new StringBuilder()
+            .append(String.format("Urlaub (%d) im Umfang von %d ",
+                vacationId,
+                vacation.getVacationDays()));
+        if (vacation.getVacationDays() == 1) {
+          successMessage.append("Tag");
+        } else {
+          successMessage.append("Tage");
+        }
+        successMessage.append(" erfasst!");
+        model.addAttribute("note", successMessage.toString());
+      } catch (NotEnoughVacationDaysException e) {
+        model.addAttribute("note", "Nicht genügend freie Urlaubstage!");
+      } catch (IllegalArgumentException e) {
+        model.addAttribute("note", e.getMessage());
+      }
+    } else {
+      model.addAttribute("note", "Mitarbeiter mit ID " + stafferId + " nicht gefunden!");
+    }
+    return "/staff/requestVacation";
+  }
+
+  /**
+   * Get all pending, running and future vacation requests.
+   * 
+   * @param model empty model
+   * @return view path
+   */
+  @GetMapping("/staff/vacations")
+  public String getVacations(Model model) {
+    log.info("get vacations - Page called");
+    model.addAttribute(VACATIONS_ATTRIBUTE_NAME, staffService.getCurrentVactionRequests());
+    return "staff/vacationMgmt";
+  }
+  
+  /**
+   * Accept a vacation.
+   * 
+   * @param model empty model
+   * @param vacationId vacation to be accepted
+   * @param redir for success/failure messages after redirect
+   * @return redirect path
+   */
+  @PostMapping(value = "/staff/vacations/{vacationId}/resolve", params = "action=accept")
+  public String acceptVacation(Model model, @PathVariable("vacationId") Long vacationId,
+      RedirectAttributes redir) {
+    log.info("accept vacation {} - Page called", vacationId);
+    try {
+      staffService.confirmVacation(vacationId);
+      redir.addFlashAttribute(SUCCESS_ATTRIBUTE_NAME, "Urlaubsantrag bewilligt!");
+    } catch (IllegalStateException | IllegalArgumentException e) {
+      redir.addFlashAttribute(DANGER_ATTRIBUTE_NAME, e.getMessage());
+    }    
+    return redirectToVacationOverview();
+  }
+
+  /**
+   * Reject a vacation with a non-optional reason.
+   *  
+   * @param model empty model
+   * @param vacationId vacation to be accepted
+   * @param reason non optional reason for vacation denial
+   * @param redir for success/failure messages after redirect
+   * @return redirect path
+   */
+  @PostMapping(value = "/staff/vacations/{vacationId}/resolve", params = "action=reject")
+  public String rejectVacation(Model model,
+      @PathVariable("vacationId") Long vacationId,
+      @ModelAttribute("reason") String reason,
+      RedirectAttributes redir) {
+    log.info("reject vacation {} - Page called", vacationId);
+    try {
+      staffService.rejectVacation(vacationId, reason);
+      redir.addFlashAttribute(SUCCESS_ATTRIBUTE_NAME, "Urlaubsantrag abgelehnt!");
+    } catch (IllegalStateException | IllegalArgumentException e) {
+      redir.addFlashAttribute(DANGER_ATTRIBUTE_NAME, e.getMessage());
+    }    
+    return redirectToVacationOverview();
   }
 
   private String redirectToSearch(StaffSearchCriteria criteria) {
@@ -214,5 +386,9 @@ public class StaffController {
 
   private String redirectToSearch(SearchOption searchOption, String searchText) {
     return String.format("redirect:/staff/search?keywords=%s&domain=%s", searchText, searchOption);
+  }
+
+  private String redirectToVacationOverview() {
+    return "redirect:/staff/vacations";
   }
 }

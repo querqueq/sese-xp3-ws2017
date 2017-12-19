@@ -8,9 +8,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
@@ -22,10 +19,9 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -41,14 +37,11 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
  * @author Johannes
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @ToString(exclude = "receipts")
 @Indexed
 @Entity
-public class CustomerEntity {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+public class CustomerEntity extends UserEntity {
 
   @Column
   @Field
@@ -96,7 +89,7 @@ public class CustomerEntity {
   @Digits(fraction = 0, integer = 50)
   private String phoneNumber;
 
-  @Column
+  @Column(unique = true)
   @Email
   @NotNull
   private String email;

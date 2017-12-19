@@ -154,4 +154,11 @@ public class StaffServiceCreateTest {
     exception.expect(IllegalArgumentException.class);
     staffService.create(null);
   }
+  
+  @Test
+  public void testCreateStafferUsingInvalidUsername() {
+    setRequestingUser(manager);
+    exception.expect(IllegalStateException.class);
+    staffService.create(newStaff);
+  }
 }

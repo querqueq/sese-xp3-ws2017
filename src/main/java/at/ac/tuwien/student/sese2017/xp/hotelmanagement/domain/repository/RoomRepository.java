@@ -24,6 +24,8 @@ public interface RoomRepository extends CrudRepository<RoomEntity, Long> {
   Collection<RoomEntity> findAllByNameContainingIgnoringCaseAndMaxOccupantsBetween(
       String name, Integer minOccupants, Integer maxOccupants);
 
+  Collection<RoomEntity> findAllByNameContainingIgnoringCase(String name);
+
   /**
    * Find all rooms by the 3 values and having a priceType entry with value lower than maxPrice.
    *

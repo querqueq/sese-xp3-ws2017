@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="../../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}">
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/offcanvas.css" rel="stylesheet" th:href="@{/css/offcanvas.css}">
+    <title>Suche</title>
+    <meta charset="utf-8" />
+    <style type="text/css">
+    .card-block {
+        padding: 10px;
+    }
+
+    article {
+        margin-bottom: 10px;
+    }
+    .row {
+        margin-top: 10px;
+    }
+</style>
+</head>
+
+<body>
+    <div th:insert="fragments/header :: menu"></div>
+    <div class="container">
+        <div class="search">
+            <form action="staff/reservation/create" method="post" th:action="@{/staff/reservation/create}" th:object="${searchCriteria}">
+                <fieldset class="form-group">
+                    <legend>Buchung erfassen</legend>
+                    <div class="form-group row">
+                        <label for="from" class="col-2 col-md-1 col-form-label required text-right">Von</label>
+                        <div class="col-10 col-md-5">
+                            <input id="from" class="form-control" type="date"
+                                   th:field="*{from}" required>
+                        </div>
+                        <label for="to" class="col-2 col-md-1 col-form-label required text-right">Bis</label>
+                        <div class="col-10 col-md-5">
+                            <input id="to" class="form-control" type="date"
+                                   th:field="*{to}" required>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="row">
+                    <div class="col-md-12 input-group">
+                        <input type="text" class="form-control input-lg" id="searchText" autofocus="autofocus" placeholder="Zimmername" th:field="*{searchText}" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="search-results">
+            <hr>
+            <h2>Suchergebnis</h2>
+            <div class="row alerts">
+                <div class="col-md-12">
+                    <div class="alert alert-danger" role="alert" th:if="${danger != null}">
+                        <strong>Fehler!</strong> 
+                        <span th:text="${danger}">
+                            Bitte versuchen Sie es später nochmal.
+                        </span>
+                    </div>
+                    <div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(customers) && #lists.isEmpty(receipts)}">
+                        <strong>Keine Treffer!</strong> Passen Sie Ihre Suche an oder konsultieren Sie die <a href="#">Hilfe</a>.
+                    </div>
+                    <div class="alert alert-success" role="alert" th:if="${success != null}">
+                        <span th:text="${success}">
+                            Erfolg
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <span th:each="room : ${searchResult}" th:if="${not #lists.isEmpty(searchResult)}">
+                <article class="card">
+                    <h3 class="card-header">
+                        <i class="fa fa-bed" aria-hidden="true"></i>
+                        <b th:text="${room.name}">Presidential Suite</b>
+                    </h3>
+                    <div class="row card-block">
+                        <div class="col-lg-4 col-12">
+                            <p>
+                                <b>Maximale Belegung</b>
+                                <br><span th:text="${room.maxOccupants}">4</span> Personen
+                            </p>
+                        </div>
+                        <div class="col-lg-4 col-12">
+                            <p>
+                                <b>Preise</b>
+                                <span th:each="price : ${room.priceMap}">
+                                    <br><span th:text="${price.key.toString()}">Einzel</span>: <span th:text="${price.value}">422.0</span>€
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-lg-4 col-12" style="padding-bottom: 5px">
+                            <button class="btn btn-primary btn-block float-right">Hinzufügen</button>
+                            <button class="btn btn-danger btn-block float-right" disabled>Bereits zu dieser Zeit belegt</button>
+                        </div>
+                    </div>
+                </article>
+            </span>
+        </div>
+        <hr>
+        <div>
+            <h2>Ausgewählte Zimmer</h2>
+            <span th:each="room : ${selectedRooms}" th:if="${not #lists.isEmpty(selectedRooms)}">
+                <article class="card">
+                    <h3 class="card-header">
+                        <i class="fa fa-bed" aria-hidden="true"></i>
+                        <b th:text="${room.name}">Presidential Suite</b>
+                    </h3>
+                    <div class="row card-block">
+                        <div class="col-lg-4 col-12">
+                            <p>
+                                <b>Maximale Belegung</b>
+                                <br><span th:text="${room.maxOccupants}">4</span> Personen
+                            </p>
+                        </div>
+                        <div class="col-lg-4 col-12">
+                            <p>
+                                <b>Preise</b>
+                                <span th:each="price : ${room.priceMap}">
+                                    <br><span th:text="${price.key.toString()}">Einzel</span>: <span th:text="${price.value}">422.0</span>€
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-lg-4 col-12" style="padding-bottom: 5px">
+                            <button class="btn btn-danger btn-block float-right">Entfernen</button>
+                        </div>
+                    </div>
+                </article>
+            </span>
+        </div>
+        <div>
+            <button class="col-12 col-md-6 col-lg-4 btn btn-primary btn-block float-right">Weiter</button>
+        </div>
+    </div>
+    <script src="../../static/js/jquery-3.2.1.slim.min.js" th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+    <script src="../../static/js/popper.min.js" th:src="@{/js/popper.min.js}"></script>
+    <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="../../static/js/offcanvas.js" th:src="@{/js/offcanvas.js}"></script>
+</body>
+
+</html>

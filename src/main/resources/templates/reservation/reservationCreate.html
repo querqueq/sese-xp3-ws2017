@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<title>Kunde anlegen</title>
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="../../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" href="../../static/css/font-awesome.min.css"
+	th:href="@{/css/font-awesome.min.css}">
+<!-- Custom styles for this template -->
+<link href="../../static/css/offcanvas.css" rel="stylesheet"
+	th:href="@{/css/offcanvas.css}">
+<meta charset="utf-8" />
+<style>
+.required.col-form-label:before {
+	color: red;
+	content: "*";
+	position: absolute;
+	margin-left: -10px;
+}
+</style>
+</head>
+<body>
+	<div class="flash-note" th:if="${note != null}" th:text="${note}"></div>
+
+	<div th:insert="fragments/header :: menu"></div>
+	<!-- 	 d-flex justify-content-center -->
+	<div class="container">
+		<form class="form-horizontal" th:action="@{/staff/customer/create}"
+			th:object="${customer}" method="post">
+			<fieldset class="form-group">
+				<legend>Buchung erfassen</legend>
+				<div class="form-group row">
+					<label for="from" class="col-2 col-md-1 col-form-label required text-right">Von</label>
+					<div class="col-10 col-md-5">
+						<input id="from" class="form-control" type="date"
+									 th:field="*{from}" required>
+					</div>
+					<label for="till" class="col-2 col-md-1 col-form-label required text-right">Bis</label>
+					<div class="col-10 col-md-5">
+						<input id="till" class="form-control" type="date"
+									 th:field="*{till}" required>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-group row">
+				<label><span style="color: red;">*</span> Pflichtfeld</label>
+			</div>
+			<button type="submit" class="btn btn-primary">Speichern</button>
+		</form>
+	</div>
+	<script src="../../static/js/jquery-3.2.1.slim.min.js"
+		th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+	<script src="../../static/js/popper.min.js"
+		th:src="@{/js/popper.min.js}"></script>
+	<script src="../../static/js/bootstrap.min.js"
+		th:src="@{/js/bootstrap.min.js}"></script>
+	<script src="../../static/js/offcanvas.js" th:src="@{/js/offcanvas.js}"></script>
+
+</body>
+</html>

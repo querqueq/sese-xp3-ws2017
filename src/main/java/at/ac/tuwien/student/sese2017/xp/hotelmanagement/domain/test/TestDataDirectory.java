@@ -2,6 +2,7 @@ package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.JobTitle;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationEntity;
@@ -15,8 +16,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -55,6 +60,19 @@ public class TestDataDirectory implements InjectableDataDirectory {
   public final CustomerEntity CUSTOMER_7;
   public final ReservationEntity RESERVATION_1;
   public final ReceiptEntity RECEIPT_1;
+  public final ReceiptEntity RECEIPT_2;
+  public final ReceiptEntity RECEIPT_3;
+  public final ReceiptEntity RECEIPT_4;
+  public final ReceiptEntity RECEIPT_5;
+  public final ReceiptEntity RECEIPT_6;
+  public final StaffEntity DEFAULT_STAFF;
+  public final StaffEntity STAFF_1;
+  public final StaffEntity STAFF_2;
+  public final StaffEntity MANAGER_1;
+  public final VacationEntity VACATION_PENDING_1;
+  public final VacationEntity VACATION_PENDING_2;
+  public final VacationEntity VACATION_ACCEPTED_1;
+  public final VacationEntity VACATION_REJECTED_1;
 
   public TestDataDirectory() {
     // ROOMS
@@ -286,7 +304,7 @@ public class TestDataDirectory implements InjectableDataDirectory {
         .setPhoneNumber("01234569");
     */
 
-    List<CustomerEntity> customers = new ArrayList<>();
+  List<CustomerEntity> customers = new ArrayList<>();
     customers.add(CUSTOMER_1);
     customers.add(CUSTOMER_2);
     customers.add(CUSTOMER_3);
@@ -313,6 +331,137 @@ public class TestDataDirectory implements InjectableDataDirectory {
             .setPrice(6853.95)
             .setDiscount(0.05)
             .setReceiptDate(LocalDateTime.of(2017, 10, 7, 21, 6))
+    ;
+
+    this.RECEIPT_2 = new ReceiptEntity()
+            .addCustomer(CUSTOMER_2)
+            .setHotelAddress(ADDRESS_HOTEL)
+            .setDurationOfStay(3)
+            .addRoom(ROOM_3)
+            .setPrice(601.8)
+            .setDiscount(0.0)
+            .setReceiptDate(LocalDateTime.of(2017, 10, 17, 8, 20))
+    ;
+
+    this.RECEIPT_3 = new ReceiptEntity()
+            .addCustomer(CUSTOMER_3)
+            .setHotelAddress(ADDRESS_HOTEL)
+            .setDurationOfStay(1)
+            .addRoom(ROOM_5)
+            .setPrice(57.66)
+            .setDiscount(0.0)
+            .setReceiptDate(LocalDateTime.of(2017, 10, 19, 17, 18))
+    ;
+
+    this.RECEIPT_4 = new ReceiptEntity()
+            .addCustomer(CUSTOMER_4)
+            .setHotelAddress(ADDRESS_HOTEL)
+            .setDurationOfStay(12)
+            .addRoom(ROOM_2)
+            .setPrice(820.95)
+            .setDiscount(0.02)
+            .setReceiptDate(LocalDateTime.of(2017, 10, 7, 6, 41))
+    ;
+
+    this.RECEIPT_5 = new ReceiptEntity()
+            .addCustomer(CUSTOMER_5)
+            .setHotelAddress(ADDRESS_HOTEL)
+            .setDurationOfStay(3)
+            .addRoom(ROOM_4)
+            .setPrice(1134.0)
+            .setDiscount(0.1)
+            .setReceiptDate(LocalDateTime.of(2017, 10, 6, 0, 41))
+    ;
+
+    this.RECEIPT_6 = new ReceiptEntity()
+            .addCustomer(CUSTOMER_6)
+            .setHotelAddress(ADDRESS_HOTEL)
+            .setDurationOfStay(2)
+            .addRoom(ROOM_6)
+            .setPrice(350.64)
+            .setDiscount(0.0)
+            .setReceiptDate(LocalDateTime.of(2017, 10, 4, 8, 20))
+    ;
+
+    this.DEFAULT_STAFF = (StaffEntity)new StaffEntity()
+            .setBirthday(LocalDate.of(1986, 6, 22))
+            .setEmail("staff@hotel.com")
+            .setJobTitle(JobTitle.RECEPTIONIST)
+            .setName("Staff member")
+            .setSex(Sex.FEMALE)
+            .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 20);}})
+            .setRoles(JobTitle.RECEPTIONIST.getRoles())
+            .setUsername("staff")
+            .setPassword(new BCryptPasswordEncoder().encode("password"));
+
+    this.STAFF_1 = (StaffEntity)new StaffEntity()
+            .setBirthday(LocalDate.of(1998, 5, 16))
+            .setEmail("receptionist@hotel.com")
+            .setJobTitle(JobTitle.RECEPTIONIST)
+            .setName("Stefanie Stafferson")
+            .setSex(Sex.FEMALE)
+            .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 20);}} )
+            .setRoles(JobTitle.RECEPTIONIST.getRoles())
+            .setUsername("receptionist")
+            .setPassword(new BCryptPasswordEncoder().encode("password"));
+
+    this.MANAGER_1 = (StaffEntity) new StaffEntity()
+            .setBirthday(LocalDate.of(1990, 5, 10))
+            .setEmail("manager@hotel.com")
+            .setJobTitle(JobTitle.MANAGER)
+            .setName("Michael Scott")
+            .setSex(Sex.MALE)
+            .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 5);}})
+            .setRoles(JobTitle.MANAGER.getRoles())
+            .setUsername("manager")
+            .setPassword(new BCryptPasswordEncoder().encode("password"))
+    ;
+
+    this.STAFF_2 = (StaffEntity) new StaffEntity()
+            .setBirthday(LocalDate.of(1990, 5, 16))
+            .setEmail("n.flynn@hotel.com")
+            .setJobTitle(JobTitle.CLEANER)
+            .setName("Neil Flynn")
+            .setSex(Sex.MALE)
+            .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2010, 22);}})
+            .setRoles(JobTitle.CLEANER.getRoles())
+            .setUsername("janitor")
+            .setPassword(new BCryptPasswordEncoder().encode("password"))
+    ;
+
+    this.VACATION_PENDING_1 = new VacationEntity()
+            .setFromDate(LocalDate.of(2020, 2, 10))
+            .setToDate(LocalDate.of(2020, 2, 20))
+            .setResolution(VacationStatus.PENDING)
+            .setStaffer(STAFF_2)
+            .setVacationDays(7)
+    ;
+
+    this.VACATION_ACCEPTED_1 = new VacationEntity()
+            .setFromDate(LocalDate.of(2018, 2, 10))
+            .setToDate(LocalDate.of(2018, 2, 20))
+            .setResolution(VacationStatus.ACCEPTED)
+            .setStaffer(STAFF_1)
+            .setManager(MANAGER_1)
+            .setVacationDays(7)
+    ;
+
+    this.VACATION_REJECTED_1 = new VacationEntity()
+            .setFromDate(LocalDate.of(2018, 3, 10))
+            .setToDate(LocalDate.of(2018, 3, 18))
+            .setResolution(VacationStatus.REJECTED)
+            .setStaffer(STAFF_2)
+            .setManager(MANAGER_1)
+            .setReason("Akt Gottes")
+            .setVacationDays(7)
+    ;
+
+    this.VACATION_PENDING_2 = new VacationEntity()
+            .setFromDate(LocalDate.of(2018, 1, 12))
+            .setToDate(LocalDate.of(2018, 1, 19))
+            .setResolution(VacationStatus.PENDING)
+            .setStaffer(STAFF_2)
+            .setVacationDays(5)
     ;
   }
 }

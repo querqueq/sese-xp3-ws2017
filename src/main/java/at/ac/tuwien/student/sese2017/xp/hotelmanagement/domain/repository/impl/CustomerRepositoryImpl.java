@@ -47,23 +47,28 @@ public class CustomerRepositoryImpl implements CustomSearchRepository<CustomerEn
     if (StringUtils.isEmpty(text) || text.length() < 3) {
       return Collections.emptyList();
     }
+
     FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 
     QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
         .buildQueryBuilder()
         .forEntity(CustomerEntity.class)
-        .overridesForField("name", "customanalyzer_query")
-        .overridesForField("billingAddress", "customanalyzer_query")
         .get();
 
     Query query = queryBuilder
         .keyword()
         .fuzzy()
         .withEditDistanceUpTo(1)
-        .onFields("name", "billingAddress")
+        .onFields(
+            "billingAddress.city",
+            "billingAddress.state",
+            "billingAddress.zipCode")
+        .andField("name").boostedTo(5F)
+        .andField("billingAddress.name").boostedTo(4F)
+        .andField("billingAddress.streetAddress1").boostedTo(3F)
+        .andField("billingAddress.streetAddress2").boostedTo(3F)
         .matching(text)
         .createQuery();
-
     return fullTextEntityManager.createFullTextQuery(query, CustomerEntity.class).getResultList();
   }
 }

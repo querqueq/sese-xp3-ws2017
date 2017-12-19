@@ -1,16 +1,23 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import lombok.ToString;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 /**
  * Representation of a hotel room.
@@ -19,8 +26,9 @@ import lombok.extern.slf4j.Slf4j;
  * @author lkerck
  */
 @Data
+@ToString(exclude = "receipts")
+@Indexed
 @Entity
-@Slf4j
 public class RoomEntity {
 
   /**
@@ -33,6 +41,7 @@ public class RoomEntity {
   /**
    * Room name or room number.
    */
+  @Field
   @Column(nullable = false, unique = true)
   private String name;
 
@@ -44,4 +53,17 @@ public class RoomEntity {
 
   @ElementCollection
   private Map<PriceType, Double> priceMap = new HashMap<>();
+
+  @ContainedIn
+  @ManyToMany(cascade = {CascadeType.PERSIST})
+  @JoinTable(name = "Room_Receipt",
+      joinColumns = {@JoinColumn(name = "roomEntity_id", referencedColumnName = "roomId")},
+      inverseJoinColumns = {
+          @JoinColumn(name = "receiptEntity_id", referencedColumnName = "receiptId")})
+  private List<ReceiptEntity> receipts = new ArrayList<>();
+
+  public RoomEntity addReceipt(ReceiptEntity receipt) {
+    receipts.add(receipt);
+    return this;
+  }
 }

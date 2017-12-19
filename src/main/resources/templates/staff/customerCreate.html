@@ -1,82 +1,178 @@
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-	<head>
-		<title>Hello Spring Security</title>
+<head>
+<title>Kunde anlegen</title>
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="../../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" href="../../static/css/font-awesome.min.css"
+	th:href="@{/css/font-awesome.min.css}">
+<!-- Custom styles for this template -->
+<link href="../../static/css/offcanvas.css" rel="stylesheet"
+	th:href="@{/css/offcanvas.css}">
+<meta charset="utf-8" />
+<style>
+.required.col-form-label:before {
+	color: red;
+	content: "*";
+	position: absolute;
+	margin-left: -10px;
+}
+</style>
+</head>
+<body>
+	<div class="flash-note" th:if="${note != null}" th:text="${note}"></div>
 
-        <!-- Bootstrap core CSS -->
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
+	<div th:insert="fragments/header :: menu"></div>
+	<!-- 	 d-flex justify-content-center -->
+	<div class="container">
+		<form class="form-horizontal" th:action="@{/staff/customer/create}"
+			th:object="${customer}" method="post">
+			<fieldset class="form-group">
+				<legend>Allgemein</legend>
+				<div class="form-group row">
+					<label for="name" class="col-2 col-form-label required">Name</label>
+					<div class="col-10">
+						<input id="name" class="form-control" type="text" autofocus
+							th:field="*{name}" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="birthday" class="col-2 col-form-label required">Geburtstag</label>
+					<div class="col-10">
+						<input id="birthday" class="form-control" type="date"
+							th:field="*{birthday}" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="sex" class="col-2 col-form-label required">Geschlecht</label>
+					<div class="col-10">
+						<select id="sex" class="custom-select mb-2 mr-sm-2 mb-sm-0"
+							required th:field="*{sex}">
+							<option
+								th:each="sex : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex).values()}"
+								th:value="${sex}" th:text="${sex.getDisplay()}"></option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="companyName" class="col-2 col-form-label">Firma</label>
+					<div class="col-10">
+						<input id="companyName" class="form-control" type="text"
+							th:field="*{companyName}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="discount" class="col-2 col-form-label">Rabbat</label>
+					<div class="col-10">
+						<input id="discount" class="form-control" type="number" step="0.1"
+							min="0" max="100" value="0" th:field="*{discount}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="phone" class="col-2 col-form-label required">Telefonnummer</label>
+					<div class="col-10">
+						<input id="phone" class="form-control" type="tel"
+							th:field="*{phoneNumber}" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="faxNumber" class="col-2 col-form-label">Faxnummer</label>
+					<div class="col-10">
+						<input id="faxNumber" class="form-control" type="tel"
+							th:field="*{faxNumber}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="email" class="col-2 col-form-label required">E-Mail</label>
+					<div class="col-10">
+						<input id="email" class="form-control" type="email"
+							placeholder="user@example.com" required th:field="*{email}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="webAddress" class="col-2 col-form-label">Web-Adresse</label>
+					<div class="col-10">
+						<input id="webAddress" class="form-control" type="url"
+							placeholder="https://example.org" th:field="*{webAddress}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="note" class="col-2 col-form-label">Notiz</label>
+					<div class="col-10">
+						<textarea id="note" class="form-control" rows="3"
+							th:field="*{note}"></textarea>
+					</div>
+				</div>
+			</fieldset>
 
-        <!-- Custom styles for this template -->
-        <link href="/css/offcanvas.css" rel="stylesheet">
-		<meta charset="utf-8" />
-	</head>
-	<body>
-		<div class="flash-note" th:if="${note != null}" th:text="${note}"></div>
+			<fieldset class="form-group">
+				<legend>Rechnungsadresse</legend>
+				<div class="form-group row">
+					<label for="billingAddress.name"
+						class="col-2 col-form-label required">Name</label>
+					<div class="col-10">
+						<input id="billingAddress.name" class="form-control" type="text"
+							th:field="*{billingAddress.name}" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="billingAddress.streetAddress1"
+						class="col-2 col-form-label required">Anschrift&nbsp;1</label>
+					<div class="col-10">
+						<input id="billingAddress.streetAddress1" class="form-control"
+							type="text" th:field="*{billingAddress.streetAddress1}" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="billingAddress.streetAddress2"
+						class="col-2 col-form-label">Anschrift&nbsp;2</label>
+					<div class="col-10">
+						<input id="billingAddress.streetAddress2" class="form-control"
+							type="text" th:field="*{billingAddress.streetAddress2}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="billingAddress.zipCode"
+						class="col-2 col-form-label required">Postleitzahl</label>
+					<div class="col-10">
+						<input id="billingAddress.zipCode" class="form-control"
+							type="text" th:field="*{billingAddress.zipCode}" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="billingAddress.city"
+						class="col-2 col-form-label required">Stadt</label>
+					<div class="col-10">
+						<input id="billingAddress.city" class="form-control" type="text"
+							th:field="*{billingAddress.city}" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="billingAddress.state"
+						class="col-2 col-form-label required">Land</label>
+					<div class="col-10">
+						<input id="billingAddress.state" class="form-control" type="text"
+							th:field="*{billingAddress.state}" required>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-group row">
+				<label><span style="color: red;">*</span> Pflichtfeld</label>
+			</div>
+			<button type="submit" class="btn btn-primary">Speichern</button>
+		</form>
+	</div>
+	<script src="../../static/js/jquery-3.2.1.slim.min.js"
+		th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+	<script src="../../static/js/popper.min.js"
+		th:src="@{/js/popper.min.js}"></script>
+	<script src="../../static/js/bootstrap.min.js"
+		th:src="@{/js/bootstrap.min.js}"></script>
+	<script src="../../static/js/offcanvas.js" th:src="@{/js/offcanvas.js}"></script>
 
-		<div th:insert="fragments/header :: menu"></div>
-		<center>
-            <h1>Kundenstammdaten erfassen</h1>
-            <form th:action="@{/staff/customer/create}" th:object="${customer}" method="post">
-                <table>
-                    <tr>
-                        <td><label for="name">Name</label></td>
-                        <td><input type="text" id="name" autofocus th:field="*{name}" required /></td>
-                    </tr>
-                    <tr>
-                        <td><label for="birthday">Geburtstag</label></td>
-                        <td><input type="date" id="birthday" th:field="*{birthday}" required /></td>
-                    </tr>
-                    <tr>
-                        <td><label for="sex">Geschlecht</label></td>
-                        <td>
-                            <select id="sex" th:field="*{sex}">
-                            <option th:each="sex : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex).values()}"
-                                    th:value="${sex}" th:text="${sex.getDisplay()}">
-                            </option>
-                        </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="billing">Rechnungsadresse</label></td>
-                        <td><input type="text" size="40" id="billing" th:field="*{billingAddress}" required /></td>
-                    </tr>
-                    <tr>
-                        <td><label for="company">Firma</label></td>
-                        <td><input type="text" id="company" th:field="*{companyName}" /></td>
-                    </tr>
-                    <tr>
-                        <td><label for="discount">Rabatt</label></td>
-                        <td><input type="number" step="0.1" min="0" max="100" id="discount" th:field="*{discount}" required /> %</td>
-                    </tr>
-                    <tr>
-                        <td><label for="phone">Telefonnummer</label></td>
-                        <td><input type="tel" id="phone" th:field="*{phoneNumber}" required/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="fax">Faxnummer</label></td>
-                        <td><input type="tel" id="fax" th:field="*{faxNumber}" /></td>
-                    </tr>
-                    <tr>
-                        <td><label for="email">E-Mail</label></td>
-                        <td><input type="email" id="email" th:field="*{email}" placeholder="user@example.com" required/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="web">Web-Adresse</label></td>
-                        <td><input type="url" id="web" th:field="*{webAddress}" placeholder="http://example.org"/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="note">Notiz</label></td>
-                        <td><textarea id="note" th:field="*{note}"></textarea></td>
-                    </tr>
-                </table>
-                    <input type="submit" value="Speichern" />
-            </form>
-		</center>
-        <script src="/js/jquery-3.2.1.slim.min.js"></script>
-        <script src="/js/popper.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
-        <script src="/js/offcanvas.js"></script>
-	</body>
+</body>
 </html>

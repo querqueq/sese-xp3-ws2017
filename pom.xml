@@ -4,7 +4,7 @@
 
 	<groupId>at.ac.tuwien.student.sese2017.xp</groupId>
 	<artifactId>hotelmanagement</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.2.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<developers>
@@ -29,8 +29,8 @@
 	<scm>
 		<url>git@github.com:sese-xp3-ws2017/sese-xp3-ws2017.git</url>
 		<connection>scm:git:git@github.com:sese-xp3-ws2017/sese-xp3-ws2017.git</connection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<name>hotelmanagement</name>
 	<description>Hotel management software for SeSE2017</description>
@@ -122,6 +122,12 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-envers-->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-envers</artifactId>
+		</dependency> 
 
 		<!-- test libs -->
 

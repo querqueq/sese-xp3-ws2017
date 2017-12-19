@@ -1,6 +1,14 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test;
 
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.*;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationRoomBooking;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Role;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,12 +17,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
- * Object wrapper for test data instances
+ * Object wrapper for test data instances.
  */
 @Component
 public class TestDataDirectory implements InjectableDataDirectory {

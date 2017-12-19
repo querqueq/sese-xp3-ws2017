@@ -124,7 +124,7 @@ public class TestDataInjectorService {
   }
 
   /**
-   * Analyzes the InjectableDataDirectory for entity objects and orders them
+   * Analyzes the InjectableDataDirectory for entity objects and orders them.
    * according to their Order value
    * @return ordered list of entity objects
    */
@@ -137,12 +137,12 @@ public class TestDataInjectorService {
     // Get all declared fields
     Field[] fields = tD.getClass().getDeclaredFields();
     // Iterate over all fields of testdata directory
-    for(Field f : fields){
+    for (Field f : fields) {
       // Get type of field
       Class type = f.getType();
 
       // Ignore non fields without JPA entities
-      if(!hasJPAAnnotation(type)) {
+      if (!hasJPAAnnotation(type)) {
         log.debug("Ignoring non JPA field {}", f.getName());
         continue;
       }
@@ -187,14 +187,15 @@ public class TestDataInjectorService {
   }
 
   /**
-   * Add a new element to a priority value
+   * Add a new element to a priority value.
    * @param key priority value
    * @param value element
    * @param priorityList priority map/list structure
    */
-  private static void addToHashList(int key, Object value, Map<Integer, List<Object>> priorityList) {
+  private static void addToHashList(int key, Object value, Map<Integer,
+                                    List<Object>> priorityList) {
     // If there is no current list for this order value, create one
-    if(!priorityList.containsKey(key)) {
+    if (!priorityList.containsKey(key)) {
       priorityList.put(key, new ArrayList<>());
     }
     // Add value to list
@@ -202,7 +203,7 @@ public class TestDataInjectorService {
   }
 
   /**
-   * Reduce the complex priority map/list structure to a simple ordered list
+   * Reduce the complex priority map/list structure to a simple ordered list.
    * @param priorityList priority data
    * @return ordered list
    */
@@ -217,7 +218,7 @@ public class TestDataInjectorService {
   }
 
   /**
-   * Check if class has an JPA annotation
+   * Check if class has an JPA annotation.
    * @param clazz class to check
    * @return true if @Entity is found
    */
@@ -227,7 +228,7 @@ public class TestDataInjectorService {
   }
 
   /**
-   * Check if field has an Order set
+   * Check if field has an Order set.
    * @param f field to check
    * @return order if order is set, otherwise an default oder of 0
    */
@@ -236,7 +237,7 @@ public class TestDataInjectorService {
     Order annotation = f.getAnnotation(Order.class);
 
     // Return order if annotation is found otherwise return 0
-    if(annotation != null) {
+    if (annotation != null) {
       return annotation.value();
     }
     return 0;

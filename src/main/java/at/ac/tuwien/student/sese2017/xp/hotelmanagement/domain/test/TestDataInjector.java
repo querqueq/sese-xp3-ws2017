@@ -10,6 +10,9 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Role;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,28 +21,17 @@ import java.util.HashMap;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.config.AppProperties;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.JobTitle;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.UserEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * This Class handles the injection of all test data for the test cases.
@@ -436,7 +428,7 @@ public class TestDataInjector {
       .setJobTitle(JobTitle.RECEPTIONIST)
       .setName("Stefanie Stafferson")
       .setSex(Sex.FEMALE)
-      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 20);}})
+      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 20);}} )
       .setRoles(JobTitle.RECEPTIONIST.getRoles())
       .setUsername("receptionist")
       .setPassword(new BCryptPasswordEncoder().encode("password"));

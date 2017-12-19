@@ -1,9 +1,15 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationRoomBooking;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationError;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationError.ReservationOverlapError;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationRoomBooking;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationExplanation;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationExplanation.ReservationExplanationBuilder;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationWarning;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReservationRepository;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.RoomRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,15 +17,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.RoomRepository;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReservationEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationExplanation;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.dto.ReservationExplanation.ReservationExplanationBuilder;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.ReservationRepository;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  *
@@ -35,7 +36,8 @@ public class ReservationService {
   private RoomRepository roomRepository;
 
   @Autowired
-  public ReservationService(ReservationRepository reservationRepository, RoomRepository roomRepository) {
+  public ReservationService(ReservationRepository reservationRepository,
+                            RoomRepository roomRepository) {
     this.reservationRepository = reservationRepository;
     this.roomRepository = roomRepository;
   }
@@ -67,7 +69,8 @@ public class ReservationService {
       throw new IllegalArgumentException("end date is before start date");
     }
 
-    if (discount == null || discount.compareTo(BigDecimal.ZERO) < 0 || discount.compareTo(BigDecimal.valueOf(100)) > 0) {
+    if (discount == null || discount.compareTo(BigDecimal.ZERO) < 0
+            || discount.compareTo(BigDecimal.valueOf(100)) > 0) {
       throw new IllegalArgumentException("discount is invalid");
     }
 
@@ -78,23 +81,25 @@ public class ReservationService {
     // Check for overlapping bookings
     for (ReservationRoomBooking room : rooms) {
       // if reservation is ok continue
-      if(reservationRepository.checkForOverlapping(room.getRoomEntity(), start, end).isEmpty()) {
+      if (reservationRepository.checkForOverlapping(room.getRoomEntity(), start, end).isEmpty()) {
         Double roomPrice = room.getRoomEntity().getPriceMap().get(room.getPriceType());
-        if(roomPrice == null) {
-          throw new IllegalArgumentException("Room " + room.getRoomEntity().getName() + " doesn't have a price for " + room.getPriceType().toString());
+        if (roomPrice == null) {
+          throw new IllegalArgumentException("Room " + room.getRoomEntity().getName()
+                  + " doesn't have a price for " + room.getPriceType().toString());
         }
         double multiplicand = 1 - (discount.doubleValue() / 100);
-        price += Math.round((multiplicand * roomPrice * days) * 100.0)/100.0;
+        price += Math.round((multiplicand * roomPrice * days) * 100.0) / 100.0;
         continue;
       }
       // otherwise add the overlapping error to the reservation errors list
-      reservationErrors.add(
-          ReservationOverlapError.builder().overlappingRoom(room.getRoomEntity().getRoomId()).build());
+      reservationErrors.add(ReservationOverlapError
+              .builder()
+              .overlappingRoom(room.getRoomEntity().getRoomId()).build());
 
       //TODO check for mängel
     }
 
-    if(reservationErrors.isEmpty()) {
+    if (reservationErrors.isEmpty()) {
       ReservationEntity reservationEntity = new ReservationEntity()
           .setCustomers(customers)
           .setRooms(rooms)

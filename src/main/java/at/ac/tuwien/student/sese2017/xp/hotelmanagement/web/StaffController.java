@@ -221,6 +221,12 @@ public class StaffController {
     return redirectToSearch(SearchOption.RECEIPTS, searchKeywords);
   }
 
+  /**
+   * Return form for creating new staffer.
+   * 
+   * @param model empty model
+   * @return view path
+   */
   @GetMapping("/staff/staffers/create")
   public String getCreateStaff(Model model) {
     log.info("create staff - Page called");
@@ -229,6 +235,13 @@ public class StaffController {
     return "staff/staffCreate";
   }
 
+  /**
+   * Creates a new staffer.
+   * 
+   * @param model empty model
+   * @param dto new staff form dto
+   * @return view path
+   */
   @PostMapping("/staff/staffers/create")
   public String doCreateStaff(Model model, @ModelAttribute StaffCreateForm dto) {
     log.info("post staff - Page called");
@@ -254,6 +267,13 @@ public class StaffController {
 
   }
 
+  /**
+   * Returns for your creating a vacation request. 
+   * 
+   * @param model empty model
+   * @param authentication for getting current user
+   * @return view path
+   */
   @GetMapping("/staff/staffers/vacations/create")
   public String getVacationInput(Model model, Authentication authentication) {
     Long stafferId = ((UserWithId)authentication.getPrincipal()).getId();
@@ -262,6 +282,14 @@ public class StaffController {
     return "/staff/requestVacation";
   }
 
+  /**
+   * Creates a new vacation request.
+   * 
+   * @param model empty model
+   * @param vacationId vacation to be accepted
+   * @param authentication for getting current user
+   * @return view path
+   */
   @PostMapping("/staff/staffers/vacations/create")
   public String doVacationInput(Model model,
       @ModelAttribute("vacation") VacationEntity vacation,
@@ -294,13 +322,27 @@ public class StaffController {
     return "/staff/requestVacation";
   }
 
+  /**
+   * Get all pending, running and future vacation requests.
+   * 
+   * @param model empty model
+   * @return view path
+   */
   @GetMapping("/staff/vacations")
   public String getVacations(Model model) {
     log.info("get vacations - Page called");
     model.addAttribute(VACATIONS_ATTRIBUTE_NAME, staffService.getCurrentVactionRequests());
     return "staff/vacationMgmt";
   }
-
+  
+  /**
+   * Accept a vacation.
+   * 
+   * @param model empty model
+   * @param vacationId vacation to be accepted
+   * @param redir for success/failure messages after redirect
+   * @return redirect path
+   */
   @PostMapping(value = "/staff/vacations/{vacationId}/resolve", params = "action=accept")
   public String acceptVacation(Model model, @PathVariable("vacationId") Long vacationId,
       RedirectAttributes redir) {
@@ -314,6 +356,15 @@ public class StaffController {
     return redirectToVacationOverview();
   }
 
+  /**
+   * Reject a vacation with a non-optional reason.
+   *  
+   * @param model empty model
+   * @param vacationId vacation to be accepted
+   * @param reason non optional reason for vacation denial
+   * @param redir for success/failure messages after redirect
+   * @return redirect path
+   */
   @PostMapping(value = "/staff/vacations/{vacationId}/resolve", params = "action=reject")
   public String rejectVacation(Model model,
       @PathVariable("vacationId") Long vacationId,

@@ -166,7 +166,7 @@ public class TestDataInjectorService {
   }
 
   /**
-   * Write all elements in that list to database
+   * Write all elements in that list to database.
    * @param toPersist list with entity elements
    */
   private void persistAll(List<Object> toPersist) {

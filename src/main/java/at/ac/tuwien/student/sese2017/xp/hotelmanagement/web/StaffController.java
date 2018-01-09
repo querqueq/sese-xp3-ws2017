@@ -51,6 +51,7 @@ public class StaffController {
   private static final String SUCCESS_ATTRIBUTE_NAME = "success";
   private static final String DANGER_ATTRIBUTE_NAME = "danger";
   private static final String STAFF_SEARCH_VIEW = "staff/search";
+  private static final String STAFF_CUSTOMER_CREATE_VIEW = "staff/customerCreate";
   private static final String RECEIPTS = "receipts";
   private static final String SEARCH_CRITERIA = "searchCriteria";
   private static final String CUSTOMER_ATTRIBUTE_NAME = "customer";
@@ -109,14 +110,9 @@ public class StaffController {
       if (entity.getId() != null) {
         log.info("Existing entity (id {}) changed", entity.getId());
         redir.addFlashAttribute("success", "Kundendaten erfolgreich geändert!");
-        try {
-          return "redirect:/staff/search?keywords="
-              + URLEncoder.encode(entity.getName(), "UTF-8")
-              + "&domain=CUSTOMERS";
-        } catch (UnsupportedEncodingException e) {
-          log.warn("Failed to encode customer name for redirect to search", e);
-          return "redirect:/staff/search&domain=CUSTOMERS";
-        }
+        return "redirect:/staff/search?keywords="
+            + URLEncoder.encode(entity.getName(), "UTF-8")
+            + "&domain=CUSTOMERS";
       } else {
         log.info("created customer {}", customerId);
         model.addAttribute("note",
@@ -127,8 +123,11 @@ public class StaffController {
       model.addAttribute("note", "Fehler - " + e.getMessage());
       model.addAttribute(CUSTOMER_ATTRIBUTE_NAME, entity);
       log.warn("Customer save validation failed", e);
+    } catch (UnsupportedEncodingException e) {
+      log.warn("Failed to encode customer name for redirect to search", e);
+      return "redirect:/staff/search&domain=CUSTOMERS";
     }
-    return "staff/customerCreate";
+    return STAFF_CUSTOMER_CREATE_VIEW;
   }
 
   /**
@@ -149,7 +148,7 @@ public class StaffController {
       customer.setBillingAddress(new AddressEntity());
     }
     model.addAttribute(CUSTOMER_ATTRIBUTE_NAME, customer);
-    return "staff/customerCreate";
+    return STAFF_CUSTOMER_CREATE_VIEW;
   }
 
   /**

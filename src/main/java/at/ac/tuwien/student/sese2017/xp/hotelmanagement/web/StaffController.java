@@ -12,9 +12,9 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSea
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.ReceiptService;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.StaffService;
 
 import java.io.UnsupportedEncodingException;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.StaffService;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.time.LocalDate;
@@ -22,7 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import javax.validation.ValidationException;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -32,7 +34,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 

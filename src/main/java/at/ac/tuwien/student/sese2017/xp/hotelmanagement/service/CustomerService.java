@@ -46,6 +46,16 @@ public class CustomerService {
     this.passwordManager = passwordManager;
   }
 
+  /**
+   * Looks for a customer in the existing database.
+   *
+   * <p>
+   * Returns null if no customer with the given ID could be found
+   * </p>
+   *
+   * @param id long id of the customer to look for
+   * @return CustomerEntity Object associated with the given id
+   */
   public CustomerEntity getCustomer(Long id) {
     Optional<CustomerEntity> byId = customerRepository.findById(id);
     return byId.orElse(null);

@@ -12,8 +12,11 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.web.form.StaffSea
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.exceptions.NotEnoughVacationDaysException;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.CustomerService;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.ReceiptService;
+
+import java.io.UnsupportedEncodingException;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.service.StaffService;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +32,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -96,15 +100,23 @@ public class StaffController {
    * @return path to template
    */
   @PostMapping("/staff/customer/create")
-  public String postCustomer(Model model, @ModelAttribute CustomerEntity entity) {
+  public String postCustomer(Model model, @ModelAttribute CustomerEntity entity,
+                             RedirectAttributes redir) {
     log.info("post customer - Page called");
-    boolean updated = false;
     try {
       Long customerId = customerService.save(entity);
 
       if (entity.getId() != null) {
         log.info("Existing entity (id {}) changed", entity.getId());
-        updated = true;
+        redir.addFlashAttribute("success", "Kundendaten erfolgreich geändert!");
+        try {
+          return "redirect:/staff/search?keywords="
+              + URLEncoder.encode(entity.getName(), "UTF-8")
+              + "&domain=CUSTOMERS";
+        } catch (UnsupportedEncodingException e) {
+          log.warn("Failed to encode customer name for redirect to search", e);
+          return "redirect:/staff/search&domain=CUSTOMERS";
+        }
       } else {
         log.info("created customer {}", customerId);
         model.addAttribute("note",
@@ -115,9 +127,6 @@ public class StaffController {
       model.addAttribute("note", "Fehler - " + e.getMessage());
       model.addAttribute(CUSTOMER_ATTRIBUTE_NAME, entity);
       log.warn("Customer save validation failed", e);
-    }
-    if (updated) {
-      return "redirect:/staff/search";
     }
     return "staff/customerCreate";
   }
@@ -132,7 +141,7 @@ public class StaffController {
    * @return path to template
    */
   @GetMapping("/staff/customer/edit/{customerId}")
-  public String postCustomer(Model model, @PathVariable("customerId") Long customerId) {
+  public String editCustomer(Model model, @PathVariable("customerId") Long customerId) {
     log.info("edit customer - Page called");
     CustomerEntity customer = customerService.getCustomer(customerId);
     if (customer == null) {

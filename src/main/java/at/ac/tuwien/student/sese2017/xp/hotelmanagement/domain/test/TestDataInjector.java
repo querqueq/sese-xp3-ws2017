@@ -10,14 +10,21 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Role;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationEntity;
+import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
+
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.Nullable;
@@ -27,19 +34,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.config.AppProperties;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.AddressEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.CustomerEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.JobTitle;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.ReceiptEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.RoomEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.StaffEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.UserEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationEntity;
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.VacationStatus;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * This Class handles the injection of all test data for the test cases.
@@ -419,53 +413,53 @@ public class TestDataInjector {
 
   @SuppressWarnings("serial")
   public static final StaffEntity DEFAULT_STAFF = (StaffEntity)new StaffEntity()
-  .setBirthday(LocalDate.of(1986, 6, 22))
-  .setEmail("staff@hotel.com")
-  .setJobTitle(JobTitle.RECEPTIONIST)
-  .setName("Staff member")
-  .setSex(Sex.FEMALE)
-  .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 20);}})
-  .setRoles(JobTitle.RECEPTIONIST.getRoles())
-  .setUsername("staff")
-  .setPassword(new BCryptPasswordEncoder().encode("password"));
+      .setBirthday(LocalDate.of(1986, 6, 22))
+      .setEmail("staff@hotel.com")
+      .setJobTitle(JobTitle.RECEPTIONIST)
+      .setName("Staff member")
+      .setSex(Sex.FEMALE)
+      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{ put(2017, 20); }})
+      .setRoles(JobTitle.RECEPTIONIST.getRoles())
+      .setUsername("staff")
+      .setPassword(new BCryptPasswordEncoder().encode("password"));
   
   @SuppressWarnings("serial")
   public static final StaffEntity STAFF_1 = (StaffEntity)new StaffEntity()
-  .setBirthday(LocalDate.of(1998, 5, 16))
-  .setEmail("receptionist@hotel.com")
-  .setJobTitle(JobTitle.RECEPTIONIST)
-  .setName("Stefanie Stafferson")
-  .setSex(Sex.FEMALE)
-  .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 20);}})
-  .setRoles(JobTitle.RECEPTIONIST.getRoles())
-  .setUsername("receptionist")
-  .setPassword(new BCryptPasswordEncoder().encode("password"));
+      .setBirthday(LocalDate.of(1998, 5, 16))
+      .setEmail("receptionist@hotel.com")
+      .setJobTitle(JobTitle.RECEPTIONIST)
+      .setName("Stefanie Stafferson")
+      .setSex(Sex.FEMALE)
+      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{ put(2017, 20); }})
+      .setRoles(JobTitle.RECEPTIONIST.getRoles())
+      .setUsername("receptionist")
+      .setPassword(new BCryptPasswordEncoder().encode("password"));
 
   @SuppressWarnings("serial")
   public static final StaffEntity MANAGER_1 = (StaffEntity) new StaffEntity()
-  .setBirthday(LocalDate.of(1990, 5, 10))
-  .setEmail("manager@hotel.com")
-  .setJobTitle(JobTitle.MANAGER)
-  .setName("Michael Scott")
-  .setSex(Sex.MALE)
-  .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 5);}})
-  .setRoles(JobTitle.MANAGER.getRoles())
-  .setUsername("manager")
-  .setPassword(new BCryptPasswordEncoder().encode("password"))
-  ;
+      .setBirthday(LocalDate.of(1990, 5, 10))
+      .setEmail("manager@hotel.com")
+      .setJobTitle(JobTitle.MANAGER)
+      .setName("Michael Scott")
+      .setSex(Sex.MALE)
+      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{ put(2017, 5); }})
+      .setRoles(JobTitle.MANAGER.getRoles())
+      .setUsername("manager")
+      .setPassword(new BCryptPasswordEncoder().encode("password"))
+      ;
 
   @SuppressWarnings("serial")
   public static final StaffEntity STAFF_2 = (StaffEntity) new StaffEntity()
-  .setBirthday(LocalDate.of(1990, 5, 16))
-  .setEmail("n.flynn@hotel.com")
-  .setJobTitle(JobTitle.CLEANER)
-  .setName("Neil Flynn")
-  .setSex(Sex.MALE)
-  .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2010, 22);}})
-  .setRoles(JobTitle.CLEANER.getRoles())
-  .setUsername("janitor")
-  .setPassword(new BCryptPasswordEncoder().encode("password"))
-  ;
+      .setBirthday(LocalDate.of(1990, 5, 16))
+      .setEmail("n.flynn@hotel.com")
+      .setJobTitle(JobTitle.CLEANER)
+      .setName("Neil Flynn")
+      .setSex(Sex.MALE)
+      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{ put(2010, 22); }})
+      .setRoles(JobTitle.CLEANER.getRoles())
+      .setUsername("janitor")
+      .setPassword(new BCryptPasswordEncoder().encode("password"))
+      ;
 
   public static final VacationEntity VACATION_PENDING_1 = new VacationEntity()
       .setFromDate(LocalDate.of(2020, 2, 10))

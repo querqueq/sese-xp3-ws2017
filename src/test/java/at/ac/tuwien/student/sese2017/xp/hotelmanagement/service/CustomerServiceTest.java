@@ -1,5 +1,6 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
@@ -92,6 +93,22 @@ public class CustomerServiceTest extends HotelManagementApplicationTests {
     CustomerEntity entity = createCustomerEntity();
     entity.setBirthday(LocalDate.now().plus(1, ChronoUnit.DAYS));
     customerService.save(entity);
+  }
+
+  @Test(expected = ValidationException.class)
+  public void testCreateEntityWithInvalidPhoneNumber() throws MalformedURLException {
+    CustomerEntity entity = createCustomerEntity();
+    entity.setPhoneNumber("invalid Phone Number");
+    customerService.save(entity);
+  }
+
+  @Test
+  public void testGetCustomerById() throws MalformedURLException {
+    CustomerEntity entity = createCustomerEntity();
+    Long id = customerService.save(entity);
+
+    CustomerEntity result = customerService.getCustomer(id);
+    assertEquals(entity, result);
   }
 
   private CustomerEntity createCustomerEntity() throws MalformedURLException {

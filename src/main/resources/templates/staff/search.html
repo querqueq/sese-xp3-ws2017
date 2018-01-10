@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}">
     <!-- Custom styles for this template -->
     <link href="../../static/css/offcanvas.css" rel="stylesheet" th:href="@{/css/offcanvas.css}">
-    <title>Staff</title>
+    <title>Suche</title>
     <meta charset="utf-8" />
     <style type="text/css">
     .card-block {
@@ -116,7 +116,8 @@
                             </p>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-12" style="padding-bottom: 5px">
-                            <a href="#" class="btn btn-primary btn-block float-right" disabled>Bearbeiten</a>
+                            <a href="#" class="btn btn-primary btn-block float-right" th:href="@{/staff/customer/edit/{id}(id=${customer.id})}"> Bearbeiten
+                            </a>
                             <a href="#" class="btn btn-primary btn-block float-right" disabled>Reservierungen 
                                 <span class="badge badge-pill badge-info">0</span>
                             </a>

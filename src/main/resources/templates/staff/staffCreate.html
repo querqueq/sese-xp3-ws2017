@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<title>Mitarbeiter anlegen</title>
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="../../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" href="../../static/css/font-awesome.min.css"
+	th:href="@{/css/font-awesome.min.css}">
+<!-- Custom styles for this template -->
+<link href="../../static/css/offcanvas.css" rel="stylesheet"
+	th:href="@{/css/offcanvas.css}">
+<meta charset="utf-8" />
+</head>
+<body>
+	<div th:insert="fragments/header :: menu"></div>
+	<!-- 	 d-flex justify-content-center -->
+	<div class="container">
+
+		<div class="row">
+			<div class="flash-note col-12" th:if="${note != null}">
+				<b th:text="${note}">
+					Mitarbeiter Foo Bar (32) erfasst! Das Passwort ist 'P8eQdWvG6D' (Wird nicht nochmal angezeigt!)
+				</b>
+				<hr>
+			</div>
+		</div>
+		<form class="form-horizontal" th:action="@{/staff/staffers/create}"
+			th:object="${staffer}" method="post">
+			<div class="form-group row">
+				<label for="name" class="col-4 col-form-label required">Name</label>
+				<div class="col-8">
+					<input id="name" class="form-control" type="text" autofocus
+						th:field="*{entity.name}" required>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="birthday" class="col-4 col-form-label required">Geburtstag</label>
+				<div class="col-8">
+					<input id="birthday" class="form-control" type="date"
+						th:field="*{entity.birthday}" required>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="sex" class="col-4 col-form-label required">Geschlecht</label>
+				<div class="col-8">
+					<select id="sex" class="custom-select mb-2 mr-sm-2 mb-sm-0"
+						required th:field="*{entity.sex}">
+						<option
+							th:each="sex : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.Sex).values()}"
+							th:value="${sex}" th:text="${sex.getDisplay()}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="title" class="col-4 col-form-label required">Anstellung</label>
+				<div class="col-8">
+					<select id="title" class="custom-select mb-2 mr-sm-2 mb-sm-0"
+						required th:field="*{entity.jobTitle}">
+						<option
+							th:each="title : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.JobTitle).values()}"
+							th:value="${title}" th:text="${title.getDisplay()}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="email" class="col-4 col-form-label required">E-Mail</label>
+				<div class="col-8">
+					<input id="email" class="form-control" type="email"
+						placeholder="user@example.com" required th:field="*{entity.email}">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="initDays" class="col-4 col-form-label required">Verbleibende Urlaubstage in diesem Jahr</label>
+				<div class="col-8">
+					<input id="initDays" class="form-control" type="number"
+						placeholder="20" required th:field="*{initialVacationDays}">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="yearlyDays" class="col-4 col-form-label required">Urlaubstageanspruch</label>
+				<div class="col-8">
+					<input id="yearlyDays" class="form-control" type="number"
+						placeholder="20" required th:field="*{yearlyVacationDays}">
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="offset-4 col-8">
+					<button type="submit" class="btn btn-primary">Speichern</button>
+				</div>
+			</div>
+			
+		</form>
+	</div>
+	<script src="../../static/js/jquery-3.2.1.slim.min.js"
+		th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+	<script src="../../static/js/popper.min.js"
+		th:src="@{/js/popper.min.js}"></script>
+	<script src="../../static/js/bootstrap.min.js"
+		th:src="@{/js/bootstrap.min.js}"></script>
+	<script src="../../static/js/offcanvas.js" th:src="@{/js/offcanvas.js}"></script>
+
+</body>
+</html>

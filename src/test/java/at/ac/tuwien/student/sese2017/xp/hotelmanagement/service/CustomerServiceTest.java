@@ -1,5 +1,6 @@
 package at.ac.tuwien.student.sese2017.xp.hotelmanagement.service;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import at.ac.tuwien.student.sese2017.xp.hotelmanagement.HotelManagementApplicationTests;
@@ -12,14 +13,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
-import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.test.TestDataInjector;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -47,7 +44,7 @@ public class CustomerServiceTest extends HotelManagementApplicationTests {
   @Test
   public void testCreateEntityWithAllFields() throws MalformedURLException {
     CustomerEntity entity = createCustomerEntity();
-    Long id = customerService.create(entity);
+    Long id = customerService.save(entity);
     assertNotNull(id);
   }
 
@@ -58,7 +55,7 @@ public class CustomerServiceTest extends HotelManagementApplicationTests {
     entity.setFaxNumber(null);
     entity.setNote(null);
     entity.setWebAddress(null);
-    Long id = customerService.create(entity);
+    Long id = customerService.save(entity);
     assertNotNull(id);
   }
 
@@ -66,7 +63,7 @@ public class CustomerServiceTest extends HotelManagementApplicationTests {
   public void testCreateEntityWithOneInvalidField() throws MalformedURLException {
     CustomerEntity entity = createCustomerEntity();
     entity.setPhoneNumber("This is not a phone number");
-    customerService.create(entity);
+    customerService.save(entity);
   }
 
   @Test(expected = ConstraintViolationException.class)
@@ -74,28 +71,44 @@ public class CustomerServiceTest extends HotelManagementApplicationTests {
     CustomerEntity entity = createCustomerEntity();
     entity.setBirthday(LocalDate.now().plus(1, ChronoUnit.DAYS));
     entity.setEmail("invalid email");
-    customerService.create(entity);
+    customerService.save(entity);
   }
 
   @Test(expected = ConstraintViolationException.class)
   public void testCreateEntityWithCompulsoryNullField() throws MalformedURLException {
     CustomerEntity entity = createCustomerEntity();
     entity.setName(null);
-    customerService.create(entity);
+    customerService.save(entity);
   }
 
   @Test(expected = ConstraintViolationException.class)
   public void testCreateEntityWithInvalidDiscount() throws MalformedURLException {
     CustomerEntity entity = createCustomerEntity();
     entity.setDiscount(BigDecimal.valueOf(101.0D));
-    customerService.create(entity);
+    customerService.save(entity);
   }
 
   @Test(expected = ValidationException.class)
   public void testCreateEntityWithInvalidBirthday() throws MalformedURLException {
     CustomerEntity entity = createCustomerEntity();
     entity.setBirthday(LocalDate.now().plus(1, ChronoUnit.DAYS));
-    customerService.create(entity);
+    customerService.save(entity);
+  }
+
+  @Test(expected = ValidationException.class)
+  public void testCreateEntityWithInvalidPhoneNumber() throws MalformedURLException {
+    CustomerEntity entity = createCustomerEntity();
+    entity.setPhoneNumber("invalid Phone Number");
+    customerService.save(entity);
+  }
+
+  @Test
+  public void testGetCustomerById() throws MalformedURLException {
+    CustomerEntity entity = createCustomerEntity();
+    Long id = customerService.save(entity);
+
+    CustomerEntity result = customerService.getCustomer(id);
+    assertEquals(entity, result);
   }
 
   private CustomerEntity createCustomerEntity() throws MalformedURLException {

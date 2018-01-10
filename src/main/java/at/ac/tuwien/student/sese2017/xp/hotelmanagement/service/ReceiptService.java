@@ -29,7 +29,7 @@ public class ReceiptService {
 
   /**
    * Constructs a {@linkplain ReceiptService}.
-   * 
+   *
    * @param receiptRepository the receipt repository
    * @param customerRepository the customer repository
    */
@@ -42,7 +42,7 @@ public class ReceiptService {
 
   /**
    * Full text search for receipts.
-   * 
+   *
    * @param searchText multiple keywords seperated by whitespaces
    * @return List of matching receipts
    */
@@ -52,7 +52,7 @@ public class ReceiptService {
 
   /**
    * Get all receipts of a single customer.
-   * 
+   *
    * @param customerId the customer's id
    * @return List of all receipts of customer with {@linkplain customerId}
    */
@@ -63,7 +63,7 @@ public class ReceiptService {
 
   /**
    * Cancels a existing non-canceled receipt.
-   * 
+   *
    * @param receiptId id of the receipt which shall be canceled
    */
   public void cancelReceipt(Long receiptId) {
@@ -80,7 +80,7 @@ public class ReceiptService {
 
   /**
    * Returns a single {@linkplain ReceiptEntity} for given {@linkplain receiptId}.
-   * 
+   *
    * @param receiptId id of the receipt which shall be retrieved
    * @return receipt for given id
    */

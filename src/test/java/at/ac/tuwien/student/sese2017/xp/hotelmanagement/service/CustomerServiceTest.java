@@ -59,7 +59,7 @@ public class CustomerServiceTest extends HotelManagementApplicationTests {
     assertNotNull(id);
   }
 
-  @Test(expected = ConstraintViolationException.class)
+  @Test(expected = ValidationException.class)
   public void testCreateEntityWithOneInvalidField() throws MalformedURLException {
     CustomerEntity entity = createCustomerEntity();
     entity.setPhoneNumber("This is not a phone number");

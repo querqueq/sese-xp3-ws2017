@@ -86,7 +86,6 @@ public class CustomerEntity extends UserEntity {
 
   @Column
   @NotNull
-  @Digits(fraction = 0, integer = 50)
   private String phoneNumber;
 
   @Column(unique = true)

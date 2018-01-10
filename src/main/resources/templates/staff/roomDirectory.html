@@ -9,66 +9,81 @@
     <!-- Custom styles for this template -->
     <link href="/css/offcanvas.css" rel="stylesheet">
     <meta charset="utf-8" />
+    <style>
+        .top-buffer { margin-top:20px; }
+    </style>
 </head>
 <body>
 <div th:insert="fragments/header :: menu"></div>
-
-<center>
+<div class="container">
     <h1>Zimmer Verwaltung</h1>
-        <form th:action="@{/staff/roomDirectory}" th:object="${roomDirectorySearchCriteria}" method="post">
-        <table>
+        <form class="form-horizontal" th:action="@{/staff/roomDirectory}" th:object="${roomDirectorySearchCriteria}" method="post">
+            <fieldset class="form-group">
+                <div class="form-group row">
+                    <label for="name" class="col-2 col-form-label">Name</label>
+                    <div class="col-4">
+                        <input class="form-control" type="text" id="name" autofocus="autofocus" th:field="*{name}"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="minOccupants" class="col-2 col-form-label">min.
+                        Belegzahl</label>
+                    <div class="col-4">
+                        <input class="form-control" type="number" id="minOccupants" th:field="*{minOccupants}"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="maxOccupants" class="col-2 col-form-label">max.
+                        Belegzahl</label>
+                    <div class="col-4">
+                        <input class="form-control" type="number" id="maxOccupants" th:field="*{maxOccupants}"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label th:for="${priceType}" class="col-2 col-form-label">Preistyp</label>
+                    <div class="col-4">
+                        <select class="form-control" th:field="*{{priceType}}">
+                            <option th:each="priceType : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType).values()}"
+                                    th:value="${{priceType}}"
+                                    th:selected="${priceType == T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType)}"
+                                    th:text="${priceType}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="maxPrice" class="col-2 col-form-label">max. Preis</label>
+                    <div class="col-4">
+                        <input class="form-control" type="number" id="maxPrice" th:field="*{maxPrice}"/>
+                    </div>
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary">Suchen</button>
+        </form>
+
+    <div class="row top-buffer">
+        <table class="table">
             <tr>
-                <td><label for="name">Name</label></td>
-                <td><input type="text" id="name" autofocus="autofocus" th:field="*{name}"/></td>
+                <th>Name</th>
+                <th>max. Belegzahl</th>
+                <th th:each="priceType : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType).values()}"
+                       th:text="${priceType}">
+                </th>
             </tr>
-            <tr>
-                <td><label for="minOccupants">min. Belegzahl</label></td>
-                <td><input type="number" id="minOccupants" th:field="*{minOccupants}"/></td>
-            </tr>
-            <tr>
-                <td><label for="maxOccupants">max. Belegzahl</label></td>
-                <td><input type="number" id="maxOccupants" th:field="*{maxOccupants}"/></td>
-            </tr>
-            <tr>
-                <td><label th:for="${priceType}">Preistyp</label></td>
-                <td>
-                    <select class="form-control" th:field="*{{priceType}}">
-                    <option th:each="priceType : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType).values()}"
-                            th:value="${{priceType}}"
-                            th:selected="${priceType == T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType)}"
-                            th:text="${priceType}">
-                    </option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="maxPrice">max. Preis</label></td>
-                <td><input type="number" id="maxPrice" th:field="*{maxPrice}"/></td>
+            <tr th:each="roomEntity : ${roomList}">
+                <td th:text="${roomEntity.name}">empty</td>
+                <td th:text="${roomEntity.maxOccupants}">0</td>
+                <td th:text="${roomEntity.priceMap[SINGLE]}">empty</td>
+                <td th:text="${roomEntity.priceMap[DOUBLE]}">empty</td>
+                <td th:text="${roomEntity.priceMap[TRIPLE]}">empty</td>
+                <td th:text="${roomEntity.priceMap[SINGLE_WITH_CHILD]}">empty</td>
+                <td th:text="${roomEntity.priceMap[SINGLE_WITH_TWO_CHILDREN]}">empty</td>
+                <td th:text="${roomEntity.priceMap[DOUBLE_WITH_CHILD]}">empty</td>
             </tr>
         </table>
-        <input type="submit" value="Suchen" />
-</form>
+    </div>
+</div>
 
-<table border="2">
-    <tr>
-        <th>Name</th>
-        <th>max. Belegzahl</th>
-        <th th:each="priceType : ${T(at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.data.PriceType).values()}"
-               th:text="${priceType}">
-        </th>
-    </tr>
-    <tr th:each="roomEntity : ${roomList}">
-        <td th:text="${roomEntity.name}">empty</td>
-        <td th:text="${roomEntity.maxOccupants}">0</td>
-        <td th:text="${roomEntity.priceMap[SINGLE]}">empty</td>
-        <td th:text="${roomEntity.priceMap[DOUBLE]}">empty</td>
-        <td th:text="${roomEntity.priceMap[TRIPLE]}">empty</td>
-        <td th:text="${roomEntity.priceMap[SINGLE_WITH_CHILD]}">empty</td>
-        <td th:text="${roomEntity.priceMap[SINGLE_WITH_TWO_CHILDREN]}">empty</td>
-        <td th:text="${roomEntity.priceMap[DOUBLE_WITH_CHILD]}">empty</td>
-    </tr>
-</table>
-</center>
 <script src="/js/jquery-3.2.1.slim.min.js"></script>
 <script src="/js/popper.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>

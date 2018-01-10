@@ -106,9 +106,10 @@ public class StaffController {
                              RedirectAttributes redir) {
     log.info("post customer - Page called");
     try {
+      Long idBeforeSave = entity.getId();
       Long customerId = customerService.save(entity);
 
-      if (entity.getId() != null) {
+      if (idBeforeSave != null) {
         log.info("Existing entity (id {}) changed", entity.getId());
         redir.addFlashAttribute("success", "Kundendaten erfolgreich geändert!");
         return "redirect:/staff/search?keywords="
@@ -116,12 +117,12 @@ public class StaffController {
             + "&domain=CUSTOMERS";
       } else {
         log.info("created customer {}", customerId);
-        model.addAttribute("note",
+        model.addAttribute("success",
             String.format("Kunde %s erfasst! (%d)", entity.getName(), customerId));
         model.addAttribute(CUSTOMER_ATTRIBUTE_NAME, new CustomerEntity());
       }
     } catch (ValidationException e) {
-      model.addAttribute("note", "Fehler - " + e.getMessage());
+      model.addAttribute("danger", e.getMessage());
       model.addAttribute(CUSTOMER_ATTRIBUTE_NAME, entity);
       log.warn("Customer save validation failed", e);
     } catch (UnsupportedEncodingException e) {

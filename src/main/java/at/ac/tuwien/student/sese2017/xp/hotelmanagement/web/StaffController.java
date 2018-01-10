@@ -110,14 +110,14 @@ public class StaffController {
       Long customerId = customerService.save(entity);
 
       if (idBeforeSave != null) {
-        log.info("Existing entity (id {}) changed", entity.getId());
-        redir.addFlashAttribute("success", "Kundendaten erfolgreich geändert!");
+        log.info("Existing entity (id {}) changed", idBeforeSave);
+        redir.addFlashAttribute(SUCCESS_ATTRIBUTE_NAME, "Kundendaten erfolgreich geändert!");
         return "redirect:/staff/search?keywords="
             + URLEncoder.encode(entity.getName(), "UTF-8")
             + "&domain=CUSTOMERS";
       } else {
         log.info("created customer {}", customerId);
-        model.addAttribute("success",
+        model.addAttribute(SUCCESS_ATTRIBUTE_NAME,
             String.format("Kunde %s erfasst! (%d)", entity.getName(), customerId));
         model.addAttribute(CUSTOMER_ATTRIBUTE_NAME, new CustomerEntity());
       }

@@ -24,13 +24,26 @@
 </style>
 </head>
 <body>
-	<div class="flash-note" th:if="${note != null}" th:text="${note}"></div>
+    <div class="row alerts">
+        <div class="col-md-12">
+            <div class="alert alert-danger" role="alert" th:if="${danger != null}">
+                <strong>Fehler!</strong>
+                <span th:text="${danger}">Bitte versuchen Sie es später noch einmal.</span>
+            </div>
+            <div class="alert alert-success" role="alert" th:if="${success != null}">
+                            <span th:text="${success}">
+                                Erfolg!
+                            </span>
+            </div>
+        </div>
+    </div>
 
 	<div th:insert="fragments/header :: menu"></div>
 	<!-- 	 d-flex justify-content-center -->
 	<div class="container">
 		<form class="form-horizontal" th:action="@{/staff/customer/create}"
 			th:object="${customer}" method="post">
+			<input hidden="true" th:value="${id}" th:field="*{id}">
 			<fieldset class="form-group">
 				<legend>Allgemein</legend>
 				<div class="form-group row">

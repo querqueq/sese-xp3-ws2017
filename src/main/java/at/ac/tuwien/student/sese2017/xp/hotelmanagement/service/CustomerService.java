@@ -7,6 +7,7 @@ import at.ac.tuwien.student.sese2017.xp.hotelmanagement.domain.repository.Custom
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
@@ -30,7 +31,7 @@ public class CustomerService {
   // Currently phone numbers are considered validate if the have a maximum
   // of 50 digits(we had to pick something without limiting really long
   // phone numbers)
-  private static final Pattern PHONE_PATTERN = Pattern.compile("^\\d{0,50}$");
+  private static final Pattern PHONE_PATTERN = Pattern.compile("^[+]??[0-9 ]{0,50}$");
   private final CustomerRepository customerRepository;
   private PasswordManager passwordManager;
 
@@ -46,12 +47,27 @@ public class CustomerService {
   }
 
   /**
-   * Validates and saves the given entity into the underlying data store.
-   * 
-   * @param entity The customer entity to create
-   * @return The id of the created entity
+   * Looks for a customer in the existing database.
+   *
+   * <p>
+   * Returns null if no customer with the given ID could be found
+   * </p>
+   *
+   * @param id long id of the customer to look for
+   * @return CustomerEntity Object associated with the given id
    */
-  public Long create(@Valid CustomerEntity entity) {
+  public CustomerEntity getCustomer(Long id) {
+    Optional<CustomerEntity> byId = customerRepository.findById(id);
+    return byId.orElse(null);
+  }
+
+  /**
+   * Validates and saves the given entity in the underlying data store.
+   * 
+   * @param entity The customer entity to save
+   * @return The id of the saved entity
+   */
+  public Long save(@Valid CustomerEntity entity) {
     // TODO deny double entries (match for name and billing address)
     // TODO generate random password and send to the customers email
     entity.setUsername(entity.getEmail());
@@ -60,7 +76,7 @@ public class CustomerService {
     checkPhoneNumber(entity.getFaxNumber());
     checkPhoneNumber(entity.getPhoneNumber());
     if (entity.getBirthday().isAfter(LocalDate.now())) {
-      throw new ValidationException("Cannot have been born in the future!");
+      throw new ValidationException("Das Geburtsdatum muss in der Vergangenheit liegen.");
     }
     return customerRepository.save(entity).getId();
   }
@@ -76,7 +92,7 @@ public class CustomerService {
 
   private void checkPhoneNumber(String phoneNumber) {
     if (phoneNumber != null && !PHONE_PATTERN.asPredicate().test(phoneNumber)) {
-      throw new ValidationException(String.format("%s invalid phone number", phoneNumber));
+      throw new ValidationException(String.format("Telefonnummer: %s ungültig!", phoneNumber));
     }
   }
 }

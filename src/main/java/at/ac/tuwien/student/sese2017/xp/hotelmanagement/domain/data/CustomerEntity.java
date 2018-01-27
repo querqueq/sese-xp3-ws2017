@@ -58,7 +58,7 @@ public class CustomerEntity extends UserEntity {
   private Sex sex;
 
   @IndexedEmbedded
-  @ManyToOne(cascade = {CascadeType.PERSIST})
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinColumn
   private AddressEntity billingAddress;
 
@@ -86,7 +86,6 @@ public class CustomerEntity extends UserEntity {
 
   @Column
   @NotNull
-  @Digits(fraction = 0, integer = 50)
   private String phoneNumber;
 
   @Column(unique = true)

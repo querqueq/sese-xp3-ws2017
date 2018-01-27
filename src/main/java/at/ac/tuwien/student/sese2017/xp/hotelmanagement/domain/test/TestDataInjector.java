@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
+
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -416,7 +417,7 @@ public class TestDataInjector {
       .setJobTitle(JobTitle.RECEPTIONIST)
       .setName("Staff member")
       .setSex(Sex.FEMALE)
-      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 20);}})
+      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{ put(2017, 20); }})
       .setRoles(JobTitle.RECEPTIONIST.getRoles())
       .setUsername("staff")
       .setPassword(new BCryptPasswordEncoder().encode("password"));
@@ -428,7 +429,7 @@ public class TestDataInjector {
       .setJobTitle(JobTitle.RECEPTIONIST)
       .setName("Stefanie Stafferson")
       .setSex(Sex.FEMALE)
-      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 20);}} )
+      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{ put(2017, 20); }})
       .setRoles(JobTitle.RECEPTIONIST.getRoles())
       .setUsername("receptionist")
       .setPassword(new BCryptPasswordEncoder().encode("password"));
@@ -440,7 +441,7 @@ public class TestDataInjector {
       .setJobTitle(JobTitle.MANAGER)
       .setName("Michael Scott")
       .setSex(Sex.MALE)
-      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2017, 5);}})
+      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{ put(2017, 5); }})
       .setRoles(JobTitle.MANAGER.getRoles())
       .setUsername("manager")
       .setPassword(new BCryptPasswordEncoder().encode("password"))
@@ -453,7 +454,7 @@ public class TestDataInjector {
       .setJobTitle(JobTitle.CLEANER)
       .setName("Neil Flynn")
       .setSex(Sex.MALE)
-      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{put(2010, 22);}})
+      .setYearlyVacationDays(new HashMap<Integer, Integer>() {{ put(2010, 22); }})
       .setRoles(JobTitle.CLEANER.getRoles())
       .setUsername("janitor")
       .setPassword(new BCryptPasswordEncoder().encode("password"))
